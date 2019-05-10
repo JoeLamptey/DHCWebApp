@@ -19,6 +19,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
+import {Redirect} from 'react-router-dom'
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -121,6 +123,21 @@ class Header extends Component{
                 })
                 //console.log(this.props.menu[3])
                 break;
+            case this.props.submenu[0]:
+                this.setState({
+                    mainContent: this.props.pages[4]
+                })
+                //console.log(this.props.menu[3])
+                break;
+            case this.props.submenu[1]:
+                this.setState({
+                    mainContent: this.props.pages[5]
+                })
+                //console.log(this.props.menu[3])
+                break;
+            case this.props.submenu[2]:
+                return (<Redirect to='/'/>)
+
             default:
                 this.setState({mainContent: this.props.menu[0]})
                 //console.log('Default menu: ',menu)
@@ -181,8 +198,8 @@ class Header extends Component{
                     </List>
                     <Divider />
                     <List>
-                        {['Schedules', 'Profile', 'Logout'].map((text, index) => (
-                        <ListItem button key={text}>
+                        {this.props.submenu.map((text, index) => (
+                        <ListItem button key={text} data-list_item={text} onClick={this.sideMenu}>
                             {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
                             <ListItemText primary={text} />
                         </ListItem>

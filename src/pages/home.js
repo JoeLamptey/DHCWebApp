@@ -4,13 +4,11 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-//import {Link} from 'gatsby'
 
-import HomeStyles from '../components/home.module.css'
+import '../styles/home.css'
 import IndexStyles from '../styles/index.css'
 
 import Verify from '../components/Router'
-//import {Redirect} from 'react-router-dom'
 
 const styles = theme => ({
     container: {
@@ -40,7 +38,7 @@ class Index extends Component{
       
 
       if(user.email === ''||user.password === ''){
-          this.setState({notification: 'Please fill in the form'})
+          this.setState({notification: 'Please completely fill in the form'})
       }else{
           e.target.email.value = ''
           e.target.password.value = ''
@@ -65,9 +63,9 @@ class Index extends Component{
   render(){
       const { classes } = this.props;
        return (
-          <div className={IndexStyles.body}>
-              <div className={HomeStyles.login}>
-                  <h1 className={HomeStyles.h1}>Domiciliary HealthCare</h1>
+          <div className={IndexStyles}>
+              <div className='login'>
+                  <h1 className='h1'>Domiciliary HealthCare</h1>
                   <form onSubmit={this.login}
                       className={[classes.container]} noValidate autoComplete="off">
                       <TextField
@@ -94,13 +92,13 @@ class Index extends Component{
                           required={true}
                           />
                       <Button 
-                          className={HomeStyles.button}
+                          className='button'
                           type='submit' 
                           variant='contained'
                           fullWidth 
                           color='primary'>Login</Button>
                   </form>
-                  <div align='center'>{this.state.notification}</div>
+                  <div align='center' className='alert'>{this.state.notification}</div>
               </div>
           </div>
       )

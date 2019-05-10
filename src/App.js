@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Index from './pages/index'
+import Home from './pages/home'
 import {Redirect} from 'react-router-dom'
 
 class App extends Component{
@@ -18,7 +18,7 @@ class App extends Component{
 
       if(!this.state.auth.status){
        return (
-          <Index verifyUser={this.verifyUser} />
+          <Home verifyUser={this.verifyUser} />
       )}
       else if(this.state.auth.status && this.state.auth.user.type === 'admin'){ 
         return (<Redirect to='/admin' />)

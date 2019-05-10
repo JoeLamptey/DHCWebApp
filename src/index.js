@@ -8,6 +8,7 @@ import Supervisor from './pages/supervisor';
 import Client from './pages/client';
 import Carer from './pages/carer';
 import Manager from './pages/manager';
+//import NoMatch from './pages/NoMatch';
 
 import {BrowserRouter as Router,Route} from 'react-router-dom'
 
@@ -20,13 +21,10 @@ const DHCRouter = ()=>{
             <Route path='/carer' exact component={Carer} />
             <Route path='/client' exact component={Client} />
             <Route path='/manager' exact component={Manager} />
+            {/* <Route exact component={NoMatch} /> */}
         </Router>
     )
 }
 
 ReactDOM.render(<DHCRouter />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-//serviceWorker.unregister();

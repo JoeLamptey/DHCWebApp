@@ -3,7 +3,7 @@ body{
     background-image: url('../images/ad6.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
-    
+    background-position: 0px 0px;
 }
 
 h1{
@@ -12,4 +12,8 @@ h1{
     
 h2{
     color: blue;
+}
+
+.alert{
+    color: red
 }

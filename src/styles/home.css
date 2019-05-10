@@ -1,0 +1,22 @@
+.body{
+    background-image: url('../images/ad6.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%
+}
+
+.login{
+    margin: 12% 32%;
+}
+
+.h1{
+    font-size: 2.4rem;
+    font-Weight: 1;
+    color: blue;
+    text-align: center;    
+}
+
+.button{
+    margin-top: 15%;
+}
+
