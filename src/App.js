@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react"
+import Index from './pages/index'
+import {Redirect} from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      auth: {status: false, user: null}
+    }
+  }
+
+  verifyUser = (user) =>{
+    this.setState({auth: user})
+    //console.log(this.state.auth)
+  }
+  render(){
+
+      if(!this.state.auth.status){
+       return (
+          <Index verifyUser={this.verifyUser} />
+      )}
+      else if(this.state.auth.status && this.state.auth.user.type === 'admin'){ 
+        return (<Redirect to='/admin' />)
+      }
+      else if(this.state.auth.status && this.state.auth.user.type === 'supervisor'){
+        return (<Redirect to='/supervisor' />)
+      }
+      else if(this.state.auth.status && this.state.auth.user.type === 'carer'){
+        return (<Redirect to='/carer' />)
+      }
+      else if(this.state.auth.status && this.state.auth.user.type === 'client'){
+        return (<Redirect to='/client' />)
+      }
+      else if(this.state.auth.status && this.state.auth.user.type === 'manager'){
+        return (<Redirect to='/manager' />)
+      }
+  }
 }
 
-export default App;
+
+export default App

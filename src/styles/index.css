@@ -1,0 +1,15 @@
+
+body{
+    background-image: url('../images/ad6.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+}
+
+h1{
+    color: red;
+}
+    
+h2{
+    color: blue;
+}
