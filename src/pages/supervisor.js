@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
-import Footer from '../components/footer'
 import Header from '../components/header'
-import SupervisorClient from '../components/SupervisorClient'
-import SupervisorCarer from '../components/SupervisorCarer'
-import SupervisorMonitoring from '../components/SupervisorMonitoring'
-import SupervisorReports from '../components/SupervisorReports'
+import SupervisorClient from '../components/supervisorComponents/SupervisorClient'
+import SupervisorCarer from '../components/supervisorComponents/SupervisorCarer'
+import SupervisorMonitoring from '../components/supervisorComponents/SupervisorMonitoring'
+import SupervisorReports from '../components/supervisorComponents/SupervisorReports'
+import SupervisorSchedules from '../components/supervisorComponents/SupervisorSchedules'
+import SupervisorProfile from '../components/supervisorComponents/SupervisorProfile'
 
 class Supervisor extends Component{
     render(){
@@ -13,11 +14,13 @@ class Supervisor extends Component{
                 <Header 
                     title='SUPERVISOR' 
                     menu={['Clients','Carers', 'Monitoring', 'Reports' ]}
+                    submenu={['Schedules', 'Profile', 'Logout']}
                     pages={[<SupervisorClient />, 
                         <SupervisorCarer />, 
                         <SupervisorMonitoring />, 
-                        <SupervisorReports />]} />
-                <Footer />
+                        <SupervisorReports />,
+                        <SupervisorSchedules />,
+                        <SupervisorProfile />]} />
             </div>
         )
     }

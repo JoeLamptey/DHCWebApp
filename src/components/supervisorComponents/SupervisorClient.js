@@ -5,13 +5,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-// import TextField from '@material-ui/core/TextField'
-// import Button from '@material-ui/core/Button';
 
-import AdminClientReports from './AdminClientReports'
-import AdminClientNew from './AdminClientNew'
-import AdminClientList from './AdminClientList'
-import AdminClientEvents from './AdminClientEvents'
+import SupervisorClientReports from './SupervisorClientReports'
+import SupervisorClientNew from './SupervisorClientNew'
+import SupervisorClientList from './SupervisorClientList'
+import SupervisorClientEvents from './SupervisorClientEvents'
 
 function TabContainer(props) {
   return (
@@ -46,7 +44,7 @@ const styles = theme => ({
   }
 });
 
-class AdminClient extends Component {
+class SupervisorClient extends Component {
   state = {
     value: 0,
     notification: '',
@@ -70,33 +68,33 @@ class AdminClient extends Component {
         <AppBar position="static" color="default" >
           <Tabs value={value} onChange={this.handleChange} textColor="primary">
             <Tab label="Add Client" />
-            <Tab label="Client Complaints" />
-            <Tab label="Client Programs" />
+            <Tab label="Client's Complaints" />
+            <Tab label="Client's Events" />
             <Tab label="Client List" />
           </Tabs>
         </AppBar>
         {value === 0 && 
             <TabContainer>                
-                <AdminClientNew createClient={this.createClient}/>
+                <SupervisorClientNew createClient={this.createClient}/>
             </TabContainer>
         }
         {value === 1 && 
             <TabContainer>
-                <AdminClientReports />
+                <SupervisorClientReports />
             </TabContainer>}
         {value === 2 && <TabContainer>
-            <AdminClientEvents />
+            <SupervisorClientEvents />
             </TabContainer>}
         {value === 3 && <TabContainer>
-            <AdminClientList />
+            <SupervisorClientList />
             </TabContainer>}
       </div>
     );
   }
 }
 
-AdminClient.propTypes = {
+SupervisorClient.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AdminClient);
+export default withStyles(styles)(SupervisorClient);

@@ -7,7 +7,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-//import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -16,8 +15,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+
 
 import {Redirect} from 'react-router-dom'
 
@@ -191,7 +189,19 @@ class Header extends Component{
                     <List>
                         {this.props.menu.map((text, index) => (
                         <ListItem button key={text} data-list_item={text} onClick={this.sideMenu}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                            <ListItemIcon>
+                            { 
+                              (() => { 
+                                switch (index) {
+                                  case 0:   return <i className="material-icons">person</i>;
+                                  case 1: return <i className="material-icons">person_outline</i>;
+                                  case 2:  return <i className="material-icons">group_add</i>;
+                                  case 3:      return <i className="material-icons">account_circle</i>;
+                                  default: return <i className="material-icons">work</i>;
+                                }
+                              })()
+                            }
+                            </ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItem>
                         ))}
@@ -200,7 +210,16 @@ class Header extends Component{
                     <List>
                         {this.props.submenu.map((text, index) => (
                         <ListItem button key={text} data-list_item={text} onClick={this.sideMenu}>
-                            {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
+                            {
+                              (() => { 
+                                switch (index) {
+                                  case 0:   return <i className="material-icons">place</i>;
+                                  case 1: return <i className="material-icons">account_box</i>;
+                                  case 2:  return <i className="material-icons">logout</i>;
+                                  default: return <i className="material-icons">work</i>;
+                                }
+                              })()
+                            }
                             <ListItemText primary={text} />
                         </ListItem>
                         ))}

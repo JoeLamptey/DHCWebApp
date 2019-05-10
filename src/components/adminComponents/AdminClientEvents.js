@@ -10,9 +10,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import img1 from '../images/ad4.jpeg'
-import img2 from '../images/ad1.jpeg'
-import img3 from '../images/ad6.jpeg'
+import img1 from '../../images/ad4.jpeg'
+import img2 from '../../images/ad1.jpeg'
+import img3 from '../../images/ad6.jpeg'
 
 const styles = theme=>({
    root:{
@@ -29,7 +29,7 @@ const styles = theme=>({
 function AdminClientEvents (props) {
   const { classes } = props;
   return (
-    <Grid container spacing={6}>
+    <Grid container spacing={8}>
         <Grid item xs>
         <Card className={classes.card}>
             <CardActionArea>

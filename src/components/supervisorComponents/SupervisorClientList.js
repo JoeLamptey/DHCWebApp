@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import MaterialTable from 'material-table'
-//import MaterialIcons from '@material-ui/core'
 
-class AdminClientList extends Component {
+class SupervisorClientList extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -71,4 +70,4 @@ class AdminClientList extends Component {
     }
   }
 
-export default AdminClientList;
+export default SupervisorClientList;

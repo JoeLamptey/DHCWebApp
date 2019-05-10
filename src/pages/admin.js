@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 //import Footer from '../components/footer'
 import Header from '../components/header'
-import AdminClient from '../components/AdminClient'
-import AdminCarer from '../components/AdminCarer'
-import AdminSupervisor from '../components/AdminSupervisor'
-import AdminManager from '../components/AdminManager'
-import AdminSchedules from '../components/AdminSchedules'
-import AdminProfile from '../components/AdminProfile'
+import AdminClient from '../components/adminComponents/AdminClient'
+import AdminCarer from '../components/adminComponents/AdminCarer'
+import AdminSupervisor from '../components/adminComponents/AdminSupervisor'
+import AdminManager from '../components/adminComponents/AdminManager'
+import AdminSchedules from '../components/adminComponents/AdminSchedules'
+import AdminProfile from '../components/adminComponents/AdminProfile'
 
 import '../styles/index.css'
 
