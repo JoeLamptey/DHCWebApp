@@ -19,6 +19,9 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
       },
+      button:{
+          marginTop: theme.spacing.unit*2,
+      }
 })
 
 
@@ -92,7 +95,7 @@ class Index extends Component{
                           required={true}
                           />
                       <Button 
-                          className='button'
+                          className={classes.button}
                           type='submit' 
                           variant='contained'
                           fullWidth 
