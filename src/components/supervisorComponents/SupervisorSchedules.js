@@ -95,10 +95,12 @@ class SupervisorSchedules extends Component{
     setClient=(e)=>{
         
         const name = e.currentTarget.dataset.list_item
-        //console.log(name)
         this.setState({client:{name}, notification: ''})
     }
 
+    refresh=()=>{
+        this.setState({})
+    }
 
     render(){
         const { classes } = this.props;
@@ -167,6 +169,7 @@ class SupervisorSchedules extends Component{
                                     InputLabelProps={{ shrink: true }}
                                     variant="standard"
                                     name='date'
+                                    required
                                 />
                                 <TextField 
                                     className={classes.scheduletext}
@@ -175,6 +178,7 @@ class SupervisorSchedules extends Component{
                                     InputLabelProps={{ shrink: true }}
                                     variant="standard"
                                     name='starttime'
+                                    required
                                 />
                                 <TextField 
                                     className={classes.scheduletext}
@@ -183,6 +187,7 @@ class SupervisorSchedules extends Component{
                                     InputLabelProps={{ shrink: true }}
                                     variant="standard"
                                     name='endtime'
+                                    required
                                 />
                                 <TextField 
                                     className={classes.scheduletext}
@@ -194,8 +199,7 @@ class SupervisorSchedules extends Component{
                                 <TextField 
                                     className={classes.scheduletext}
                                     label='Carer 2'
-                                    type='select'
-                                    required
+                                    type='select'                                    
                                     name='carer2'
                                 />
                                 <Button 
@@ -213,9 +217,10 @@ class SupervisorSchedules extends Component{
                     <Grid item xs={5}>
                         <Paper className={classes.paper}>
                             
-                            <ScheduleList 
+                            <ScheduleList
+                                refresh={this.refresh} 
                                 update={{name: this.state.client.name,
-                                    schedule: this.state.schedule}}/>
+                                    ...this.state.schedule}}/>
                         </Paper>
                     </Grid>
                 </Grid>

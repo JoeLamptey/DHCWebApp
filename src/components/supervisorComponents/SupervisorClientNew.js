@@ -83,7 +83,7 @@ class SupervisorClientNew extends Component{
         return(
             <div>
                 <form onSubmit={this.createClient}
-                    className={classes.container} noValidate autoComplete="off">
+                    className={classes.container}  autoComplete="off">
                     <TextField
                         className={classes.textField}
                         variant='standard'

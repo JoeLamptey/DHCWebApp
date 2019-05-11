@@ -15,30 +15,46 @@ class ScheduleList extends Component {
         ],
         data: [
           { name: 'Mehmet Baran', date: '11/05/2019', start: '8:00:00', end: '8:30:00', carer1: 'Ivy Anna', carer2: 'Bernice Fisher'},
-          { name: 'Mehmet Baran', date: '11/05/2019', start: '10:00:00', end: '10:30:00', carer1: 'Ivy Anna', carer2: 'Bernice Fisher'},
-          { name: 'Mehmet Baran', date: '11/05/2019', start: '16:00:00', end: '16:30:00', carer1: 'Ivy Anna', carer2: 'Bernice Fisher'},
           { name: 'Mehmet Baran', date: '11/05/2019', start: '20:00', end: '20:30:00', carer1: 'Ivy Anna', carer2: 'Bernice Fisher'},
           { name: 'Zerya Betül', date: '11/05/2019', start: '8:00:00', end: '8:30:00', carer1: 'Ivy Anna', carer2: 'Bernice Fisher' },
-        ]
+        ],
+        status: 'no update'
       }
     }
   
-    update =(info)=>{
-        const data = this.state.data;
-        data.push(info);
-        this.setState({ data })
+    refresh=()=>{this.setState({status: 'updated!'})}
+    
+    componentDidUpdate( prevProps,prevState){
+        const info = prevProps.update
+        
+        if(info.name !== 'Schedule Client' && info.date !== undefined
+            && info.start !== undefined && info.end !==undefined && info.carer1 !==undefined){
+            const data = prevState.data;
+            data.push(info);           
+            prevProps = ''
+        }
+        
     }
 
-    render() {
-        const updateList = this.props.update
-        console.log(updateList)
+    // componentDidUpdate( prevProps,prevState){
+    //     const info = prevProps.update
+        
+    //     if(info.name !== 'Schedule Client' && info.date !== undefined
+    //         && info.start !== undefined && info.end !==undefined && info.carer1 !==undefined){
+    //         const data = prevState.data;
+    //         data.push(info);           
+    //         prevProps = ''
+    //     }
+        
+    // }
 
+    render() {        
+      //this.props.refresh
       return (
         <MaterialTable
           title="Schedules Preview"
           columns={this.state.columns}
           data={this.state.data}
-          update={this.update}
           editable={{
             onRowAdd: newData =>
               new Promise((resolve, reject) => {

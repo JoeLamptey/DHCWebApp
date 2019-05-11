@@ -40,7 +40,7 @@ class Index extends Component{
       }
       
 
-      if(user.email === ''||user.password === ''){
+      if(user.email === 'ml'||user.password === 'l'){
           this.setState({notification: 'Please completely fill in the form'})
       }else{
           e.target.email.value = ''
@@ -70,18 +70,17 @@ class Index extends Component{
               <div className='login'>
                   <h1 className='h1'>Domiciliary HealthCare</h1>
                   <form onSubmit={this.login}
-                      className={[classes.container]} noValidate autoComplete="off">
+                      className={[classes.container]} autoComplete="off">
                       <TextField
                           id="outlined-email-input"
                           label="Email"
                           className={classes.textField}
                           type="email"
                           name="email"
-                          margin="normal"
                           variant="standard"
                           autoComplete="email"
                           fullWidth
-                          required={true}
+                          required
                           />
                       <TextField
                           id="outlined-password-input"
@@ -89,10 +88,9 @@ class Index extends Component{
                           className={classes.textField}
                           type="password"
                           name="password"
-                          margin="normal"
                           variant="standard"
                           fullWidth
-                          required={true}
+                          required
                           />
                       <Button 
                           className={classes.button}
