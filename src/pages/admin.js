@@ -7,6 +7,7 @@ import AdminSupervisor from '../components/adminComponents/AdminSupervisor'
 import AdminManager from '../components/adminComponents/AdminManager'
 import AdminSchedules from '../components/adminComponents/AdminSchedules'
 import AdminProfile from '../components/adminComponents/AdminProfile'
+import AdminLogout from '../components/adminComponents/AdminLogout'
 
 import '../styles/index.css'
 
@@ -30,7 +31,7 @@ class Admin extends Component{
                         <AdminSupervisor />, <AdminManager />, 
                         ]}
                     submenuPages={[ 
-                        <AdminSchedules />, <AdminProfile />]}/>
+                        <AdminSchedules />, <AdminProfile />, <AdminLogout />]}/>
             </div>
         )
     }

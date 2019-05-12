@@ -6,6 +6,7 @@ import SupervisorMonitoring from '../components/supervisorComponents/SupervisorM
 import SupervisorReports from '../components/supervisorComponents/SupervisorReports'
 import SupervisorSchedules from '../components/supervisorComponents/SupervisorSchedules'
 import SupervisorProfile from '../components/supervisorComponents/SupervisorProfile'
+import SupervisorLogout from '../components/supervisorComponents/SupervisorLogout'
 
 class Supervisor extends Component{
     render(){
@@ -22,7 +23,8 @@ class Supervisor extends Component{
                         ]}
                     submenuPages={[
                         <SupervisorSchedules />,
-                        <SupervisorProfile />]} />
+                        <SupervisorProfile />,
+                        <SupervisorLogout />]} />
             </div>
         )
     }

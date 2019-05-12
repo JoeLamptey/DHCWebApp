@@ -16,7 +16,7 @@ const styles = theme =>({
     }
 })
 
-class CarerTraining extends Component{
+class CarerScheduleMap extends Component{
     constructor(props){
         super(props)
 
@@ -32,7 +32,7 @@ class CarerTraining extends Component{
                <Grid container spacing={24}>
                     <Grid item  xs={12}>
                         <Paper className={classes.paper}>
-                            Carer Trainings
+                            Map View of Schedules
                         </Paper>
                     </Grid>                    
                </Grid>
@@ -45,4 +45,4 @@ class CarerTraining extends Component{
 //     classes: PropTypes.object.isRequired,
 //   };
 
-export default withStyles(styles)(CarerTraining)
+export default withStyles(styles)(CarerScheduleMap)

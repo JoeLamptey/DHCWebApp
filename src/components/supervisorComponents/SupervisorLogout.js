@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Redirect}  from 'react-router-dom'
 
-class CarerLogout extends Component{
+class SupervisorLogout extends Component{
     render(){
         return(
             <div><Redirect to='/'/></div>
@@ -9,4 +9,4 @@ class CarerLogout extends Component{
     }
 }
 
-export default CarerLogout
+export default SupervisorLogout
