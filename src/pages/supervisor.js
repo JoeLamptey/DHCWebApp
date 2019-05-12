@@ -15,10 +15,12 @@ class Supervisor extends Component{
                     title='SUPERVISOR' 
                     menu={['Clients','Carers', 'Monitoring', 'Reports' ]}
                     submenu={['Schedules', 'Profile', 'Logout']}
-                    pages={[<SupervisorClient />, 
+                    menuPages={[<SupervisorClient />, 
                         <SupervisorCarer />, 
                         <SupervisorMonitoring />, 
                         <SupervisorReports />,
+                        ]}
+                    submenuPages={[
                         <SupervisorSchedules />,
                         <SupervisorProfile />]} />
             </div>

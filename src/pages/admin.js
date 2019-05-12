@@ -24,10 +24,12 @@ class Admin extends Component{
                 <h1 >Admin Page</h1>
                 <Header 
                     title="ADMINISTRATOR" 
-                    menu={['Client','Carer', 'Supervisor', 'Manager']}
+                    menu={['Clients','Carers', 'Supervisors', 'Managers']}
                     submenu={['Schedules', 'Profile', 'Logout']}
-                    pages={[<AdminClient />,<AdminCarer />, 
+                    menuPages={[<AdminClient />,<AdminCarer />, 
                         <AdminSupervisor />, <AdminManager />, 
+                        ]}
+                    submenuPages={[ 
                         <AdminSchedules />, <AdminProfile />]}/>
             </div>
         )

@@ -17,7 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 
-import {Redirect} from 'react-router-dom'
+//import {Redirect} from 'react-router-dom'
 
 const drawerWidth = 240;
 
@@ -82,7 +82,7 @@ class Header extends Component{
     
     state = {
         open: false,
-        mainContent: this.props.pages[0]
+        mainContent: this.props.menuPages[0]
       };
     
       handleDrawerOpen = () => {
@@ -99,42 +99,46 @@ class Header extends Component{
         switch(menu){
             case this.props.menu[0]:
                 this.setState({
-                    mainContent: this.props.pages[0]
+                    mainContent: this.props.menuPages[0]
                 })
                 //console.log(this.props.menu[0])
                 break;
             case this.props.menu[1]:
                 this.setState({
-                    mainContent: this.props.pages[1]
+                    mainContent: this.props.menuPages[1]
                 })
                 //console.log(this.props.menu[1])
                 break;
             case this.props.menu[2]:
                 this.setState({
-                    mainContent: this.props.pages[2]
+                    mainContent: this.props.menuPages[2]
                 })
                 //console.log(this.props.menu[2])
                 break;
             case this.props.menu[3]:
                 this.setState({
-                    mainContent: this.props.pages[3]
+                    mainContent: this.props.menuPages[3]
                 })
                 //console.log(this.props.menu[3])
                 break;
             case this.props.submenu[0]:
                 this.setState({
-                    mainContent: this.props.pages[4]
+                    mainContent: this.props.submenuPages[0]
                 })
                 //console.log(this.props.menu[3])
                 break;
             case this.props.submenu[1]:
                 this.setState({
-                    mainContent: this.props.pages[5]
+                    mainContent: this.props.submenuPages[1]
                 })
                 //console.log(this.props.menu[3])
                 break;
             case this.props.submenu[2]:
-                return (<Redirect to='/'/>)
+                this.setState({
+                    mainContent: this.props.submenuPages[2]
+                })
+                //console.log(this.props.menu[3])
+                break;
 
             default:
                 this.setState({mainContent: this.props.menu[0]})
@@ -191,12 +195,15 @@ class Header extends Component{
                         <ListItem button key={text} data-list_item={text} onClick={this.sideMenu}>
                             <ListItemIcon>
                             { 
-                              (() => { 
-                                switch (index) {
-                                  case 0:   return <i className="material-icons">person</i>;
-                                  case 1: return <i className="material-icons">person_outline</i>;
-                                  case 2:  return <i className="material-icons">group_add</i>;
-                                  case 3:      return <i className="material-icons">account_circle</i>;
+                              (() => { //console.log(text)
+                                switch (text) {
+                                  case 'Clients':   return <i className="material-icons">person</i>;
+                                  case 'Carers': return <i className="material-icons">person_outline</i>;
+                                  case 'Supervisors':  return <i className="material-icons">supervised_user_circle</i>;
+                                  case 'Managers':      return <i className="material-icons">supervisor_account</i>;
+                                  case 'Reports':      return <i className="material-icons">file_copy</i>;
+                                  case 'Monitoring':      return <i className="material-icons">timelapse</i>;
+                                  case 'Schedules':      return <i className="material-icons">schedule</i>;
                                   default: return <i className="material-icons">work</i>;
                                 }
                               })()
@@ -212,10 +219,11 @@ class Header extends Component{
                         <ListItem button key={text} data-list_item={text} onClick={this.sideMenu}>
                             {
                               (() => { 
-                                switch (index) {
-                                  case 0:   return <i className="material-icons">place</i>;
-                                  case 1: return <i className="material-icons">account_box</i>;
-                                  case 2:  return <i className="material-icons">logout</i>;
+                                switch (text) {
+                                  case 'Training':   return <i className="material-icons">class</i>;
+                                  case 'Schedules':  return <i className="material-icons">schedule</i>;
+                                  case 'Profile': return <i className="material-icons">account_circle</i>;
+                                  case 'Logout':  return <i className="material-icons">logout</i>;
                                   default: return <i className="material-icons">work</i>;
                                 }
                               })()
