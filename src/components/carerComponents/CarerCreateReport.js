@@ -108,18 +108,25 @@ class CarerCreateReport extends Component{
         //      }
         //  }`
 
-        const createReportQuery = `mutation domiciliary{
-            createDomiciliary(input: {title: "${report.title}"}){
+        const createReportQuery = `mutation report{
+            createReport(input: {
+                title: "${report.title}",
+                recipient: "${report.recipient}",
+                description: "${report.description}",
+                sender: "carer"
+            }){
                 id
                 title
+                description
+                sender
             }
 
         }`
 
          API.graphql(graphqlOperation(createReportQuery)).then((res) =>{
             //console.log(res.data.createDHCReports.items) 
-            const reportdb = res.data.createDomiciliary.items
-            //this.setState({report: reportdb}) 
+            const reportdb = res.data.createReport
+            this.setState({report: reportdb}) 
             console.log(reportdb)        
          }).catch(err => console.log(err))
         

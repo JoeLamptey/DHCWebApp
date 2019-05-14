@@ -25,7 +25,7 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    margin: '0% 15%',
+    margin: '0% 2%',
     backgroundImage: 'none !important',
   },
   container: {
@@ -64,7 +64,11 @@ class CarerSchedule extends Component {
     return (
       <div className={classes.root}>
         <AppBar position="static" color="default" >
-          <Tabs value={value} onChange={this.handleChange} textColor="primary">
+          <Tabs 
+              variant="scrollable"
+              scrollButtons="on"
+              value={value} 
+              onChange={this.handleChange} textColor="primary">
             <Tab label="Schedules" />
             <Tab label="Map View" />
           </Tabs>
