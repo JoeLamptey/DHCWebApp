@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "dhc-webapp-dev-20190514211436-authRole",
+            "UnauthRoleArn": "arn:aws:iam::295841432243:role/dhc-webapp-dev-20190514211436-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::295841432243:role/dhc-webapp-dev-20190514211436-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "dhc-webapp-dev-20190514211436-deployment",
+            "UnauthRoleName": "dhc-webapp-dev-20190514211436-unauthRole",
+            "StackName": "dhc-webapp-dev-20190514211436",
+            "StackId": "arn:aws:cloudformation:us-east-1:295841432243:stack/dhc-webapp-dev-20190514211436/252a3dc0-7674-11e9-808f-0ad4d2e93658"
+        }
+    }
+}

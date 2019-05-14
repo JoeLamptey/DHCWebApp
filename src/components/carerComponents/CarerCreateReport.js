@@ -4,7 +4,11 @@ import { withStyles } from '@material-ui/core/styles';
 //import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import { TextField, Select, MenuItem, Divider } from '@material-ui/core';
+import { TextField, Select, MenuItem, Divider, InputLabel ,FormControl} from '@material-ui/core';
+
+import {API, graphqlOperation} from 'aws-amplify'
+import awsmobile from '../../aws-exports'
+API.configure(awsmobile)
 
 const styles = theme =>({
     form: {
@@ -20,22 +24,28 @@ const styles = theme =>({
     },
     title:{
         marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        marginBottom: '5%',
-        width: '60%',
+        marginRight: '10%',
+        marginBottom: '3%',
+        width: '80%',
+
     },
     description:{
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         marginBottom: '5%',
+        marginTop: '2%',
         width: '90%',
     },
     select:{
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        marginBottom: '5%',
-        width: '60%',
+        marginBottom: '0%',
+        width: '80%',
     },
+    formControl: {
+        margin: theme.spacing.unit,
+        minWidth: '100%',
+      },
     button:{
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
@@ -47,8 +57,72 @@ class CarerCreateReport extends Component{
         super(props)
 
         this.state={
-            report: ''
+            report: {},
+            recipient: 'Supervisor',
+            report_type: 'Incident',
+            title: '',
+            description: ''
         }
+    }
+    title=(e)=>{
+        this.setState({title: e.target.value})
+    }
+
+    recipient=(e)=>{
+        this.setState({recipient: e.target.value})
+    }
+
+    reportType=(e)=>{
+        this.setState({report_type: e.target.value})
+    }
+
+    description=(e)=>{
+        this.setState({description: e.target.value})
+    }
+
+    report=(e)=>{
+        e.preventDefault()
+        const report = {
+            title: this.state.title,
+            report_type: this.state.report_type,
+            recipient: this.state.recipient,
+            description: this.state.description
+        }
+
+         //this.setState({report})
+         e.target.title.value = ''
+         e.target.description.value = ''
+
+        //  const createReportQuery = `mutation myReport{
+        //      createDHCReports(input: {
+        //             title: "${report.title}",
+        //             report_type: "${report.report_type}",
+        //             recipient: "${report.recipient}",
+        //             description: "${report.description}"
+        //     }){
+        //          id
+        //          title
+        //          report_type
+        //          recipient
+        //          description
+        //      }
+        //  }`
+
+        const createReportQuery = `mutation domiciliary{
+            createDomiciliary(input: {title: "${report.title}"}){
+                id
+                title
+            }
+
+        }`
+
+         API.graphql(graphqlOperation(createReportQuery)).then((res) =>{
+            //console.log(res.data.createDHCReports.items) 
+            const reportdb = res.data.createDomiciliary.items
+            //this.setState({report: reportdb}) 
+            console.log(reportdb)        
+         }).catch(err => console.log(err))
+        
     }
 
     render(){
@@ -58,8 +132,8 @@ class CarerCreateReport extends Component{
                <Grid container spacing={24}>
                     <Grid item  xs={12}>
                         <Paper className={classes.paper}>
-                            <form className={classes.form}>
-                                <TextField
+                        <form className={classes.form} onSubmit={this.report}>
+                                <TextField onChange={this.title}
                                     className={classes.title}
                                     variant='standard'
                                     label='Tile'
@@ -67,37 +141,39 @@ class CarerCreateReport extends Component{
                                     type='text'
                                     required
                                 />
-                                <Select
-                                    className={classes.select}
-                                    variant='standard'
-                                    label='Select'
-                                    name='type'
-                                    type='select'
-                                    required
-                                    value='Incident'>
-                                        <MenuItem>Incident</MenuItem>
-                                        <MenuItem>Complaints</MenuItem>
-                                        <MenuItem>Accident</MenuItem>
-                                </Select>
-                                <Select
-                                    className={classes.select}
-                                    variant='standard'
-                                    label='Select'
-                                    name='type'
-                                    required
-                                    type='select'
-                                    value='Supervisor'>
-                                        <MenuItem value=''>Manager</MenuItem>
-                                        <MenuItem value=''>Supervisor</MenuItem>
-                                        <MenuItem value=''>Admin</MenuItem>
-                                </Select>
-                                <TextField
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel htmlFor="type-of-report">Report Type</InputLabel>
+                                    <Select onChange={this.reportType}
+                                        className={classes.select}
+                                        variant='standard'
+                                        inputProps={{ id: 'type-of-report', name: 'report_type', required: true}}
+                                        value={this.state.report_type}>
+                                            <MenuItem value='Incident'>Incident</MenuItem>
+                                            <MenuItem value='Complaint'>Complaint</MenuItem>
+                                            <MenuItem value='Safegaurd'>Safeguard Issue</MenuItem>
+                                            <MenuItem value='Medication'>Medication Error</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel htmlFor="recipient">Report Recipient</InputLabel>
+                                    <Select onChange={this.recipient}
+                                        className={classes.select}
+                                        variant='standard'
+                                        inputProps={{ id: 'recipient',name: 'recipient', required: true}}
+                                        value={this.state.recipient}>
+                                            <MenuItem value='Manager'>Manager</MenuItem>
+                                            <MenuItem value='Supervisor'>Supervisor</MenuItem>
+                                            <MenuItem value='Carer'>Carer</MenuItem>
+                                            <MenuItem value='Admin'>Admin</MenuItem>
+                                    </Select>
+                                </FormControl>                                
+                                <TextField onChange={this.description}
                                     className={classes.description}
                                     variant='outlined'
                                     label='Description'
                                     name='description'
-                                    type='text'
                                     multiline
+                                    rows={5}
                                     required
                                 />
                                 <Divider light variant='middle'/>
