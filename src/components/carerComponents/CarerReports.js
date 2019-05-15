@@ -28,18 +28,6 @@ const styles = theme => ({
     margin: '0% 2%',
     backgroundImage: 'none !important',
   },
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
-  button:{
-      marginTop: theme.spacing.unit,
-  }
 });
 
 class CarerReport extends Component {

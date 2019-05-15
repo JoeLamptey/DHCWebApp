@@ -3,19 +3,32 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button';
 
+
+import {API, graphqlOperation} from 'aws-amplify'
+import awsmobile from '../../aws-exports'
+API.configure(awsmobile)
+
 const styles = theme => ({
    
     container: {
-      display: 'flex',
-      flexWrap: 'wrap',
+        flexGrow: 1,
     },
     textField: {
-      marginLeft: theme.spacing.unit,
-      marginRight: theme.spacing.unit,
-      width: 200,
+      marginLeft: theme.spacing.unit*2,
+      marginRight: theme.spacing.unit*2,
+      width: '45%',
+
+      '@media (max-width: 1030px) and (min-width: 651px)':{
+            width: '40%',
+        },
+
+        '@media (max-width: 650px)':{
+            width: '90%',
+        }
     },
+    
     button:{
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing.unit*3,
     }
   });
 
@@ -39,7 +52,7 @@ class AdminClientNew extends Component{
           birthday: e.target.birthday.value,
           postcode: e.target.postcode.value,
           email: e.target.email.value,
-          telephone: e.target.telephone.value,
+          mobile: e.target.telephone.value,
           address: e.target.address.value,
           region: e.target.region.value,
           nextofkin: e.target.nextofkin.value,
@@ -47,19 +60,38 @@ class AdminClientNew extends Component{
           nokmobile: e.target.nokmobile.value,
         }
   
+       
         
-        if(newClient.firstname === ''|| newClient.lastname === ''
-          || newClient.postcode === ''|| newClient.telephone === ''
-          || newClient.address === '' || newClient.nextofkin === ''
-          || newClient.birthday === '' || newClient.nokmobile === ''
-        ){
-          this.setState({
-              notification: 'Please fill the required fields marked *'
-          })
-        }else{
-        
-            this.setState({newClient: newClient, notification: 'New Client Successfully created!'})
+            const createClientQuery = `
+                mutation createClient{
+                    createClient(input:{
+                        firstname: "${newClient.firstname}",
+                        lastname: "${newClient.lastname}",
+                        birthday: "${newClient.birthday}",
+                        postcode: "${newClient.postcode}",
+                        email: "${newClient.email}",
+                        mobile: "${newClient.mobile}",
+                        address: "${newClient.address}",
+                        region: "${newClient.region}",
+                        nextofkin: "${newClient.nextofkin}",
+                        nok_email: "${newClient.email}",
+                        nok_mobile: "${newClient.nokmobile}"
+                    }){
+                        id
+                        firstname
+                        lastname
+                        email
+                        region
+                        postcode
+                    }
+                }
+            `
 
+            API.graphql(graphqlOperation(createClientQuery)).then(res=>{
+                //console.log('response: ',res.data.createClient)
+                this.setState({newClient: newClient, notification: 'New Client Successfully created!'})
+            }).catch(err => console.log('Error: ',err))
+            
             e.target.firstname.value = ''
             e.target.middlename.value = ''
             e.target.lastname.value = ''
@@ -73,8 +105,12 @@ class AdminClientNew extends Component{
             e.target.nokemail.value = ''
             e.target.nokmobile.value = ''
             
-            this.props.createClient({newClient: newClient,notification: 'New Client Successfully created'})
-        }    
+            //this.props.createClient({newClient: newClient,notification: 'New Client Successfully created'})
+          
+    }
+
+    changed=()=>{
+        this.setState({notification: ''})
     }
 
     render(){
@@ -83,8 +119,8 @@ class AdminClientNew extends Component{
         return(
             <div>
                 <form onSubmit={this.createClient}
-                    className={classes.container}  autoComplete="off">
-                    <TextField
+                    className={classes.container}  autoComplete="on">
+                    <TextField onChange={this.changed}
                         className={classes.textField}
                         variant='standard'
                         label='First Name'
@@ -120,7 +156,8 @@ class AdminClientNew extends Component{
                         variant='standard'
                         label='Birthday'
                         name='birthday'
-                        type='text'
+                        type='date'
+                        InputLabelProps={{ shrink: true }}
                         required 
                     />
                     <TextField
@@ -167,7 +204,7 @@ class AdminClientNew extends Component{
                         variant='standard'
                         label='NoK Mobile'
                         name='nokmobile'
-                        type='text'
+                        type='tel'
                         required
                     />
                     <TextField

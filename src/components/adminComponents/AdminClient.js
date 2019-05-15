@@ -11,6 +11,8 @@ import AdminClientNew from './AdminClientNew'
 import AdminClientList from './AdminClientList'
 import AdminClientEvents from './AdminClientEvents'
 
+import '../../styles/admin_client.css'
+
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
@@ -26,22 +28,8 @@ TabContainer.propTypes = {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    margin: '0% 15%',
-    backgroundImage: 'none !important',
+    backgroundColor: theme.palette.background.paper,  
   },
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
-  button:{
-      marginTop: theme.spacing.unit,
-  }
 });
 
 class AdminClient extends Component {
@@ -64,30 +52,35 @@ class AdminClient extends Component {
     const { value } = this.state;
 
     return (
-      <div className={classes.root}>
-        <AppBar position="static" color="default" >
-          <Tabs value={value} onChange={this.handleChange} textColor="primary">
-            <Tab label="Add Client" />
-            <Tab label="Client's Complaints" />
-            <Tab label="Client's Events" />
-            <Tab label="Client List" />
-          </Tabs>
-        </AppBar>
-        {value === 0 && 
-            <TabContainer>                
-                <AdminClientNew createClient={this.createClient}/>
-            </TabContainer>
-        }
-        {value === 1 && 
-            <TabContainer>
-                <AdminClientReports />
-            </TabContainer>}
-        {value === 2 && <TabContainer>
-            <AdminClientEvents />
-            </TabContainer>}
-        {value === 3 && <TabContainer>
-            <AdminClientList />
-            </TabContainer>}
+      <div className='root'>
+        <div className={[classes.root]}>
+            <AppBar position="static" color="default" >
+                  <Tabs value={value} 
+                    variant="scrollable"
+                    scrollButtons="on"
+                    onChange={this.handleChange} textColor="primary">
+                    <Tab label="Add Client" />
+                    <Tab label="Client's Complaints" />
+                    <Tab label="Client's Events" />
+                    <Tab label="Client List" />
+                  </Tabs>
+                </AppBar>
+                {value === 0 && 
+                    <TabContainer>                
+                        <AdminClientNew createClient={this.createClient}/>
+                    </TabContainer>
+                }
+                {value === 1 && 
+                    <TabContainer>
+                        <AdminClientReports />
+                    </TabContainer>}
+                {value === 2 && <TabContainer>
+                    <AdminClientEvents />
+                    </TabContainer>}
+                {value === 3 && <TabContainer>
+                    <AdminClientList />
+                    </TabContainer>}
+        </div>
       </div>
     );
   }

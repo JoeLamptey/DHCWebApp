@@ -1,0 +1,39 @@
+
+.root{
+    margin: 0% 15%;
+    
+}
+
+@media (max-width: 900px) and (min-width: 500px) {
+    .root {
+        margin: 0% 15%;
+    }
+}
+
+@media (max-width: 500px) {
+    .root {
+        margin: 0% 1%;
+    }
+}
+
+.textField{
+    width: 40%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+/* @media (max-width: 900px) and (min-width: 500px) {
+    .textField {
+        margin-left: 5px;
+        margin-right: 5px;
+        width: 30%;
+    }
+}
+
+@media (max-width: 500px) {
+    .textField {
+         margin-left: 2%;
+        margin-right: 2%; 
+        width: 90%;
+    }
+} */

@@ -9,7 +9,7 @@ import AdminSchedules from '../components/adminComponents/AdminSchedules'
 import AdminProfile from '../components/adminComponents/AdminProfile'
 import AdminLogout from '../components/adminComponents/AdminLogout'
 
-import '../styles/index.css'
+//import '../styles/index.css'
 
 
 class Admin extends Component{
@@ -22,7 +22,6 @@ class Admin extends Component{
     render(){ //console.log(this.state)
         return(
             <div>
-                <h1 >Admin Page</h1>
                 <Header 
                     title="ADMINISTRATOR" 
                     menu={['Clients','Carers', 'Supervisors', 'Managers']}
