@@ -76,7 +76,10 @@ class AdminClientList extends Component {
 
       const updateClientQuery = `
       mutation updateClient {
-            updateClient(input: {id: "${this.state.updated.id}"}) {
+            updateClient(input: {
+              id: "${this.state.updated.id}",
+              firstname
+            }) {
                   id
                   firstname
                   lastname
