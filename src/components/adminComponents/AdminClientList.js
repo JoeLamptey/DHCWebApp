@@ -1,41 +1,71 @@
 import React, {Component} from 'react'
 import MaterialTable from 'material-table'
 
+import {API, graphqlOperation} from 'aws-amplify'
+import awsmobile from '../../aws-exports'
+API.configure(awsmobile)
+
 class AdminClientList extends Component {
     constructor(props) {
       super(props);
       this.state = {
         columns: [
-          { title: 'Name', field: 'name' },
-          { title: 'Surname', field: 'surname' },
-          { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-          {
-            title: 'Birth Place',
-            field: 'birthCity',
-            lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-          },
+          { title: 'First Name', field: 'firstname' },
+          { title: 'Last Name', field: 'lastname' },
+          { title: 'Mobile', field: 'mobile' },
+          {title: 'Postcode',  field: 'postcode'},
+          {title: 'Address',  field: 'address'},
+          {title: 'Region',  field: 'region'},
         ],
-        data: [
-          { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-          { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
-        ]
+        clients: [],
+        loaded: false,
+        region: 'London'
       }
+    }
+
+    async componentWillMount(){
+      const listClientQuery = `
+          query listClients {
+              listClients(filter: {region:{ eq: "London"}}) {
+              items {
+                  id
+                  firstname
+                  lastname
+                  mobile
+                  postcode
+                  address
+                  region
+              }
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(listClientQuery)).then(res =>{            
+         const clients = res.data.listClients.items
+          this.setState({clients, loaded: true})
+      }).catch(err => console.log('Error: ',err))
+      
+    }
+
+    componentWillUpdate(){
+
     }
   
     render() {
-      return (
+      const { loaded } = this.state;
+
+      return (  loaded &&
         <MaterialTable
-          title="Editable Preview"
+          title={this.state.region +" Clients"}
           columns={this.state.columns}
-          data={this.state.data}
+          data={this.state.clients}
           editable={{
             onRowAdd: newData =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
                   {
-                    const data = this.state.data;
-                    data.push(newData);
-                    this.setState({ data }, () => resolve());
+                    const clients = this.state.clients;
+                    clients.push(newData);
+                    this.setState({ clients }, () => resolve());
                   }
                   resolve()
                 }, 1000)
@@ -44,10 +74,10 @@ class AdminClientList extends Component {
               new Promise((resolve, reject) => {
                 setTimeout(() => {
                   {
-                    const data = this.state.data;
-                    const index = data.indexOf(oldData);
-                    data[index] = newData;
-                    this.setState({ data }, () => resolve());
+                    const clients = this.state.clients;
+                    const index = clients.indexOf(oldData);
+                    clients[index] = newData;
+                    this.setState({ clients }, () => resolve());
                   }
                   resolve()
                 }, 1000)
@@ -56,10 +86,10 @@ class AdminClientList extends Component {
               new Promise((resolve, reject) => {
                 setTimeout(() => {
                   {
-                    let data = this.state.data;
-                    const index = data.indexOf(oldData);
-                    data.splice(index, 1);
-                    this.setState({ data }, () => resolve());
+                    let clients = this.state.clients;
+                    const index = clients.indexOf(oldData);
+                    clients.splice(index, 1);
+                    this.setState({ clients }, () => resolve());
                   }
                   resolve()
                 }, 1000)
