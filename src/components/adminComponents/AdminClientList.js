@@ -18,6 +18,8 @@ class AdminClientList extends Component {
           {title: 'Region',  field: 'region'},
         ],
         clients: [],
+        deleted: {},
+        updated: {},
         loaded: false,
         region: 'London'
       }
@@ -44,6 +46,49 @@ class AdminClientList extends Component {
           this.setState({clients, loaded: true})
       }).catch(err => console.log('Error: ',err))
       
+    }
+
+    delete=async ()=>{
+      
+      console.log('to be deleted: ',this.state.deleted)
+
+      const deleteClientQuery = `
+      mutation deleteClient {
+            deleteClient(input: {id: "${this.state.deleted.id}"}) {
+                  id
+                  firstname
+                  lastname
+                  mobile
+                  region
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(deleteClientQuery)).then(res =>{            
+          const deleted = res.data.deleteClient
+          this.setState({deleted})
+      }).catch(err => console.log('Error: ',err))
+
+    }
+     
+    update= async ()=>{
+         
+      console.log('to be deleted: ',this.state.updated)
+
+      const updateClientQuery = `
+      mutation updateClient {
+            updateClient(input: {id: "${this.state.updated.id}"}) {
+                  id
+                  firstname
+                  lastname
+                  mobile
+                  region
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(updateClientQuery)).then(res =>{            
+          const updated = res.data.updateClient
+          this.setState({updated})
+      }).catch(err => console.log('Error: ',err))
     }
 
     componentWillUpdate(){
@@ -77,7 +122,9 @@ class AdminClientList extends Component {
                     const clients = this.state.clients;
                     const index = clients.indexOf(oldData);
                     clients[index] = newData;
-                    this.setState({ clients }, () => resolve());
+                    const updated = newData;
+                    this.setState({ clients, updated }, () => resolve());
+                    this.update()
                   }
                   resolve()
                 }, 1000)
@@ -88,8 +135,10 @@ class AdminClientList extends Component {
                   {
                     let clients = this.state.clients;
                     const index = clients.indexOf(oldData);
+                    const deleted = this.state.clients[index]
                     clients.splice(index, 1);
-                    this.setState({ clients }, () => resolve());
+                    this.setState({ clients , deleted }, () => resolve());
+                    this.delete()
                   }
                   resolve()
                 }, 1000)
