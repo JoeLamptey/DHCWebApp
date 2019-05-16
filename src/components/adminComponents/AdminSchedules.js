@@ -30,7 +30,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,    
   },
   container:{
-    width: '300px',
+    width: '400px',
   }
 });
 

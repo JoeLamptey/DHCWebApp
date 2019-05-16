@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 const style ={
     map:{  
-        
         top:0,
         bottom:0,
         width:'100%',
@@ -31,7 +30,7 @@ class AdminMapView extends Component {
     render() {
         return (
             <div className={style.body}>
-               <div id='map' className={style.map} style={{height: '600px', width:'100%'}}></div>
+               <div id='map' className={style.map} style={{height: '450px', width:'100%'}}></div>
             </div>
         );
     }
