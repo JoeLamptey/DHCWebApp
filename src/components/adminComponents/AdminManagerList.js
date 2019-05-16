@@ -11,7 +11,7 @@ const style={
   }
 }
 
-class AdminClientList extends Component {
+class AdminManagerList extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -28,7 +28,7 @@ class AdminClientList extends Component {
           { title: 'NOK Email', field: 'nok_email' },
           {title: 'Region',  field: 'region'},
         ],
-        clients: [],
+        Managers: [],
         deleted: {},
         updated: {},
         create: {},
@@ -38,9 +38,9 @@ class AdminClientList extends Component {
     }
 
     async componentWillMount(){
-      const listClientQuery = `
-          query listClients {
-              listClients(filter: {region:{ eq: "London"}}) {
+      const listManagerQuery = `
+          query listManagers {
+              listManagers(filter: {region:{ eq: "London"}}) {
               items {
                   id
                   firstname
@@ -58,9 +58,9 @@ class AdminClientList extends Component {
               }
           }
       `
-      await API.graphql(graphqlOperation(listClientQuery)).then(res =>{            
-         const clients = res.data.listClients.items
-          this.setState({clients, loaded: true})
+      await API.graphql(graphqlOperation(listManagerQuery)).then(res =>{            
+         const Managers = res.data.listManagers.items
+          this.setState({Managers, loaded: true})
       }).catch(err => console.log('Error: ',err))
       
     }
@@ -69,9 +69,9 @@ class AdminClientList extends Component {
       
       console.log('to be deleted: ',this.state.deleted)
 
-      const deleteClientQuery = `
-      mutation deleteClient {
-            deleteClient(input: {id: "${this.state.deleted.id}"}) {
+      const deleteManagerQuery = `
+      mutation deleteManager {
+            deleteManager(input: {id: "${this.state.deleted.id}"}) {
                   id
                   firstname
                   lastname
@@ -80,8 +80,8 @@ class AdminClientList extends Component {
               }
           }
       `
-      await API.graphql(graphqlOperation(deleteClientQuery)).then(res =>{            
-          const deleted = res.data.deleteClient
+      await API.graphql(graphqlOperation(deleteManagerQuery)).then(res =>{            
+          const deleted = res.data.deleteManager
           this.setState({deleted})
       }).catch(err => console.log('Error: ',err))
 
@@ -91,9 +91,9 @@ class AdminClientList extends Component {
          
       //console.log('to be deleted: ',this.state.updated)
 
-      const updateClientQuery = `
-      mutation updateClient {
-            updateClient(input: {
+      const updateManagerQuery = `
+      mutation updateManager {
+            updateManager(input: {
               id: "${this.state.updated.id}",
               firstname: "${this.state.updated.firstname}",
               lastname: "${this.state.updated.lastname}",
@@ -115,8 +115,8 @@ class AdminClientList extends Component {
               }
           }
       `
-      await API.graphql(graphqlOperation(updateClientQuery)).then(res =>{            
-          const updated = res.data.updateClient
+      await API.graphql(graphqlOperation(updateManagerQuery)).then(res =>{            
+          const updated = res.data.updateManager
           this.setState({updated})
       }).catch(err => console.log('Error: ',err))
     }
@@ -125,9 +125,9 @@ class AdminClientList extends Component {
       //console.log('to be created: ',e)
       console.log(this.state.create)
 
-      const createClientQuery = `
-          mutation createClient {
-                createClient(input: {
+      const createManagerQuery = `
+          mutation createManager {
+                createManager(input: {
                   firstname: "${this.state.create.firstname}",
                   lastname: "${this.state.create.lastname}",
                   mobile: "${this.state.create.mobile}",
@@ -148,8 +148,8 @@ class AdminClientList extends Component {
               }
           }
         `
-      await API.graphql(graphqlOperation(createClientQuery)).then(res =>{            
-          const create = res.data.createClient
+      await API.graphql(graphqlOperation(createManagerQuery)).then(res =>{            
+          const create = res.data.createManager
           this.setState({create})
       }).catch(err => console.log('Error: ',err))
     }
@@ -162,17 +162,17 @@ class AdminClientList extends Component {
 
       return (  loaded &&
         <div className={style.container}><MaterialTable 
-          title={this.state.region +" Clients"}
+          title={this.state.region +" Managers"}
           columns={this.state.columns}
-          data={this.state.clients}
+          data={this.state.Managers}
           editable={{
             onRowAdd: newData =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
                   {
-                    const clients = this.state.clients;
-                    clients.push(newData);
-                    this.setState({ clients, create: newData }, () => resolve());
+                    const Managers = this.state.Managers;
+                    Managers.push(newData);
+                    this.setState({ Managers, create: newData }, () => resolve());
                     this.create()                    
                   }
                   resolve()
@@ -182,11 +182,11 @@ class AdminClientList extends Component {
               new Promise((resolve, reject) => {
                 setTimeout(() => {
                   {
-                    const clients = this.state.clients;
-                    const index = clients.indexOf(oldData);
-                    clients[index] = newData;
+                    const Managers = this.state.Managers;
+                    const index = Managers.indexOf(oldData);
+                    Managers[index] = newData;
                     const updated = newData;
-                    this.setState({ clients, updated }, () => resolve());
+                    this.setState({ Managers, updated }, () => resolve());
                     this.update()
                   }
                   resolve()
@@ -196,11 +196,11 @@ class AdminClientList extends Component {
               new Promise((resolve, reject) => {
                 setTimeout(() => {
                   {
-                    let clients = this.state.clients;
-                    const index = clients.indexOf(oldData);
-                    const deleted = this.state.clients[index]
-                    clients.splice(index, 1);
-                    this.setState({ clients , deleted }, () => resolve());
+                    let Managers = this.state.Managers;
+                    const index = Managers.indexOf(oldData);
+                    const deleted = this.state.Managers[index]
+                    Managers.splice(index, 1);
+                    this.setState({ Managers , deleted }, () => resolve());
                     this.delete()
                   }
                   resolve()
@@ -212,4 +212,4 @@ class AdminClientList extends Component {
     }
   }
 
-export default AdminClientList;
+export default AdminManagerList;

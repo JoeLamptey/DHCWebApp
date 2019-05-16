@@ -1,18 +1,22 @@
 
-.root{
-    margin: 0% 15%;
-    
+@media (min-width: 900px){
+    .root{
+        margin: 0% 15%;
+        width: 850px;
+    }
 }
 
 @media (max-width: 900px) and (min-width: 500px) {
     .root {
         margin: 0% 15%;
+        /* width: 650; */
     }
 }
 
 @media (max-width: 500px) {
     .root {
         margin: 0% 1%;
+        /* width: 350; */
     }
 }
 

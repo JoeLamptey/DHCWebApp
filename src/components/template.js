@@ -73,3 +73,18 @@ class CarerCreateReport extends Component{
 //   };
 
 export default withStyles(styles)(CarerCreateReport)
+
+
+
+address: "West Manchester"
+birthday: "1968-01-08"
+email: "jery@gmail.com"
+firstname: "Jerry"
+lastname: "Lawson"
+mobile: "(+44) 639-258-6543"
+nextofkin: "Fiaz"
+nok_email: "fiaz@gmail.com"
+nok_mobile: "(+44) 321-852-6547"
+postcode: "HE8 IH0"
+region: "Manchester"
+

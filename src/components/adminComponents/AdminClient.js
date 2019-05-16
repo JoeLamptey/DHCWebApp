@@ -28,8 +28,11 @@ TabContainer.propTypes = {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,  
+    backgroundColor: theme.palette.background.paper,    
   },
+  container:{
+    width: '300px',
+  }
 });
 
 class AdminClient extends Component {
@@ -53,7 +56,7 @@ class AdminClient extends Component {
 
     return (
       <div className='root'>
-        <div className={[classes.root]}>
+        <div className={classes.root}>
             <AppBar position="static" color="default" >
                   <Tabs value={value} 
                     variant="scrollable"
@@ -77,7 +80,7 @@ class AdminClient extends Component {
                 {value === 2 && <TabContainer>
                     <AdminClientEvents />
                     </TabContainer>}
-                {value === 3 && <TabContainer>
+                {value === 3 && <TabContainer >
                     <AdminClientList />
                     </TabContainer>}
         </div>
