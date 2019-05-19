@@ -21,10 +21,26 @@ class AdminMapView extends Component {
         let map = new mapboxgl.Map({
             container: 'map', // container id
             style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-            center: [-74.50, 40], // starting position [lng, lat]
-            zoom: 9 // starting zoom
+            center: [-0.118092, 51.509865], // starting position [lng, lat]
+            zoom: 12 // starting zoom
         })
-        //console.log(map)
+        // let clients = [[-74.50, 40], [-74.51, 40.001], [-74.5002, 40.023]]
+        // let carers =  [[-74.50, 40.03],  [-74.515, 40.0007]]
+        let clients = [[-0.112, 51.504], [-0.128, 51.509 ], [-0.114, 51.500]]
+        let carers =  [[-0.128, 51.506],  [-0.108, 51.502]]
+        let mark=(data, color)=>{
+            data.map((item)=>{
+                //console.log(item[0])
+                let marking = new mapboxgl.Marker({color: color})
+                                 .setLngLat(item)
+                                 .addTo(map)
+                 return marking
+             })
+        }
+
+        mark(clients, '#911')
+        mark(carers, '#a1e')
+        
     }
 
     render() {
