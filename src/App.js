@@ -10,11 +10,14 @@ class App extends Component{
     }
   }
 
-  verifyUser = (user) =>{
-    this.setState({auth: user})
-    //console.log(this.state.auth)
+  verifyUser =  (auth) =>{ 
+      
+      this.props.verifyUser(auth)
+      this.setState({auth: auth})
+     //console.log(this.state.auth)
   }
-  render(){
+
+  render(){ 
 
       if(!this.state.auth.status){
        return (
@@ -24,13 +27,13 @@ class App extends Component{
         return (<Redirect to='/admin' />)
       }
       else if(this.state.auth.status && this.state.auth.user.type === 'supervisor'){
-        return (<Redirect to='/supervisor' />)
+        return (<Redirect to='/supervisor'/>)
       }
       else if(this.state.auth.status && this.state.auth.user.type === 'carer'){
         return (<Redirect to='/carer' />)
       }
       else if(this.state.auth.status && this.state.auth.user.type === 'client'){
-        return (<Redirect to='/client' />)
+        return (<Redirect to='/client'  />)
       }
       else if(this.state.auth.status && this.state.auth.user.type === 'manager'){
         return (<Redirect to='/manager' />)

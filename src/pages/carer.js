@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+//import {Redirect} from 'react-router-dom'
 import Header from '../components/header'
 import CarerSchedule from '../components/carerComponents/CarerSchedule'
 import CarerTraining from '../components/carerComponents/CarerTraining'
@@ -7,7 +8,26 @@ import CarerProfile from '../components/carerComponents/CarerProfile'
 import CarerLogout from '../components/carerComponents/CarerLogout'
 
 class Carer extends Component{
+
+    state = {
+        // redirectToPreviousRoute: false
+      }
+    
+    //   login = () => {
+    //     AuthService.authenticate(() => {
+    //       this.setState({ redirectToPreviousRoute: true });
+    //     });
+    //   }
+
     render(){
+
+        // const { from } = this.props.location.state || { from: { pathname: "/" } };
+        // const { redirectToPreviousRoute } = this.state;
+
+        // if (redirectToPreviousRoute) {
+        //     return <Redirect to={from} />;
+        // }
+
         return(
             <div>
                 <Header 

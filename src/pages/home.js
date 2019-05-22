@@ -30,7 +30,7 @@ class Index extends Component{
       auth: {status: false, user: null}
   }
 
-  login = (e) =>{
+  login = async (e) =>{
       e.preventDefault()
 
       let user = {
@@ -39,27 +39,27 @@ class Index extends Component{
       }
       
 
-      if(user.email === 'ml'||user.password === 'l'){
-          this.setState({notification: 'Please completely fill in the form'})
-      }else{
-          e.target.email.value = ''
-          e.target.password.value = ''
-          const auth = Verify(user)
-          if(!auth.status){
+        e.target.email.value = ''
+        e.target.password.value = ''
+          const auth = await Verify(user)
+          //console.log('Auth: ',auth)
+
+        if(!auth.status){ //console.log('False: ',auth)
             this.setState({
                 auth: auth,
                 notification: 'Failed login, Please try again!'
             })
-          }else{
+        }else{ //console.log('True: ',auth)
             this.setState({
                 auth: auth,
                 notification: 'Login successful!'
             })
             this.props.verifyUser(auth)
-          }
-          
-          
-      }        
+        }       
+  }
+
+  componentWillUpdate(){
+
   }
 
   render(){
