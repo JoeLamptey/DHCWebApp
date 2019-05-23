@@ -5,11 +5,11 @@ import {API, graphqlOperation} from 'aws-amplify'
 import awsmobile from '../../aws-exports'
 API.configure(awsmobile)
 
-const style={
-  container: {
-    width: '500px',
-  }
-}
+// const style={
+//   container: {
+//     // width: '500px',
+//   }
+// }
 
 class AdminManagerList extends Component {
     constructor(props) {
@@ -161,7 +161,7 @@ class AdminManagerList extends Component {
       const { loaded } = this.state;
 
       return (  loaded &&
-        <div className={style.container}><MaterialTable 
+        <div><MaterialTable 
           title={this.state.region +" Managers"}
           columns={this.state.columns}
           data={this.state.Managers}

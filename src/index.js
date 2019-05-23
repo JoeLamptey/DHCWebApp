@@ -34,19 +34,29 @@ class DHCRouter extends Component{
                     <Route exact path='/' render={()=><App verifyUser={this.verifyUser} />}/>
                     <Route exact path='/carer'  render={()=>
                         ((this.state.auth.status && this.state.auth.user.type === 'carer')?
-                            <Carer {...this.state.user} />: <Redirect to='/' />)                          
+                            <Carer {...this.state.auth.user} />: <Redirect to='/' />)                          
                         } />
                     <Route exact path='/admin'  render={()=>
                         ((this.state.auth.status && this.state.auth.user.type === 'admin')?
-                            <Admin {...this.state.user} />: <Redirect to='/' />)                          
+                            <Admin {...this.state.auth.user} />: <Redirect to='/' />)                          
                         } />
                     <Route exact path='/supervisor'  render={()=>
                         ((this.state.auth.status && this.state.auth.user.type === 'supervisor')?
-                            <Supervisor {...this.state.user} />: <Redirect to='/' />)                          
+                            <Supervisor {...this.state.auth.user} />: <Redirect to='/' />)                          
                         } />
-                    
+                    <Route exact path='/client'  render={()=>
+                        ((this.state.auth.status && this.state.auth.user.type === 'client')?
+                            <Client {...this.state.auth.user} />: <Redirect to='/' />)                          
+                        } />
+                    <Route exact path='/manager'  render={()=>
+                        ((this.state.auth.status && this.state.auth.user.type === 'manager')?
+                            <Manager {...this.state.auth.user} />: <Redirect to='/' />)                          
+                        } />
+                    {/* <Route exact path='/admin'  component={Admin} />
+                    <Route exact path='/carer'  component={Carer} />
+                    <Route exact path='/supervisor'  component={Supervisor} />
                     <Route exact path='/client'  component={Client} />
-                    <Route exact path='/manager'  component={Manager} />
+                    <Route exact path='/manager'  component={Manager} /> */}
                     <Route exact component={NoMatch} />
                 </Switch>            
             </Router>

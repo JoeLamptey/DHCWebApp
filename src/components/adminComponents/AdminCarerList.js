@@ -40,7 +40,7 @@ class AdminCarerList extends Component {
     async componentWillMount(){
       const listCarerQuery = `
           query listCarers {
-              listCarers(filter: {region:{ eq: "London"}}) {
+              listCarers(filter: {region:{ eq: "Manchester"}}) {
               items {
                   id
                   firstname

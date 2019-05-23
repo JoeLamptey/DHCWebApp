@@ -27,11 +27,21 @@ TabContainer.propTypes = {
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    //flexGrow: 1,
     backgroundColor: theme.palette.background.paper,    
   },
-  container:{
-    width: '300px',
+  container: {
+      '@media (min-width: 901px)':{
+        width: '350px',
+      },
+
+      '@media (max-width: 900px) and (min-width: 600px)':{
+        width: '65%',
+      },
+
+      '@media (min-width: 599px)':{
+        width: '80%',
+      }
   }
 });
 
@@ -80,7 +90,7 @@ class AdminSupervisor extends Component {
                 {value === 2 && <TabContainer>
                     <AdminSupervisorTraining />
                     </TabContainer>}
-                {value === 3 && <TabContainer >
+                {value === 3 && <TabContainer>
                     <AdminSupervisorList />
                     </TabContainer>}
         </div>

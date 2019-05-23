@@ -19,18 +19,20 @@ class Admin extends Component{
 
         }
     }
-    render(){ //console.log(this.state)
+    render(){ 
+        //console.log(this.props)
+        //console.log(this.states)
         return(
             <div>
                 <Header 
-                    title="ADMINISTRATOR" 
+                    title= {this.props.firstname.toUpperCase()+ '  '+ this.props.lastname.toUpperCase()}
                     menu={['Clients','Carers', 'Supervisors', 'Managers']}
                     submenu={['Schedules', 'Profile', 'Logout']}
-                    menuPages={[<AdminClient />,<AdminCarer />, 
+                    menuPages={[<AdminClient {...this.props}/>,<AdminCarer />, 
                         <AdminSupervisor />, <AdminManager />, 
                         ]}
                     submenuPages={[ 
-                        <AdminSchedules />, <AdminProfile />, <AdminLogout />]}/>
+                        <AdminSchedules />, <AdminProfile {...this.props}/>, <AdminLogout />]}/>
             </div>
         )
     }

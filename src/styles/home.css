@@ -6,7 +6,7 @@
 }
 
 .login{
-    margin: 12% 32%;
+    margin: 12% 35%;
 }
 
 @media (max-width: 900px) and (min-width: 500px) {
@@ -24,8 +24,11 @@
 .h1{
     font-size: 2.4rem;
     font-Weight: 1;
-    color: blue;
-    text-align: center;    
+    /* color: blue; */
+    color:  rgb(230, 44, 19);
+    text-align: center;  
+    font-weight: 3;
+    font-family: Georgia, 'Times New Roman', Times, serif;  
 }
 
 .button{

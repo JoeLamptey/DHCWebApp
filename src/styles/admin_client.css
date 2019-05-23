@@ -6,17 +6,24 @@
     }
 }
 
-@media (max-width: 900px) and (min-width: 500px) {
+@media (max-width: 899px) and (min-width: 701px) {
     .root {
-        margin: 0% 15%;
-        /* width: 650; */
+        margin: 0% 5%;
+        width: 650px;
+    }
+}
+
+@media (max-width: 700px) and (min-width: 500px) {
+    .root {
+        margin: 0% 5%;
+        width: 550px;
     }
 }
 
 @media (max-width: 500px) {
     .root {
         margin: 0% 1%;
-        /* width: 350; */
+        width: 400px;
     }
 }
 

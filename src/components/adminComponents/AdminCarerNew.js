@@ -38,31 +38,14 @@ class AdminCarerNew extends Component{
         super(props)
         this.state ={
             newCarer: '',
+            newUser: '',
+            hide: 'none',
             notification: ''
         }
     }
 
-    createCarer = (e) =>{
-        e.preventDefault()
-  
-        const newCarer={
-          firstname: e.target.firstname.value,
-          middlename: e.target.middlename.value,
-          lastname: e.target.lastname.value,
-          birthday: e.target.birthday.value,
-          postcode: e.target.postcode.value,
-          email: e.target.email.value,
-          mobile: e.target.telephone.value,
-          address: e.target.address.value,
-          region: e.target.region.value,
-          nextofkin: e.target.nextofkin.value,
-          nokemail: e.target.nokemail.value,
-          nokmobile: e.target.nokmobile.value,
-        }
-  
-       
-        
-            const createCarerQuery = `
+    createCarerQuery=(newCarer)=>{
+        const createCarerQuery = `
                 mutation createCarer{
                     createCarer(input:{
                         firstname: "${newCarer.firstname}",
@@ -89,8 +72,63 @@ class AdminCarerNew extends Component{
 
             API.graphql(graphqlOperation(createCarerQuery)).then(res=>{
                 //console.log('response: ',res.data.createCarer)
-                this.setState({newCarer: newCarer, notification: 'New Carer Successfully created!'})
+                this.setState({newCarer: newCarer, hide: 'block', notification: 'New Carer Successfully created!'})
             }).catch(err => console.log('Error: ',err))
+    }
+
+    createUserQuery=(newCarer)=>{
+        const createUserQuery = `
+        mutation createUser{
+                createUser(input:{
+                    firstname: "${newCarer.firstname}",
+                    lastname: "${newCarer.lastname}",
+                    birthday: "${newCarer.birthday}",
+                    postcode: "${newCarer.postcode}",
+                    email: "${newCarer.email}",
+                    password: "carer",
+                    mobile: "${newCarer.mobile}",
+                    address: "${newCarer.address}",
+                    region: "${newCarer.region}",
+                    type: "carer"
+                }){
+                    id
+                    firstname
+                    lastname
+                    mobile
+                    email
+                    region
+                    postcode
+                }
+            }
+        `
+
+        API.graphql(graphqlOperation(createUserQuery)).then(res=>{
+            //console.log('response: ',res.data.createCarer)
+            let newUser = res.data.createUser
+            this.setState({newUser: newUser})
+        }).catch(err => console.log('Error: ',err))
+    }
+
+
+    createCarer = (e) =>{
+        e.preventDefault()
+  
+        const newCarer={
+          firstname: e.target.firstname.value,
+          middlename: e.target.middlename.value,
+          lastname: e.target.lastname.value,
+          birthday: e.target.birthday.value,
+          postcode: e.target.postcode.value,
+          email: e.target.email.value,
+          mobile: e.target.telephone.value,
+          address: e.target.address.value,
+          region: e.target.region.value,
+          nextofkin: e.target.nextofkin.value,
+          nokemail: e.target.nokemail.value,
+          nokmobile: e.target.nokmobile.value,
+        }
+            this.createCarerQuery(newCarer)
+            this.createUserQuery(newCarer)
             
             e.target.firstname.value = ''
             e.target.middlename.value = ''
@@ -214,15 +252,20 @@ class AdminCarerNew extends Component{
                         name='nokemail'
                         type='email'
                     />
-                    <Button 
-                        className={classes.button}
-                        type='submit'
-                        variant='contained'
-                        
-                        color='primary'
-                    >Create Carer</Button>
+                    <span>
+                        <Button 
+                            className={classes.button}
+                            type='submit'
+                            variant='contained'
+                            
+                            color='primary'
+                        >Create Carer</Button>
+                        <div align='center' className='success' style={{display: this.state.hide}}>
+                            {this.state.notification}
+                        </div>
+                    </span>
                 </form>
-                <div align='center' className='alert'>{this.state.notification}</div>
+                
             </div>
         )
     }

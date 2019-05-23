@@ -7,7 +7,17 @@ API.configure(awsmobile)
 
 const style={
   container: {
-    width: '500px',
+    // '@media (min-width: 901px)':{
+    //   width: '350px',
+    // },
+
+    // '@media (max-width: 900px) and (min-width: 600px)':{
+    //   width: '65%',
+    // },
+
+    // '@media (min-width: 599px)':{
+    //   width: '80%',
+    // }
   }
 }
 

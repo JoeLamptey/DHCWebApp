@@ -38,10 +38,80 @@ class AdminManagerNew extends Component{
         super(props)
         this.state ={
             newManager: '',
+            newUser: '',
+            hide: 'none',
             notification: ''
         }
     }
 
+    createManagerQuery=(newManager)=>{
+        const createManagerQuery = `
+        mutation createManager{
+                createManager(input:{
+                    firstname: "${newManager.firstname}",
+                    lastname: "${newManager.lastname}",
+                    birthday: "${newManager.birthday}",
+                    postcode: "${newManager.postcode}",
+                    email: "${newManager.email}",
+                    mobile: "${newManager.mobile}",
+                    address: "${newManager.address}",
+                    region: "${newManager.region}",
+                    nextofkin: "${newManager.nextofkin}",
+                    nok_email: "${newManager.email}",
+                    nok_mobile: "${newManager.nokmobile}"
+                }){
+                    id
+                    firstname
+                    lastname
+                    email
+                    region
+                    postcode
+                }
+            }
+        `
+
+        API.graphql(graphqlOperation(createManagerQuery)).then(res=>{
+            //console.log('response: ',res.data.createManager)
+            this.setState({newManager: newManager, hide: 'block', notification: 'New Manager Successfully created!'})
+        }).catch(err => {
+            console.log('Error: ',err)
+            this.setState({notification :"Failed to create user, please check the input data!"})
+        })
+    }
+
+
+    createUserQuery=(newManager)=>{
+        const createUserQuery = `
+        mutation createUser{
+                createUser(input:{
+                    firstname: "${newManager.firstname}",
+                    lastname: "${newManager.lastname}",
+                    birthday: "${newManager.birthday}",
+                    postcode: "${newManager.postcode}",
+                    email: "${newManager.email}",
+                    password: "manager",
+                    mobile: "${newManager.mobile}",
+                    address: "${newManager.address}",
+                    region: "${newManager.region}",
+                    type: "manager"
+                }){
+                    id
+                    firstname
+                    lastname
+                    mobile
+                    email
+                    region
+                    postcode
+                }
+            }
+        `
+
+        API.graphql(graphqlOperation(createUserQuery)).then(res=>{
+            //console.log('response: ',res.data.createManager)
+            let newUser = res.data.createUser
+            this.setState({newUser: newUser})
+        }).catch(err => console.log('Error: ',err))
+    }
     createManager = (e) =>{
         e.preventDefault()
   
@@ -59,39 +129,9 @@ class AdminManagerNew extends Component{
           nokemail: e.target.nokemail.value,
           nokmobile: e.target.nokmobile.value,
         }
-  
-       
-        
-            const createManagerQuery = `
-                mutation createManager{
-                    createManager(input:{
-                        firstname: "${newManager.firstname}",
-                        lastname: "${newManager.lastname}",
-                        birthday: "${newManager.birthday}",
-                        postcode: "${newManager.postcode}",
-                        email: "${newManager.email}",
-                        mobile: "${newManager.mobile}",
-                        address: "${newManager.address}",
-                        region: "${newManager.region}",
-                        nextofkin: "${newManager.nextofkin}",
-                        nok_email: "${newManager.email}",
-                        nok_mobile: "${newManager.nokmobile}"
-                    }){
-                        id
-                        firstname
-                        lastname
-                        email
-                        region
-                        postcode
-                    }
-                }
-            `
-
-            API.graphql(graphqlOperation(createManagerQuery)).then(res=>{
-                //console.log('response: ',res.data.createManager)
-                this.setState({newManager: newManager, notification: 'New Manager Successfully created!'})
-            }).catch(err => console.log('Error: ',err))
-            
+            this.createManagerQuery(newManager)
+            this.createUserQuery(newManager)
+                   
             e.target.firstname.value = ''
             e.target.middlename.value = ''
             e.target.lastname.value = ''
@@ -222,7 +262,7 @@ class AdminManagerNew extends Component{
                         color='primary'
                     >Create Manager</Button>
                 </form>
-                <div align='center' className='alert'>{this.state.notification}</div>
+                <div align='center' className='success' style={{display: this.state.hide}}>{this.state.notification}</div>
             </div>
         )
     }

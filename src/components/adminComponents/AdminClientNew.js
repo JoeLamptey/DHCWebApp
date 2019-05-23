@@ -38,8 +38,75 @@ class AdminClientNew extends Component{
         super(props)
         this.state ={
             newClient: '',
+            newUser: '',
+            hide: 'none',
             notification: ''
         }
+    }
+
+    createClientQuery=(newClient)=>{
+        const createClientQuery = `
+        mutation createClient{
+                createClient(input:{
+                    firstname: "${newClient.firstname}",
+                    lastname: "${newClient.lastname}",
+                    birthday: "${newClient.birthday}",
+                    postcode: "${newClient.postcode}",
+                    email: "${newClient.email}",
+                    mobile: "${newClient.mobile}",
+                    address: "${newClient.address}",
+                    region: "${newClient.region}",
+                    nextofkin: "${newClient.nextofkin}",
+                    nok_email: "${newClient.email}",
+                    nok_mobile: "${newClient.nokmobile}"
+                }){
+                    id
+                    firstname
+                    lastname
+                    email
+                    region
+                    postcode
+                }
+            }
+        `
+
+        API.graphql(graphqlOperation(createClientQuery)).then(res=>{
+            //console.log('response: ',res.data.createClient)
+            this.setState({newClient: newClient, hide: 'block', notification: 'New Client Successfully created!'})
+        }).catch(err => console.log('Error: ',err))
+    }
+
+    createUserQuery=(newClient)=>{
+        const createUserQuery = `
+        mutation createUser{
+                createUser(input:{
+                    firstname: "${newClient.firstname}",
+                    lastname: "${newClient.lastname}",
+                    birthday: "${newClient.birthday}",
+                    postcode: "${newClient.postcode}",
+                    email: "${newClient.email}",
+                    password: "client",
+                    mobile: "${newClient.mobile}",
+                    address: "${newClient.address}",
+                    region: "${newClient.region}",
+                    type: "client"
+                }){
+                    id
+                    firstname
+                    lastname
+                    mobile
+                    email
+                    region
+                    postcode
+                }
+            }
+        `
+
+        API.graphql(graphqlOperation(createUserQuery)).then(res=>{
+            //console.log('response: ',res.data.createClient)
+            let newUser = res.data.createUser
+            this.setState({newUser: newUser})
+        }).catch(err => console.log('Error: ',err))
     }
 
     createClient = (e) =>{
@@ -59,39 +126,9 @@ class AdminClientNew extends Component{
           nokemail: e.target.nokemail.value,
           nokmobile: e.target.nokmobile.value,
         }
-  
+            this.createClientQuery(newClient)
+            this.createUserQuery(newClient)
        
-        
-            const createClientQuery = `
-                mutation createClient{
-                    createClient(input:{
-                        firstname: "${newClient.firstname}",
-                        lastname: "${newClient.lastname}",
-                        birthday: "${newClient.birthday}",
-                        postcode: "${newClient.postcode}",
-                        email: "${newClient.email}",
-                        mobile: "${newClient.mobile}",
-                        address: "${newClient.address}",
-                        region: "${newClient.region}",
-                        nextofkin: "${newClient.nextofkin}",
-                        nok_email: "${newClient.email}",
-                        nok_mobile: "${newClient.nokmobile}"
-                    }){
-                        id
-                        firstname
-                        lastname
-                        email
-                        region
-                        postcode
-                    }
-                }
-            `
-
-            API.graphql(graphqlOperation(createClientQuery)).then(res=>{
-                //console.log('response: ',res.data.createClient)
-                this.setState({newClient: newClient, notification: 'New Client Successfully created!'})
-            }).catch(err => console.log('Error: ',err))
-            
             e.target.firstname.value = ''
             e.target.middlename.value = ''
             e.target.lastname.value = ''
@@ -222,7 +259,7 @@ class AdminClientNew extends Component{
                         color='primary'
                     >Create Client</Button>
                 </form>
-                <div align='center' className='alert'>{this.state.notification}</div>
+                <div align='center' className='success' style={{display: this.state.hide}}>{this.state.notification}</div>
             </div>
         )
     }

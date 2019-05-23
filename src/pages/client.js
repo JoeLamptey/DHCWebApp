@@ -19,7 +19,7 @@ class Client extends Component{
         return(
             <div>
                 <Header 
-                    title='Client' 
+                    title={this.props.firstname.toUpperCase()+ '  '+ this.props.lastname.toUpperCase()}
                     menu={['Schedules', 'Reports']}
                     submenu={['Events', 'Profile', 'Logout']}
                     menuPages={[<ClientSchedule />, 

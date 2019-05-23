@@ -17,6 +17,8 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
+        borderColor: '#fff',
+        textColor: '#fff',
       },
       button:{
           marginTop: theme.spacing.unit*2,
@@ -27,6 +29,7 @@ const styles = theme => ({
 class Index extends Component{
   state={
       notification: '',
+      hide: 'none',
       auth: {status: false, user: null}
   }
 
@@ -47,6 +50,7 @@ class Index extends Component{
         if(!auth.status){ //console.log('False: ',auth)
             this.setState({
                 auth: auth,
+                hide: 'block',
                 notification: 'Failed login, Please try again!'
             })
         }else{ //console.log('True: ',auth)
@@ -65,7 +69,7 @@ class Index extends Component{
   render(){
       const { classes } = this.props;
        return (
-          <div className={IndexStyles}>
+          <div className={IndexStyles.body}>
               <div className='login'>
                   <h1 className='h1'>Domiciliary HealthCare</h1>
                   <form onSubmit={this.login}
@@ -98,7 +102,7 @@ class Index extends Component{
                           fullWidth 
                           color='primary'>Login</Button>
                   </form>
-                  <div align='center' className='alert'>{this.state.notification}</div>
+                  <div align='center' className='alert' style={{display: this.state.hide}} >{this.state.notification}</div>
               </div>
           </div>
       )

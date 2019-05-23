@@ -38,9 +38,76 @@ class AdminSupervisorNew extends Component{
         super(props)
         this.state ={
             newSupervisor: '',
+            hide: 'none',
             notification: ''
         }
     }
+
+    createSupervisorQuery=(newSupervisor)=>{
+        const createSupervisorQuery = `
+        mutation createSupervisors{
+                createSupervisors(input:{
+                    firstname: "${newSupervisor.firstname}",
+                    lastname: "${newSupervisor.lastname}",
+                    birthday: "${newSupervisor.birthday}",
+                    postcode: "${newSupervisor.postcode}",
+                    email: "${newSupervisor.email}",
+                    mobile: "${newSupervisor.mobile}",
+                    address: "${newSupervisor.address}",
+                    region: "${newSupervisor.region}",
+                    nextofkin: "${newSupervisor.nextofkin}",
+                    nok_email: "${newSupervisor.email}",
+                    nok_mobile: "${newSupervisor.nokmobile}"
+                }){
+                    id
+                    firstname
+                    lastname
+                    email
+                    region
+                    postcode
+                }
+            }
+        `
+
+        API.graphql(graphqlOperation(createSupervisorQuery)).then(res=>{
+            //console.log('response: ',res.data.createSupervisor)
+            this.setState({newSupervisor: newSupervisor, hide: 'block', notification: 'New Supervisor Successfully created!'})
+        }).catch(err => console.log('Error: ',err))
+    }
+
+    createUserQuery=(newSupervisor)=>{
+        const createUserQuery = `
+        mutation createUser{
+                createUser(input:{
+                    firstname: "${newSupervisor.firstname}",
+                    lastname: "${newSupervisor.lastname}",
+                    birthday: "${newSupervisor.birthday}",
+                    postcode: "${newSupervisor.postcode}",
+                    email: "${newSupervisor.email}",
+                    password: "super",
+                    mobile: "${newSupervisor.mobile}",
+                    address: "${newSupervisor.address}",
+                    region: "${newSupervisor.region}",
+                    type: "supervisor"
+                }){
+                    id
+                    firstname
+                    lastname
+                    mobile
+                    email
+                    region
+                    postcode
+                }
+            }
+        `
+
+        API.graphql(graphqlOperation(createUserQuery)).then(res=>{
+            //console.log('response: ',res.data.createSupervisor)
+            let newUser = res.data.createUser
+            this.setState({newUser: newUser})
+        }).catch(err => console.log('Error: ',err))
+    }
+
 
     createSupervisor = (e) =>{
         e.preventDefault()
@@ -59,38 +126,8 @@ class AdminSupervisorNew extends Component{
           nokemail: e.target.nokemail.value,
           nokmobile: e.target.nokmobile.value,
         }
-  
-       
-        
-            const createSupervisorQuery = `
-                mutation createSupervisor{
-                    createSupervisor(input:{
-                        firstname: "${newSupervisor.firstname}",
-                        lastname: "${newSupervisor.lastname}",
-                        birthday: "${newSupervisor.birthday}",
-                        postcode: "${newSupervisor.postcode}",
-                        email: "${newSupervisor.email}",
-                        mobile: "${newSupervisor.mobile}",
-                        address: "${newSupervisor.address}",
-                        region: "${newSupervisor.region}",
-                        nextofkin: "${newSupervisor.nextofkin}",
-                        nok_email: "${newSupervisor.email}",
-                        nok_mobile: "${newSupervisor.nokmobile}"
-                    }){
-                        id
-                        firstname
-                        lastname
-                        email
-                        region
-                        postcode
-                    }
-                }
-            `
-
-            API.graphql(graphqlOperation(createSupervisorQuery)).then(res=>{
-                //console.log('response: ',res.data.createSupervisor)
-                this.setState({newSupervisor: newSupervisor, notification: 'New Supervisor Successfully created!'})
-            }).catch(err => console.log('Error: ',err))
+             this.createSupervisorQuery(newSupervisor)
+             this.createUserQuery(newSupervisor)
             
             e.target.firstname.value = ''
             e.target.middlename.value = ''
@@ -222,7 +259,7 @@ class AdminSupervisorNew extends Component{
                         color='primary'
                     >Create Supervisor</Button>
                 </form>
-                <div align='center' className='alert'>{this.state.notification}</div>
+                <div align='center' className='success' style={{display: this.state.hide}}>{this.state.notification}</div>
             </div>
         )
     }

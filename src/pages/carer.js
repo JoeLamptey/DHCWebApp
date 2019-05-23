@@ -31,7 +31,7 @@ class Carer extends Component{
         return(
             <div>
                 <Header 
-                    title='CARER' 
+                    title={this.props.firstname.toUpperCase()+ '  '+ this.props.lastname.toUpperCase()}
                     menu={['Schedules', 'Reports']}
                     submenu={['Training', 'Profile', 'Logout']}
                     menuPages={[<CarerSchedule />, 
