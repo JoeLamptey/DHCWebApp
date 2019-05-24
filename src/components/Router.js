@@ -25,6 +25,7 @@ const Verify = async (user)=>{
                 email
                 password
                 address
+                region
                 type
             }
             }
