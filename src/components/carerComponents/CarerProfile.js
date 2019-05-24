@@ -1,48 +1,72 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 
-const styles = theme =>({
-    paper:{
-      padding: theme.spacing.unit * 2,
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-    },
-    textField:{
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: '90%',
-    }
-})
+import EditProfile from './EditProfile'
 
-class CarerProfile extends Component{
-    constructor(props){
-        super(props)
 
-        this.state={
-            report: ''
-        }
-    }
+import '../../styles/admin_client.css'
 
-    render(){
-        const {classes} = this.props
-        return(
-            <div>
-               <Grid container spacing={24}>
-                    <Grid item  xs={12}>
-                        <Paper className={classes.paper}>
-                            Profile page
-                        </Paper>
-                    </Grid>                    
-               </Grid>
-            </div>
-        )
-    }
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  );
 }
 
-// CarerReport.propTypes = {
-//     classes: PropTypes.object.isRequired,
-//   };
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
-export default withStyles(styles)(CarerProfile)
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,    
+  },
+  container:{
+    width: '400px',
+  }
+});
+
+class CarerProfile extends Component {
+  state = {
+    value: 0,
+  };
+
+ 
+  render() {
+    const { classes } = this.props;
+    const { value } = this.state;
+
+    return (
+      <div className='root'>
+        <div className={classes.root}>
+            <AppBar position="static" color="default" >
+                  <Tabs value={value} 
+                    variant="scrollable"
+                    scrollButtons="on"
+                    onChange={this.handleChange} textColor="primary">
+                    <Tab label="Edit Profile" />
+                  </Tabs>
+                </AppBar>
+                {value === 0 && 
+                    <TabContainer>                
+                        <EditProfile {...this.props} />
+                    </TabContainer>
+                }
+        </div>
+      </div>
+    );
+  }
+}
+
+CarerProfile.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(CarerProfile);

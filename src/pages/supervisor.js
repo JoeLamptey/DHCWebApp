@@ -16,14 +16,14 @@ class Supervisor extends Component{
                     title={this.props.firstname.toUpperCase()+ '  '+ this.props.lastname.toUpperCase()} 
                     menu={['Clients','Carers', 'Monitoring', 'Reports' ]}
                     submenu={['Schedules', 'Profile', 'Logout']}
-                    menuPages={[<SupervisorClient />, 
-                        <SupervisorCarer />, 
-                        <SupervisorMonitoring />, 
-                        <SupervisorReports />,
+                    menuPages={[<SupervisorClient {...this.props}/>, 
+                        <SupervisorCarer {...this.props}/>, 
+                        <SupervisorMonitoring {...this.props}/>, 
+                        <SupervisorReports {...this.props}/>,
                         ]}
                     submenuPages={[
-                        <SupervisorSchedules />,
-                        <SupervisorProfile />,
+                        <SupervisorSchedules {...this.props}/>,
+                        <SupervisorProfile {...this.props}/>,
                         <SupervisorLogout />]} />
             </div>
         )

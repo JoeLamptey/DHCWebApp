@@ -34,11 +34,11 @@ class Carer extends Component{
                     title={this.props.firstname.toUpperCase()+ '  '+ this.props.lastname.toUpperCase()}
                     menu={['Schedules', 'Reports']}
                     submenu={['Training', 'Profile', 'Logout']}
-                    menuPages={[<CarerSchedule />, 
-                        <CarerReport />,]}
+                    menuPages={[<CarerSchedule {...this.props}/>, 
+                        <CarerReport {...this.props}/>,]}
                     submenuPages={[ 
-                        <CarerTraining />, 
-                        <CarerProfile />,
+                        <CarerTraining {...this.props}/>, 
+                        <CarerProfile {...this.props}/>,
                         <CarerLogout />,]} />
             </div>
         )
