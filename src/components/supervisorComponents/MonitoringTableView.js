@@ -5,7 +5,7 @@ import {API, graphqlOperation} from 'aws-amplify'
 import awsmobile from '../../aws-exports'
 API.configure(awsmobile)
 
-class AdminTabularView extends Component {
+class MonitoringTabularView extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -116,4 +116,4 @@ class AdminTabularView extends Component {
     }
   }
 
-export default AdminTabularView;
+export default MonitoringTabularView;

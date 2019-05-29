@@ -52,8 +52,8 @@ class DHCRouter extends Component{
                         ((this.state.auth.status && this.state.auth.user.type === 'manager')?
                             <Manager {...this.state.auth.user} />: <Redirect to='/' />)                          
                         } />
-                    {/* <Route exact path='/admin'  component={Admin} />
-                    <Route exact path='/carer'  component={Carer} />
+                    {/* <Route exact path='/admin'  component={Admin} /> */}
+                    {/* <Route exact path='/carer'  component={Carer} />
                     <Route exact path='/supervisor'  component={Supervisor} />
                     <Route exact path='/client'  component={Client} />
                     <Route exact path='/manager'  component={Manager} /> */}

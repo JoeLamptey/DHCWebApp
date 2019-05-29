@@ -27,7 +27,7 @@ class Admin extends Component{
                 <Header 
                     title= {this.props.firstname.toUpperCase()+ '  '+ this.props.lastname.toUpperCase()}
                     menu={['Clients','Carers', 'Supervisors', 'Managers']}
-                    submenu={['Schedules', 'Profile', 'Logout']}
+                    submenu={['Monitoring', 'Profile', 'Logout']}
                     menuPages={[<AdminClient {...this.props}/>,<AdminCarer />, 
                         <AdminSupervisor />, <AdminManager />, 
                         ]}

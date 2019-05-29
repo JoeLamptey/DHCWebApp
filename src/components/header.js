@@ -222,6 +222,7 @@ class Header extends Component{
                                 switch (text) {
                                   case 'Training':   return <i className="material-icons">class</i>;
                                   case 'Schedules':  return <i className="material-icons">schedule</i>;
+                                  case 'Monitoring':      return <i className="material-icons">timelapse</i>;
                                   case 'Profile': return <i className="material-icons">account_circle</i>;
                                   case 'Logout':  return <i className="material-icons">logout</i>;
                                   default: return <i className="material-icons">work</i>;

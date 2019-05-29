@@ -63,9 +63,9 @@ class AdminCarer extends Component {
                     scrollButtons="on"
                     onChange={this.handleChange} textColor="primary">
                     <Tab label="Add Carer" />
-                    <Tab label="Carer's Reports" />
-                    <Tab label="Carer's Training" />
-                    <Tab label="Carer List" />
+                    <Tab label="Reports" />
+                    <Tab label="Training" />
+                    <Tab label="List" />
                   </Tabs>
                 </AppBar>
                 {value === 0 && 

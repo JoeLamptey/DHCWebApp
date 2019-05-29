@@ -72,7 +72,7 @@ let distance = (locA, locB)=>{
     return d
 }
 
-class AdminMapView extends Component {
+class MonitoringMapView extends Component {
 
     componentDidMount(){
         const mapboxgl = window.mapboxgl
@@ -215,4 +215,4 @@ class AdminMapView extends Component {
     }
 }
 
-export default AdminMapView;
+export default MonitoringMapView;

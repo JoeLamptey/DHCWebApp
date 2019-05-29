@@ -73,9 +73,9 @@ class AdminSupervisor extends Component {
                     scrollButtons="on"
                     onChange={this.handleChange} textColor="primary">
                     <Tab label="Add Supervisor" />
-                    <Tab label="Supervisor's Reports" />
-                    <Tab label="Supervisor's Training" />
-                    <Tab label="Supervisor List" />
+                    <Tab label="Reports" />
+                    <Tab label="Training" />
+                    <Tab label="List" />
                   </Tabs>
                 </AppBar>
                 {value === 0 && 

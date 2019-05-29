@@ -63,9 +63,9 @@ class AdminClient extends Component {
                     scrollButtons="on"
                     onChange={this.handleChange} textColor="primary">
                     <Tab label="Add Client" />
-                    <Tab label="Client's Complaints" />
-                    <Tab label="Client's Events" />
-                    <Tab label="Client List" />
+                    <Tab label="Complaints" />
+                    <Tab label="Events" />
+                    <Tab label="List" />
                   </Tabs>
                 </AppBar>
                 {value === 0 && 

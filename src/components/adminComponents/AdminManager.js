@@ -63,9 +63,9 @@ class AdminManager extends Component {
                     scrollButtons="on"
                     onChange={this.handleChange} textColor="primary">
                     <Tab label="Add Manager" />
-                    <Tab label="Manager's Complaints" />
-                    <Tab label="Manager's Events" />
-                    <Tab label="Manager List" />
+                    <Tab label="Reports" />
+                    <Tab label="Events" />
+                    <Tab label="List" />
                   </Tabs>
                 </AppBar>
                 {value === 0 && 
