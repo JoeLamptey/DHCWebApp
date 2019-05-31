@@ -50,6 +50,9 @@ class SupervisorCarer extends Component {
     console.log(e) 
   }
   
+  componentWillMount(){ //console.log(this.props.region)
+    this.setState({...this.props.region})
+  }
   render() {
     const { classes } = this.props;
     const { value } = this.state;
@@ -75,13 +78,13 @@ class SupervisorCarer extends Component {
                 }
                 {value === 1 && 
                     <TabContainer>
-                        <SupervisorCarerReports />
+                        <SupervisorCarerReports {...this.props}/>
                     </TabContainer>}
                 {value === 2 && <TabContainer>
-                    <SupervisorCarerTraining />
+                    <SupervisorCarerTraining {...this.props}/>
                     </TabContainer>}
                 {value === 3 && <TabContainer >
-                    <SupervisorCarerList />
+                    <SupervisorCarerList  {...this.props}/>
                     </TabContainer>}
         </div>
       </div>

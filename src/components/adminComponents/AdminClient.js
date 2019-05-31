@@ -61,7 +61,8 @@ class AdminClient extends Component {
                   <Tabs value={value} 
                     variant="scrollable"
                     scrollButtons="on"
-                    onChange={this.handleChange} textColor="primary">
+                    onChange={this.handleChange}
+                    textColor="primary">
                     <Tab label="Add Client" />
                     <Tab label="Complaints" />
                     <Tab label="Events" />

@@ -176,7 +176,7 @@ class AdminMapView extends Component {
 
         
 
-        //console.log('First: ',distance(loc[0],loc[1]))
+        console.log('First: ',distance(loc[0],loc[1]))
         // console.log('Second: ',distance(loc[0],loc[2]))
         // console.log('third: ',distance(loc[2],loc[3]))
         // console.log('4th: ',distance(loc[0],loc[3]))

@@ -11,6 +11,8 @@ import SupervisorClientNew from './SupervisorClientNew'
 import SupervisorClientList from './SupervisorClientList'
 import SupervisorClientEvents from './SupervisorClientEvents'
 
+import '../../styles/admin_client.css'
+
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
@@ -27,7 +29,7 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    margin: '0% 15%',
+    // margin: '0% 15%',
     backgroundImage: 'none !important',
   },
   container: {
@@ -62,32 +64,38 @@ class SupervisorClient extends Component {
   render() {
     const { classes } = this.props;
     const { value } = this.state;
+    //console.log(this.props.region)
 
-    return (
-      <div className={classes.root}>
-        <AppBar position="static" color="default" >
-          <Tabs value={value} onChange={this.handleChange} textColor="primary">
-            <Tab label="Add Client" />
-            <Tab label="Client's Complaints" />
-            <Tab label="Client's Events" />
-            <Tab label="Client List" />
-          </Tabs>
-        </AppBar>
-        {value === 0 && 
-            <TabContainer>                
-                <SupervisorClientNew createClient={this.createClient}/>
-            </TabContainer>
-        }
-        {value === 1 && 
-            <TabContainer>
-                <SupervisorClientReports />
-            </TabContainer>}
-        {value === 2 && <TabContainer>
-            <SupervisorClientEvents />
-            </TabContainer>}
-        {value === 3 && <TabContainer>
-            <SupervisorClientList />
-            </TabContainer>}
+    return ( 
+      <div className='root'>
+          <div className={classes.root}>
+            <AppBar position="static" color="default" >
+              <Tabs value={value} 
+                  variant="scrollable"
+                  onChange={this.handleChange}
+                  textColor="primary">
+                <Tab label="Add Client" />
+                <Tab label="Client's Complaints" />
+                <Tab label="Client's Events" />
+                <Tab label="Client List" />
+              </Tabs>
+            </AppBar>
+            {value === 0 && 
+                <TabContainer>                
+                    <SupervisorClientNew createClient={this.createClient}/>
+                </TabContainer>
+            }
+            {value === 1 && 
+                <TabContainer>
+                    <SupervisorClientReports {...this.props}/>
+                </TabContainer>}
+            {value === 2 && <TabContainer>
+                <SupervisorClientEvents {...this.props}/>
+                </TabContainer>}
+            {value === 3 && <TabContainer>
+                <SupervisorClientList {...this.props}/>
+                </TabContainer>}
+        </div>
       </div>
     );
   }

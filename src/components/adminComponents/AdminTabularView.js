@@ -47,24 +47,25 @@ class AdminTabularView extends Component {
 
         await API.graphql(graphqlOperation(ListSchedulesQuery)).then((res)=>{
             const sche = res.data.listSchedules.items
-            let schedules = []
-            sche.map((item)=>{
+            //let schedules = []
+            // sche.map((item)=>{
 
-                let schedule = {
-                  address: item.address,
-                  postcode: item.postcode,
-                  start: item.start,
-                  end: item.end,
-                  carer1: item.carer[0],
-                  carer2: item.carer[1],
-                  note: item.note,
-                  alert: item.alert
-                }
-                schedules.push(schedule)
-            })
+            //     let schedule = {
+            //       address: item.address,
+            //       postcode: item.postcode,
+            //       start: item.start,
+            //       end: item.end,
+            //       carer1: item.carer[0],
+            //       carer2: item.carer[1],
+            //       note: item.note,
+            //       alert: item.alert
+            //     }
+            //     schedules.push(schedule)
+            // })
 
-            this.setState({data: schedules})
-            console.log(schedules)
+            // this.setState({data: schedules})
+            // console.log(schedules)
+             return sche
         }).catch(e => console.log('Error: ', e))
     }
   

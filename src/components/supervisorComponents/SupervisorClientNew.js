@@ -25,6 +25,8 @@ class SupervisorClientNew extends Component{
         super(props)
         this.state ={
             newClient: '',
+            hide: 'none',
+            alert: 'alert',
             notification: ''
         }
     }
@@ -54,11 +56,12 @@ class SupervisorClientNew extends Component{
           || newClient.birthday === '' || newClient.nokmobile === ''
         ){
           this.setState({
-              notification: 'Please fill the required fields marked *'
+              notification: 'Please fill the required fields marked *',
+              alert:'alert'
           })
         }else{
         
-            this.setState({newClient: newClient, notification: 'New Client Successfully created!'})
+            //this.setState({newClient: newClient,  notification: 'New Client Successfully created!'})
 
             e.target.firstname.value = ''
             e.target.middlename.value = ''
@@ -73,7 +76,12 @@ class SupervisorClientNew extends Component{
             e.target.nokemail.value = ''
             e.target.nokmobile.value = ''
             
-            this.props.createClient({newClient: newClient,notification: 'New Client Successfully created'})
+            this.props.createClient({
+                newClient: newClient,
+                hide: 'block',
+                alert: 'success',
+                notification: 'New Client Successfully created!'
+            })
         }    
     }
 
@@ -185,7 +193,9 @@ class SupervisorClientNew extends Component{
                         color='primary'
                     >Create Client</Button>
                 </form>
-                <div align='center' className='alert'>{this.state.notification}</div>
+                <div align='center' className={this.state.alert} style={{display: this.state.hide}}>
+                    {this.state.notification}
+                </div>
             </div>
         )
     }

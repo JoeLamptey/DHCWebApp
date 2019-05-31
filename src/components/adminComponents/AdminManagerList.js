@@ -37,10 +37,10 @@ class AdminManagerList extends Component {
       }
     }
 
-    async componentWillMount(){
+    async componentWillMount(){ //(filter: {region:{ eq: "London"}}) 
       const listManagerQuery = `
           query listManagers {
-              listManagers(filter: {region:{ eq: "London"}}) {
+              listManagers{
               items {
                   id
                   firstname
@@ -162,7 +162,7 @@ class AdminManagerList extends Component {
 
       return (  loaded &&
         <div><MaterialTable 
-          title={this.state.region +" Managers"}
+          title={"All Managers"}
           columns={this.state.columns}
           data={this.state.Managers}
           editable={{

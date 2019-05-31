@@ -8,6 +8,10 @@ import { TextField, List, ListItem, ListItemText, Divider } from '@material-ui/c
 
 import ScheduleList from './ScheduleList'
 
+import {API, graphqlOperation} from 'aws-amplify'
+import awsmobile from '../../aws-exports'
+API.configure(awsmobile)
+
 const styles = theme => ({
     root: {
       flexGrow: 1,
@@ -63,24 +67,74 @@ class SupervisorSchedules extends Component{
                 name: 'Schedule Client'
             },
             schedule: {},
-            notification: ''
+            alert: 'alert',
+            hide:'none',
+            notification: '',
+            Clients: [],
+            searchClients: []
         }
     }
+
+    createSchedule=async (schedule)=>{
+        //console.log('to be created: ',e)
+         //console.log(this.props)
+  
+        const createScheduleQuery = `
+            mutation createSchedule {
+                  createSchedule(input: {
+                    date: "${schedule.date}",
+                    start: "${schedule.start}",
+                    end: "${schedule.end}",
+                    client: "${schedule.client}",
+                    carer: ["${schedule.carer1}","${schedule.carer2}"],
+                    note: "${schedule.note}",
+                    postcode: "${schedule.postcode}",
+                    address: "${schedule.address}",
+                    region: "${this.props.region}"
+                  }) {
+                        id
+                        date
+                        client
+                        carer
+                        start
+                        end
+                        region
+                        address
+                        postcode
+                }
+            }
+          `
+        await API.graphql(graphqlOperation(createScheduleQuery)).then(res =>{            
+            const schedule = res.data.createSchedule
+            //console.log(schedule)
+            this.setState({schedule})
+        }).catch(err => console.log('Error: ',err))
+      }
 
     scheduleClient=(e)=>{
         e.preventDefault()
 
         if(this.state.client.name === 'Schedule Client'){
-            this.setState({notification: ' Please select a client!'})
+            this.setState({notification: ' Please select a client!', hide: 'block'})
         }else{
             let schedule ={
                 date: e.target.date.value,
                 start: e.target.starttime.value,
                 end: e.target.endtime.value,
+                client: this.state.client.name,
                 carer1: e.target.carer1.value,
-                carer2: e.target.carer2.value
+                carer2: e.target.carer2.value,
+                note: e.target.note.value,
+                address: this.state.client.address,
+                postcode: this.state.client.postcode,                
             }
-            this.setState({schedule, notification: 'Schedule successful!'})
+            this.setState({
+                schedule,
+                alert: 'success',
+                notification: 'Schedule successful!',
+                hide: 'block'
+            })
+            this.createSchedule(schedule)
             //console.log(schedule)
     
             e.target.date.value = ''
@@ -88,6 +142,7 @@ class SupervisorSchedules extends Component{
             e.target.endtime.value = ''
             e.target.carer1.value = ''
             e.target.carer2.value = ''
+            e.target.note.value = ''
         }
         
     }
@@ -95,14 +150,56 @@ class SupervisorSchedules extends Component{
     setClient=(e)=>{
         
         const name = e.currentTarget.dataset.list_item
-        this.setState({client:{name}, notification: ''})
+        let selected = this.state.Clients.filter((client)=>{
+            let fullname = client.firstname+ ' '+client.lastname
+            return fullname.match(name)
+        })
+        //console.log(selected)
+        this.setState({
+            client:{
+                name: selected[0].firstname+ ' '+selected[0].lastname,
+                address: selected[0].address,
+                postcode: selected[0].postcode
+            },
+             notification: ''
+        })
     }
 
     refresh=()=>{
-        this.setState({})
+       if(this.state.hide !== 'none'){this.setState({hide:'none'})}
     }
 
-    render(){
+    async componentWillMount(){
+        const listClientQuery = `
+          query listClients {
+              listClients(filter: {region:{ eq: "${this.props.region}"}}) {
+              items {
+                  id
+                  firstname
+                  lastname
+                  address
+                  postcode
+                }
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(listClientQuery)).then(res =>{            
+          const Clients = res.data.listClients.items
+          //console.log(Clients)
+          this.setState({Clients, searchClients: Clients})
+      }).catch(err => console.log('Error: ',err))
+    }
+
+    search=(e)=>{
+        let info = e.target.value
+       let searchClients = this.state.Clients.filter((client)=>{
+            return (client.firstname.toLowerCase().match(info)||client.lastname.toLowerCase().match(info))
+        })
+        //console.log(searchClients)
+        this.setState({searchClients})
+    }
+
+    render(){ 
         const { classes } = this.props;
         const date = Date().substring(0,15)
         
@@ -111,15 +208,23 @@ class SupervisorSchedules extends Component{
                 <Grid container spacing={24}>
                     <Grid item  xs={3}>
                         <Paper className={classes.paper}>
-                            <TextField
+                            <TextField onChange={this.search}
                                 className={classes.textField}
                                 variant='standard'
                                 label='search'
                                 name='search'
                                 type='search'
                             ></TextField>
+                            {/* TODO: retrieve client from backend and also add the search function*/}
                             <List component='nav' className={classes.papersize}>
-                                <ListItem button onClick={this.setClient} data-list_item={"Enid Wayman"}>
+                                {
+                                    this.state.searchClients.map((client, index)=>{
+                                        return (<ListItem button key={index} onClick={this.setClient} data-list_item={client.firstname+ ' '+ client.lastname}>
+                                            <ListItemText>{client.firstname+ ' '+ client.lastname}</ListItemText>
+                                        </ListItem>)
+                                    })
+                                }
+                                {/* <ListItem button onClick={this.setClient} data-list_item={"Enid Wayman"}>
                                     <ListItemText>Enid Wayman</ListItemText>
                                 </ListItem>
                                 <ListItem button onClick={this.setClient} data-list_item={"Oliver Abott"}>
@@ -148,7 +253,7 @@ class SupervisorSchedules extends Component{
                                 </ListItem>
                                 <ListItem button onClick={this.setClient} data-list_item={'Lily Ashvelay'}>
                                     <ListItemText>Lily Ashvelay</ListItemText>
-                                </ListItem>
+                                </ListItem> */}
                             </List>
                         </Paper>
                     </Grid>
@@ -162,7 +267,7 @@ class SupervisorSchedules extends Component{
                             </div>
                             <Divider />
                             <form onSubmit={this.scheduleClient}>
-                                <TextField 
+                                <TextField onChange={this.refresh}
                                     className={classes.scheduletext}
                                     label='Date'
                                     type='date'
@@ -171,7 +276,7 @@ class SupervisorSchedules extends Component{
                                     name='date'
                                     required
                                 />
-                                <TextField 
+                                <TextField onChange={this.refresh}
                                     className={classes.scheduletext}
                                     label='Start Time'
                                     type='time'
@@ -180,7 +285,7 @@ class SupervisorSchedules extends Component{
                                     name='starttime'
                                     required
                                 />
-                                <TextField 
+                                <TextField onChange={this.refresh}
                                     className={classes.scheduletext}
                                     label='End Time'
                                     type='time'
@@ -189,18 +294,24 @@ class SupervisorSchedules extends Component{
                                     name='endtime'
                                     required
                                 />
-                                <TextField 
+                                <TextField onChange={this.refresh}
                                     className={classes.scheduletext}
                                     label='Carer 1'
                                     type='select'
                                     required
                                     name='carer1'
                                 />
-                                <TextField 
+                                <TextField onChange={this.refresh}
                                     className={classes.scheduletext}
                                     label='Carer 2'
                                     type='select'                                    
                                     name='carer2'
+                                />
+                                <TextField onChange={this.refresh}
+                                    className={classes.scheduletext}
+                                    label='Note'
+                                    type='text'                                    
+                                    name='note'
                                 />
                                 <Button 
                                     className={classes.button}
@@ -211,13 +322,16 @@ class SupervisorSchedules extends Component{
                                         Create Schedule
                                 </Button>
                             </form>
-                            <div align='center' className='alert'>{this.state.notification}</div>
+                            <div align='center' className={this.state.alert} style={{display: this.state.hide}}>
+                                {this.state.notification}
+                            </div>
                         </Paper>
                     </Grid>
                     <Grid item xs={5}>
                         <Paper className={classes.paper}>
                             
                             <ScheduleList
+                                user={this.props}
                                 refresh={this.refresh} 
                                 update={{name: this.state.client.name,
                                     ...this.state.schedule}}/>

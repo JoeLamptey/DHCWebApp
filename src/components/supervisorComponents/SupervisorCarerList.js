@@ -33,14 +33,14 @@ class SupervisorCarerList extends Component {
         updated: {},
         create: {},
         loaded: false,
-        region: 'London'
+        region: this.props.region
       }
     }
 
     async componentWillMount(){
       const listCarerQuery = `
           query listCarers {
-              listCarers(filter: {region:{ eq: "Manchester"}}) {
+              listCarers(filter: {region:{ eq: "${this.props.region}"}}) {
               items {
                   id
                   firstname

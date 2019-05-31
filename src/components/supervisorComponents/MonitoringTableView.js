@@ -16,8 +16,8 @@ class MonitoringTabularView extends Component {
           { title: 'Postcode', field: 'postcode' },
           { title: 'Start', field: 'start', type: 'time' },
           { title: 'End', field: 'end', type: 'time' },
-          { title: 'First Carer', field: 'carer1' },
-          { title: 'Second Carer', field: 'carer2' },
+          { title: 'First Carer', field: 'carer[0]' },
+          { title: 'Second Carer', field: 'carer[1]' },
           { title: 'Note', field: 'note' },
           { title: 'Alert', field: 'alert' }
         ],
@@ -46,25 +46,10 @@ class MonitoringTabularView extends Component {
         `
 
         await API.graphql(graphqlOperation(ListSchedulesQuery)).then((res)=>{
-            const sche = res.data.listSchedules.items
-            let schedules = []
-            sche.map((item)=>{
-
-                let schedule = {
-                  address: item.address,
-                  postcode: item.postcode,
-                  start: item.start,
-                  end: item.end,
-                  carer1: item.carer[0],
-                  carer2: item.carer[1],
-                  note: item.note,
-                  alert: item.alert
-                }
-                schedules.push(schedule)
-            })
+            const schedules = res.data.listSchedules.items
 
             this.setState({data: schedules})
-            console.log(schedules)
+            //console.log(sche)
         }).catch(e => console.log('Error: ', e))
     }
   

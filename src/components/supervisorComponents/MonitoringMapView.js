@@ -24,26 +24,26 @@ let myloca= {
 // }
 
 let loc = [
-    // {
-    //     latitude: 55.779616,
-    //     longitude: 37.633789
-    // },
-    // {
-    //     latitude: 55.7875416,
-    //     longitude: 37.6403557
-    // },
-    // {
-    //     latitude: 55.779437,
-    //     longitude: 37.633203
-    // },
-    // {
-    //     latitude: 55.779954,
-    //     longitude: 37.633500
-    // },
-    // {
-    //     latitude: 55.755826,
-    //     longitude: 37.6173
-    // },
+    {
+        latitude: 55.779616,
+        longitude: 37.633789
+    },
+    {
+        latitude: 55.7875416,
+        longitude: 37.6403557
+    },
+    {
+        latitude: 55.779437,
+        longitude: 37.633203
+    },
+    {
+        latitude: 55.779954,
+        longitude: 37.633500
+    },
+    {
+        latitude: 55.755826,
+        longitude: 37.6173
+    },
     
     {
        latitude: 55.787401,
@@ -176,7 +176,7 @@ class MonitoringMapView extends Component {
 
         
 
-        //console.log('First: ',distance(loc[0],loc[1]))
+        console.log('First: ',distance(loc[0],loc[1]))
         // console.log('Second: ',distance(loc[0],loc[2]))
         // console.log('third: ',distance(loc[2],loc[3]))
         // console.log('4th: ',distance(loc[0],loc[3]))
