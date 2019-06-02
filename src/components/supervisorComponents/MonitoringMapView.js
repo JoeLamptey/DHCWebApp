@@ -14,44 +14,16 @@ const style ={
 }
 
 let myloca= {
-    latitude: 55.7514319,
-    longitude: 48.754850399
+    latitude: 55.759060399999996,
+    longitude: 48.740467599
 }
 
-// let secloc = {
-//     latitude: 55.7514319,
-//     longitude: 48.754950399
-// }
+ let secloc = {
+     latitude: 55.753847300000004,
+     longitude: 48.7423134
+ }
 
-let loc = [
-    {
-        latitude: 55.779616,
-        longitude: 37.633789
-    },
-    {
-        latitude: 55.7875416,
-        longitude: 37.6403557
-    },
-    {
-        latitude: 55.779437,
-        longitude: 37.633203
-    },
-    {
-        latitude: 55.779954,
-        longitude: 37.633500
-    },
-    {
-        latitude: 55.755826,
-        longitude: 37.6173
-    },
-    
-    {
-       latitude: 55.787401,
-       longitude: 37.640836
-    }
-]
-
-
+let loc = []
 
 let distance = (locA, locB)=>{
     const R = 6373e3 //(where R is the radius of the Earth)
@@ -76,12 +48,13 @@ class MonitoringMapView extends Component {
 
     componentDidMount(){
         const mapboxgl = window.mapboxgl
+        const MapboxGeocoder =  window.MapboxGeocoder
         mapboxgl.accessToken = 'pk.eyJ1IjoibmlpbmlpIiwiYSI6ImNqdG1vNGh2czBoZTE0NmxpMHd1Ynpna3EifQ.ZPedbjHDKONkcYRclXSAbw';
         let map = new mapboxgl.Map({
             container: 'map', // container id
             style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-            center: [loc[0].longitude,loc[0].latitude], // starting position [lng, lat]
-            zoom: 12 // starting zoom
+            center: [secloc.longitude,secloc.latitude], // starting position [lng, lat]
+            zoom: 10 // starting zoom
         })
         
         map.on('load',()=>{
@@ -143,42 +116,67 @@ class MonitoringMapView extends Component {
                 map.getCanvas().style.cursor = '';
             });
 
-            navigator.geolocation.getCurrentPosition(async (pos)=>{
-                loc.push(pos)
-                console.log('My location: ',pos)
-                await  new mapboxgl.Marker({color: '#00a'})
-                            .setLngLat([pos.coords.longitude,pos.coords.latitude])
-                            .addTo(map)
-                await  new mapboxgl.Marker({color: '#0a0'})
-                            .setLngLat([loc[0].longitude,loc[0].latitude])
-                            .addTo(map)
-                // await  new mapboxgl.Marker({color: '#00a'})
-                //             .setLngLat([loc[1].longitude,loc[1].latitude])
-                //             .addTo(map)
-                // await  new mapboxgl.Marker({color: '#a00'})
-                //             .setLngLat([loc[2].longitude,loc[2].latitude])
-                //             .addTo(map)
-                // await  new mapboxgl.Marker({color: '#a00'})
-                //             .setLngLat([loc[3].longitude,loc[3].latitude])
-                //             .addTo(map)
-                // await  new mapboxgl.Marker({color: '#a00'})
-                //             .setLngLat([loc[4].longitude,loc[4].latitude])
-                //             .addTo(map)
-            })
+            setInterval(
+                ()=>{ let loca = {}
+                        navigator.geolocation.getCurrentPosition(async (pos)=>{
+                            
+                            loca = {
+                                latitude: pos.coords.latitude,
+                                longitude: pos.coords.longitude
+                            }
+                            loc.push(loca)
+                    })
+                    for(let i = 1; i< loc.length; i++){
+                        console.log('Distance: ',distance(loc[i-1], loc[i]))
+                    }
+                }
+            ,15000)
+
+            map.addControl(new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl
+            }))
+                
         })
 
-        map.addControl(new mapboxgl.GeolocateControl({
-            positionOptions: {
-            enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        }));
+            // navigator.geolocation.getCurrentPosition(async (pos)=>{
+            //             loc.push(pos)
+            //             console.log('My location: ',pos)
+            //             // await  new mapboxgl.Marker({color: '#00a'})
+            //             //             .setLngLat([pos.coords.longitude,pos.coords.latitude])
+            //             //             .addTo(map)
+            //             map.addControl(new mapboxgl.GeolocateControl({
+            //                 positionOptions: {
+            //                 enableHighAccuracy: true
+            //                 },
+            //                 trackUserLocation: true
+            //             }))
+                
+            
+            //         //map.flyTo({center: [pos.coords.longitude,pos.coords.latitude]})
+                    
+                    
+            //         // await  new mapboxgl.Marker({color: '#0a0'})
+            //         //             .setLngLat([loc[1].longitude,loc[1].latitude])
+            //         //             .addTo(map)
 
-        
+            //         // await  new mapboxgl.Marker({color: '#00a'})
+            //         //             .setLngLat([loc[1].longitude,loc[1].latitude])
+            //         //             .addTo(map)
+            //         // await  new mapboxgl.Marker({color: '#a00'})
+            //         //             .setLngLat([loc[2].longitude,loc[2].latitude])
+            //         //             .addTo(map)
+            //         // await  new mapboxgl.Marker({color: '#a00'})
+            //         //             .setLngLat([loc[3].longitude,loc[3].latitude])
+            //         //             .addTo(map)
+            //         // await  new mapboxgl.Marker({color: '#a00'})
+            //         //             .setLngLat([loc[4].longitude,loc[4].latitude])
+            //         //             .addTo(map)
+            //     })
 
-        console.log('First: ',distance(loc[0],loc[1]))
-        // console.log('Second: ',distance(loc[0],loc[2]))
-        // console.log('third: ',distance(loc[2],loc[3]))
+        // console.log('First: ',distance(loc[0],loc[2]))
+        // console.log('Second: ',distance(loc[0],loc[3]))
+        //console.log('third: ',distance(loc[2],loc[3]))
         // console.log('4th: ',distance(loc[0],loc[3]))
 
         // let clients = [[-0.112, 51.504], [-0.128, 51.509 ], [-0.114, 51.500]]
@@ -207,6 +205,7 @@ class MonitoringMapView extends Component {
     }
 
     render() {
+        
         return (
             <div className={style.body}>
                <div id='map' className={style.map} style={{height: '450px', width:'100%'}}></div>

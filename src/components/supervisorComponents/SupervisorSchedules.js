@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import { TextField, List, ListItem, ListItemText, Divider } from '@material-ui/core';
+import { TextField, List, ListItem, ListItemText, Divider, Select, MenuItem } from '@material-ui/core';
 
 import ScheduleList from './ScheduleList'
 
@@ -71,7 +71,10 @@ class SupervisorSchedules extends Component{
             hide:'none',
             notification: '',
             Clients: [],
-            searchClients: []
+            Carers: [],
+            searchClients: [],
+            firstCarer: 'First Carer',
+            secondCarer: 'Second Carer'
         }
     }
 
@@ -188,6 +191,25 @@ class SupervisorSchedules extends Component{
           //console.log(Clients)
           this.setState({Clients, searchClients: Clients})
       }).catch(err => console.log('Error: ',err))
+
+      const listCarerQuery = `
+          query listCarers {
+              listCarers(filter: {region:{ eq: "${this.props.region}"}}) {
+              items {
+                  id
+                  firstname
+                  lastname
+                  address
+                  postcode
+                }
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(listCarerQuery)).then(res =>{            
+          const Carers = res.data.listCarers.items
+          //console.log(Carers)
+          this.setState({Carers})
+      }).catch(err => console.log('Error: ',err))
     }
 
     search=(e)=>{
@@ -197,6 +219,16 @@ class SupervisorSchedules extends Component{
         })
         //console.log(searchClients)
         this.setState({searchClients})
+    }
+
+    firstCarer=(e)=>{
+        this.setState({firstCarer: e.target.value})
+        this.refresh()
+    }
+
+    secondCarer=(e)=>{
+        this.setState({secondCarer: e.target.value})
+        this.refresh()
     }
 
     render(){ 
@@ -214,8 +246,7 @@ class SupervisorSchedules extends Component{
                                 label='search'
                                 name='search'
                                 type='search'
-                            ></TextField>
-                            {/* TODO: retrieve client from backend and also add the search function*/}
+                            ></TextField>                            
                             <List component='nav' className={classes.papersize}>
                                 {
                                     this.state.searchClients.map((client, index)=>{
@@ -224,36 +255,6 @@ class SupervisorSchedules extends Component{
                                         </ListItem>)
                                     })
                                 }
-                                {/* <ListItem button onClick={this.setClient} data-list_item={"Enid Wayman"}>
-                                    <ListItemText>Enid Wayman</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={"Oliver Abott"}>
-                                    <ListItemText>Oliver Abott</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={'Roy Finch'}>
-                                    <ListItemText>Roy Finch</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={'John Studge'}>
-                                    <ListItemText>John Studge</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={'Michael Sally'}>
-                                    <ListItemText>Michael Sally</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={'Daniel Dubios'}>
-                                    <ListItemText>Daniel Dubios</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={'Ahmed Sawyer'}>
-                                    <ListItemText>Ahmed Sawyer</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={'Will Gashi'}>
-                                    <ListItemText>Will Gashi</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={'Ben Jameson'}>
-                                    <ListItemText>Ben Jameson</ListItemText>
-                                </ListItem>
-                                <ListItem button onClick={this.setClient} data-list_item={'Lily Ashvelay'}>
-                                    <ListItemText>Lily Ashvelay</ListItemText>
-                                </ListItem> */}
                             </List>
                         </Paper>
                     </Grid>
@@ -294,7 +295,30 @@ class SupervisorSchedules extends Component{
                                     name='endtime'
                                     required
                                 />
-                                <TextField onChange={this.refresh}
+                                <Select onChange={this.firstCarer}
+                                    className={classes.scheduletext}
+                                    variant='standard'
+                                    name='carer1'
+                                    required
+                                    value={this.state.firstCarer}>
+                                        {this.state.Carers.map((carer, index)=>{
+                                            return <MenuItem value={carer.firstname +' '+carer.lastname} key={index}>
+                                                {carer.firstname +' '+carer.lastname}
+                                            </MenuItem>
+                                        })}
+                                </Select>
+                                <Select onChange={this.secondCarer}
+                                    className={classes.scheduletext}
+                                    variant='standard'
+                                    name='carer2'
+                                    value={this.state.secondCarer}>
+                                        {this.state.Carers.map((carer, index)=>{
+                                            return <MenuItem value={carer.firstname +' '+carer.lastname} key={index}>
+                                                {carer.firstname +' '+carer.lastname}
+                                            </MenuItem>
+                                        })}
+                                </Select>
+                                {/* <TextField onChange={this.refresh}
                                     className={classes.scheduletext}
                                     label='Carer 1'
                                     type='select'
@@ -306,7 +330,7 @@ class SupervisorSchedules extends Component{
                                     label='Carer 2'
                                     type='select'                                    
                                     name='carer2'
-                                />
+                                /> */}
                                 <TextField onChange={this.refresh}
                                     className={classes.scheduletext}
                                     label='Note'

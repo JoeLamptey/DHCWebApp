@@ -49,7 +49,7 @@ class SupervisorMonitoring extends Component {
     console.log(e) 
   }
   
-  render() {
+  render() { //console.log(this.props)
     const { classes } = this.props;
     const { value } = this.state;
 
@@ -67,12 +67,12 @@ class SupervisorMonitoring extends Component {
                 </AppBar>
                 {value === 0 && 
                     <TabContainer>                
-                        <MonitoringTableView />
+                        <MonitoringTableView user={this.props}/>
                     </TabContainer>
                 }
                 {value === 1 && 
                     <TabContainer>
-                        <MonitoringMapView />
+                        <MonitoringMapView user={this.props}/>
                     </TabContainer>}
         </div>
       </div>

@@ -10,8 +10,6 @@ class MonitoringTabularView extends Component {
       super(props);
       this.state = {
         columns: [
-          // { title: 'First Name', field: 'name' },
-          // { title: 'Last Name', field: 'surname' },
           { title: 'Address', field: 'address' },          
           { title: 'Postcode', field: 'postcode' },
           { title: 'Start', field: 'start', type: 'time' },
@@ -21,18 +19,18 @@ class MonitoringTabularView extends Component {
           { title: 'Note', field: 'note' },
           { title: 'Alert', field: 'alert' }
         ],
-        data: [
-          // { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-          // { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
-        ]
+        data: [],
+        update: [],
+        deleted: []
       }
     }
 
-    async componentWillMount(){
+    async componentWillMount(){ //console.log(this.props)
         const ListSchedulesQuery = `
         query listSchedules{
-          listSchedules{
+          listSchedules(filter: {region:{ eq: "${this.props.user.region}"}}){
             items{
+              id
               start
               end
               address
@@ -53,6 +51,95 @@ class MonitoringTabularView extends Component {
         }).catch(e => console.log('Error: ', e))
     }
   
+    create=async ()=>{
+      //console.log('to be created: ',e)
+      // console.log(this.state.create)
+
+      // const createCarerQuery = `
+      //     mutation createCarer {
+      //           createCarer(input: {
+      //             firstname: "${this.state.create.firstname}",
+      //             lastname: "${this.state.create.lastname}",
+      //             mobile: "${this.state.create.mobile}",
+      //             postcode: "${this.state.create.postcode}",
+      //             email: "${this.state.create.email}",
+      //             address: "${this.state.create.address}",
+      //             birthday: "${this.state.create.birthday}",
+      //             nextofkin: "${this.state.create.nextofkin}",
+      //             nok_mobile: "${this.state.create.nok_mobile}",
+      //             nok_email: "${this.state.create.nok_email}",
+      //             region: "${this.state.create.region}",
+      //           }) {
+      //                 id
+      //                 firstname
+      //                 lastname
+      //                 mobile
+      //                 region
+      //         }
+      //     }
+      //   `
+      // await API.graphql(graphqlOperation(createCarerQuery)).then(res =>{            
+      //     const create = res.data.createCarer
+      //     this.setState({create})
+      // }).catch(err => console.log('Error: ',err))
+    }
+    
+    delete=async ()=>{
+      
+      console.log('to be deleted: ',this.state.deleted.id)
+
+      const deleteScheduleQuery = `
+      mutation deleteSchedule {
+            deleteSchedule(input: {id: "${this.state.deleted.id}"}) {
+                  id
+                  client
+                  start
+                  end
+                  carer
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(deleteScheduleQuery)).then(res =>{            
+          const deleted = res.data.deleteSchedule
+          this.setState({deleted})
+          console.log('Deleted: ', this.state.deleted)
+      }).catch(err => console.log('Error: ',err))
+
+    }
+
+    update= async ()=>{ //console.log(this.state.updated)
+      
+
+      const updateScheduleQuery = `
+      mutation updateSchedule {
+            updateSchedule(input: {
+              id: "${this.state.updated.id}",
+              client: "${this.state.updated.client}",
+              start: "${this.state.updated.start}",
+              end: "${this.state.updated.end}",
+              date: "${this.state.updated.date}",
+              carer: ["${this.state.updated.carer[0]}","${this.state.updated.carer[1]}"],
+              note: "${this.state.updated.note}",
+              address: "${this.state.updated.address}",
+              postcode: "${this.state.updated.postcode}",
+              region: "${this.state.region}",
+            }) {
+                  id
+                  client
+                  start
+                  end
+                  carer
+                  region
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(updateScheduleQuery)).then(res =>{            
+          const updated = res.data.updateSchedule
+          //console.log(updated)
+          this.setState({updated})
+      }).catch(err => console.log('Error: ',err))
+    }
+
     render() {
       return (
         <MaterialTable
@@ -60,17 +147,17 @@ class MonitoringTabularView extends Component {
           columns={this.state.columns}
           data={this.state.data}
           editable={{
-            onRowAdd: newData =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    const data = this.state.data;
-                    data.push(newData);
-                    this.setState({ data }, () => resolve());
-                  }
-                  resolve()
-                }, 1000)
-              }),
+            // onRowAdd: newData =>
+            //   new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //       {
+            //         const data = this.state.data;
+            //         data.push(newData);
+            //         this.setState({ data }, () => resolve());
+            //       }
+            //       resolve()
+            //     }, 1000)
+            //   }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -78,7 +165,8 @@ class MonitoringTabularView extends Component {
                     const data = this.state.data;
                     const index = data.indexOf(oldData);
                     data[index] = newData;
-                    this.setState({ data }, () => resolve());
+                    this.setState({ data, updated: newData }, () => resolve());
+                    this.update()
                   }
                   resolve()
                 }, 1000)
@@ -90,7 +178,8 @@ class MonitoringTabularView extends Component {
                     let data = this.state.data;
                     const index = data.indexOf(oldData);
                     data.splice(index, 1);
-                    this.setState({ data }, () => resolve());
+                    this.setState({ data , deleted: oldData}, () => resolve());
+                    this.delete()
                   }
                   resolve()
                 }, 1000)

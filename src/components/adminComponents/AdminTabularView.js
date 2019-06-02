@@ -10,29 +10,31 @@ class AdminTabularView extends Component {
       super(props);
       this.state = {
         columns: [
-          // { title: 'First Name', field: 'name' },
-          // { title: 'Last Name', field: 'surname' },
-          { title: 'Address', field: 'address' },          
-          { title: 'Postcode', field: 'postcode' },
+          { title: 'Client', field: 'client' },
           { title: 'Start', field: 'start', type: 'time' },
           { title: 'End', field: 'end', type: 'time' },
-          { title: 'First Carer', field: 'carer1' },
-          { title: 'Second Carer', field: 'carer2' },
+          { title: 'First Carer', field: 'carer[0]' },
+          { title: 'Second Carer', field: 'carer[1]' },
           { title: 'Note', field: 'note' },
-          { title: 'Alert', field: 'alert' }
+          { title: 'Alert', field: 'alert' },
+          { title: 'Address', field: 'address' },          
+          { title: 'Postcode', field: 'postcode' },
+          { title: 'Region', field: 'region' },
+          
         ],
-        data: [
-          // { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-          // { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
-        ]
+        data: [],
+        update: [],
+        deleted: []
       }
     }
 
-    async componentWillMount(){
+    async componentWillMount(){ //(filter: {region:{ eq: "${this.props.user.region}"}})
         const ListSchedulesQuery = `
         query listSchedules{
           listSchedules{
             items{
+              id
+              client
               start
               end
               address
@@ -40,35 +42,109 @@ class AdminTabularView extends Component {
               carer
               note
               alert
+              region
             }
           }
         }
         `
 
         await API.graphql(graphqlOperation(ListSchedulesQuery)).then((res)=>{
-            const sche = res.data.listSchedules.items
-            //let schedules = []
-            // sche.map((item)=>{
+            const schedules = res.data.listSchedules.items
 
-            //     let schedule = {
-            //       address: item.address,
-            //       postcode: item.postcode,
-            //       start: item.start,
-            //       end: item.end,
-            //       carer1: item.carer[0],
-            //       carer2: item.carer[1],
-            //       note: item.note,
-            //       alert: item.alert
-            //     }
-            //     schedules.push(schedule)
-            // })
-
-            // this.setState({data: schedules})
-            // console.log(schedules)
-             return sche
+            this.setState({data: schedules})
+            //console.log(sche)
         }).catch(e => console.log('Error: ', e))
     }
   
+    create=async ()=>{
+      //console.log('to be created: ',e)
+      // console.log(this.state.create)
+
+      // const createCarerQuery = `
+      //     mutation createCarer {
+      //           createCarer(input: {
+      //             firstname: "${this.state.create.firstname}",
+      //             lastname: "${this.state.create.lastname}",
+      //             mobile: "${this.state.create.mobile}",
+      //             postcode: "${this.state.create.postcode}",
+      //             email: "${this.state.create.email}",
+      //             address: "${this.state.create.address}",
+      //             birthday: "${this.state.create.birthday}",
+      //             nextofkin: "${this.state.create.nextofkin}",
+      //             nok_mobile: "${this.state.create.nok_mobile}",
+      //             nok_email: "${this.state.create.nok_email}",
+      //             region: "${this.state.create.region}",
+      //           }) {
+      //                 id
+      //                 firstname
+      //                 lastname
+      //                 mobile
+      //                 region
+      //         }
+      //     }
+      //   `
+      // await API.graphql(graphqlOperation(createCarerQuery)).then(res =>{            
+      //     const create = res.data.createCarer
+      //     this.setState({create})
+      // }).catch(err => console.log('Error: ',err))
+    }
+    
+    delete=async ()=>{
+      
+      console.log('to be deleted: ',this.state.deleted.id)
+
+      const deleteScheduleQuery = `
+      mutation deleteSchedule {
+            deleteSchedule(input: {id: "${this.state.deleted.id}"}) {
+                  id
+                  client
+                  start
+                  end
+                  carer
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(deleteScheduleQuery)).then(res =>{            
+          const deleted = res.data.deleteSchedule
+          this.setState({deleted})
+          console.log('Deleted: ', this.state.deleted)
+      }).catch(err => console.log('Error: ',err))
+
+    }
+
+    update= async ()=>{ //console.log(this.state.updated)
+      
+
+      const updateScheduleQuery = `
+      mutation updateSchedule {
+            updateSchedule(input: {
+              id: "${this.state.updated.id}",
+              client: "${this.state.updated.client}",
+              start: "${this.state.updated.start}",
+              end: "${this.state.updated.end}",
+              date: "${this.state.updated.date}",
+              carer: ["${this.state.updated.carer[0]}","${this.state.updated.carer[1]}"],
+              note: "${this.state.updated.note}",
+              address: "${this.state.updated.address}",
+              postcode: "${this.state.updated.postcode}",
+              region: "${this.state.region}",
+            }) {
+                  id
+                  client
+                  start
+                  end
+                  carer
+                  region
+              }
+          }
+      `
+      await API.graphql(graphqlOperation(updateScheduleQuery)).then(res =>{            
+          const updated = res.data.updateSchedule
+          //console.log(updated)
+          this.setState({updated})
+      }).catch(err => console.log('Error: ',err))
+    }
+
     render() {
       return (
         <MaterialTable
@@ -76,17 +152,17 @@ class AdminTabularView extends Component {
           columns={this.state.columns}
           data={this.state.data}
           editable={{
-            onRowAdd: newData =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    const data = this.state.data;
-                    data.push(newData);
-                    this.setState({ data }, () => resolve());
-                  }
-                  resolve()
-                }, 1000)
-              }),
+            // onRowAdd: newData =>
+            //   new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //       {
+            //         const data = this.state.data;
+            //         data.push(newData);
+            //         this.setState({ data }, () => resolve());
+            //       }
+            //       resolve()
+            //     }, 1000)
+            //   }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -94,7 +170,8 @@ class AdminTabularView extends Component {
                     const data = this.state.data;
                     const index = data.indexOf(oldData);
                     data[index] = newData;
-                    this.setState({ data }, () => resolve());
+                    this.setState({ data, updated: newData }, () => resolve());
+                    this.update()
                   }
                   resolve()
                 }, 1000)
@@ -106,7 +183,8 @@ class AdminTabularView extends Component {
                     let data = this.state.data;
                     const index = data.indexOf(oldData);
                     data.splice(index, 1);
-                    this.setState({ data }, () => resolve());
+                    this.setState({ data , deleted: oldData}, () => resolve());
+                    this.delete()
                   }
                   resolve()
                 }, 1000)
