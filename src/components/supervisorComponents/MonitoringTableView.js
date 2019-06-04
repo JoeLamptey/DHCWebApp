@@ -10,14 +10,14 @@ class MonitoringTabularView extends Component {
       super(props);
       this.state = {
         columns: [
+          { title: 'Date', field: 'date' },
+          { title: 'Start', field: 'start'},
+          { title: 'End', field: 'end' },
+          { title: 'First Carer', field: 'carer1' },
+          { title: 'Second Carer', field: 'carer2' },
+          { title: 'Note', field: 'note' },
           { title: 'Address', field: 'address' },          
           { title: 'Postcode', field: 'postcode' },
-          { title: 'Start', field: 'start', type: 'time' },
-          { title: 'End', field: 'end', type: 'time' },
-          { title: 'First Carer', field: 'carer[0]' },
-          { title: 'Second Carer', field: 'carer[1]' },
-          { title: 'Note', field: 'note' },
-          { title: 'Alert', field: 'alert' }
         ],
         data: [],
         update: [],
@@ -31,6 +31,7 @@ class MonitoringTabularView extends Component {
           listSchedules(filter: {region:{ eq: "${this.props.user.region}"}}){
             items{
               id
+              client
               start
               end
               address
@@ -38,16 +39,21 @@ class MonitoringTabularView extends Component {
               carer
               note
               alert
+              date
+              region
             }
           }
         }
         `
 
         await API.graphql(graphqlOperation(ListSchedulesQuery)).then((res)=>{
-            const schedules = res.data.listSchedules.items
-
-            this.setState({data: schedules})
-            //console.log(sche)
+            let schedules = res.data.listSchedules.items
+            let newSchedules = schedules.map(schedule=>{ //console.log(schedule)
+                  schedule = {...schedule, carer1:schedule.carer[0], carer2:schedule.carer[1]}
+                  delete schedule.carer
+                  return schedule
+                })
+            this.setState({data: newSchedules})
         }).catch(e => console.log('Error: ', e))
     }
   
@@ -107,8 +113,7 @@ class MonitoringTabularView extends Component {
 
     }
 
-    update= async ()=>{ //console.log(this.state.updated)
-      
+    update= async ()=>{ 
 
       const updateScheduleQuery = `
       mutation updateSchedule {
@@ -118,7 +123,7 @@ class MonitoringTabularView extends Component {
               start: "${this.state.updated.start}",
               end: "${this.state.updated.end}",
               date: "${this.state.updated.date}",
-              carer: ["${this.state.updated.carer[0]}","${this.state.updated.carer[1]}"],
+              carer: ["${this.state.updated.carer1}","${this.state.updated.carer2}"],
               note: "${this.state.updated.note}",
               address: "${this.state.updated.address}",
               postcode: "${this.state.updated.postcode}",
@@ -143,7 +148,7 @@ class MonitoringTabularView extends Component {
     render() {
       return (
         <MaterialTable
-          title="Schedules"
+          title={this.props.user.region +" Schedules"}
           columns={this.state.columns}
           data={this.state.data}
           editable={{
@@ -164,7 +169,7 @@ class MonitoringTabularView extends Component {
                   {
                     const data = this.state.data;
                     const index = data.indexOf(oldData);
-                    data[index] = newData;
+                    data[index] = newData; 
                     this.setState({ data, updated: newData }, () => resolve());
                     this.update()
                   }

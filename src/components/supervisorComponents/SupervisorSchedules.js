@@ -80,7 +80,7 @@ class SupervisorSchedules extends Component{
 
     createSchedule=async (schedule)=>{
         //console.log('to be created: ',e)
-         //console.log(this.props)
+         //console.log(schedule)
   
         const createScheduleQuery = `
             mutation createSchedule {

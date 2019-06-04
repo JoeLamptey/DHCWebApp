@@ -7,9 +7,10 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 
 import SupervisorClientReports from './SupervisorClientReports'
-import SupervisorClientNew from './SupervisorClientNew'
+//import SupervisorClientNew from './SupervisorClientNew'
 import SupervisorClientList from './SupervisorClientList'
 import SupervisorClientEvents from './SupervisorClientEvents'
+import SupervisorAddClient from './SupervisorAddClient'
 
 import '../../styles/admin_client.css'
 
@@ -78,11 +79,12 @@ class SupervisorClient extends Component {
                 <Tab label="Client's Complaints" />
                 <Tab label="Client's Events" />
                 <Tab label="Client List" />
+                {/* <Tab label="Add Client Stepper" /> */}
               </Tabs>
             </AppBar>
             {value === 0 && 
                 <TabContainer>                
-                    <SupervisorClientNew createClient={this.createClient}/>
+                    <SupervisorAddClient {...this.props}/>
                 </TabContainer>
             }
             {value === 1 && 
@@ -95,6 +97,9 @@ class SupervisorClient extends Component {
             {value === 3 && <TabContainer>
                 <SupervisorClientList {...this.props}/>
                 </TabContainer>}
+              {/* {value === 4 && <TabContainer>
+                <SupervisorAddClient {...this.props}/>
+                </TabContainer>} */}
         </div>
       </div>
     );

@@ -57,7 +57,7 @@ class CarerSchedule extends Component {
     console.log(e) 
   }
   
-  render() {
+  render() { //console.log(this.props)
     const { classes } = this.props;
     const { value } = this.state;
 
@@ -75,12 +75,12 @@ class CarerSchedule extends Component {
         </AppBar>
         {value === 0 && 
             <TabContainer>                
-                <CarerScheduleList createClient={this.createClient}/>
+                <CarerScheduleList createClient={this.createClient} {...this.props}/>
             </TabContainer>
         }
         {value === 1 && 
             <TabContainer>
-                <CarerScheduleMap />
+                <CarerScheduleMap {...this.props}/>
             </TabContainer>}
       </div>
     );

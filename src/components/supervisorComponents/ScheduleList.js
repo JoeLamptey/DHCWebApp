@@ -12,10 +12,10 @@ class ScheduleList extends Component {
         columns: [
           { title: 'Client', field: 'client' },
           { title: 'Date', field: 'date' },
-          { title: 'Start', field: 'start', type: 'time' },
-          { title: 'End', field: 'end', type: 'time' },
-          { title: 'First Carer', field: 'carer[0]' },
-          { title: 'Second Carer', field: 'carer[1]'},
+          { title: 'Start', field: 'start'},
+          { title: 'End', field: 'end'},
+          { title: 'First Carer', field: 'carer1' },
+          { title: 'Second Carer', field: 'carer2'},
           { title: 'Note', field: 'note'},
         ],
         data: [],
@@ -60,9 +60,13 @@ class ScheduleList extends Component {
             }
         `
         await API.graphql(graphqlOperation(listScheduleQuery)).then(res =>{            
-          const Schedules = res.data.listSchedules.items
-          //console.log('schedules: ',Schedules)
-            this.setState({data: Schedules})
+          const schedules = res.data.listSchedules.items
+          let newSchedules = schedules.map(schedule=>{ //console.log(schedule)
+            schedule = {...schedule, carer1:schedule.carer[0], carer2:schedule.carer[1]}
+            delete schedule.carer
+            return schedule
+          })
+      this.setState({data: newSchedules})
         }).catch(err => console.log('Error: ',err))
     }
 
@@ -132,7 +136,7 @@ class ScheduleList extends Component {
               start: "${this.state.updated.start}",
               end: "${this.state.updated.end}",
               date: "${this.state.updated.date}",
-              carer: ["${this.state.updated.carer[0]}","${this.state.updated.carer[1]}"],
+              carer: ["${this.state.updated.carer1}","${this.state.updated.carer2}"],
               note: "${this.state.updated.note}",
               region: "${this.state.region}",
             }) {

@@ -67,7 +67,7 @@ class SupervisorCarerList extends Component {
 
     delete=async ()=>{
       
-      console.log('to be deleted: ',this.state.deleted)
+      //console.log('to be deleted: ',this.state.deleted)
 
       const deleteCarerQuery = `
       mutation deleteCarer {
@@ -123,7 +123,7 @@ class SupervisorCarerList extends Component {
 
     create=async ()=>{
       //console.log('to be created: ',e)
-      console.log(this.state.create)
+      //console.log(this.state.create)
 
       const createCarerQuery = `
           mutation createCarer {

@@ -9,24 +9,11 @@ import CarerLogout from '../components/carerComponents/CarerLogout'
 
 class Carer extends Component{
 
-    state = {
-        // redirectToPreviousRoute: false
-      }
+    state = { }
     
-    //   login = () => {
-    //     AuthService.authenticate(() => {
-    //       this.setState({ redirectToPreviousRoute: true });
-    //     });
-    //   }
+   
 
     render(){
-
-        // const { from } = this.props.location.state || { from: { pathname: "/" } };
-        // const { redirectToPreviousRoute } = this.state;
-
-        // if (redirectToPreviousRoute) {
-        //     return <Redirect to={from} />;
-        // }
 
         return(
             <div>
