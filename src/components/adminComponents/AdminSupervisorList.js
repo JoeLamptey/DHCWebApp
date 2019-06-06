@@ -77,7 +77,7 @@ class AdminSupervisorList extends Component {
 
     delete=async ()=>{
       
-      console.log('to be deleted: ',this.state.deleted)
+      //console.log('to be deleted: ',this.state.deleted)
 
       const deleteSupervisorQuery = `
       mutation deleteSupervisor {

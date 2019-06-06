@@ -31,9 +31,9 @@ const Verify = async (user)=>{
             }
         }
     `
-    await API.graphql(graphqlOperation(listUserQuery)).then(res =>{            
+    await API.graphql(graphqlOperation(listUserQuery)).then(res =>{    //console.log('Return: ',res)          
        user = res.data.listUsers.items[0]
-       if(user === undefined){
+       if(user === undefined){ //console.log('Response: ',user) 
             return auth = {status: false, user: null}
        }else{
             auth = {status: true, user: user}

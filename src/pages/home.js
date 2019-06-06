@@ -66,6 +66,11 @@ class Index extends Component{
 
   }
 
+  reset=(e)=>{
+    e.preventDefault()
+    this.setState({hide: 'none'})
+  }
+
   render(){
       const { classes } = this.props;
        return (
@@ -74,7 +79,7 @@ class Index extends Component{
                   <h1 className='h1'>Domiciliary HealthCare</h1>
                   <form onSubmit={this.login}
                       className={[classes.container]} autoComplete="off">
-                      <TextField
+                      <TextField onChange={this.reset}
                           id="outlined-email-input"
                           label="Email"
                           className={classes.textField}
