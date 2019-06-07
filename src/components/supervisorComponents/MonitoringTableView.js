@@ -127,7 +127,7 @@ class MonitoringTabularView extends Component {
               note: "${this.state.updated.note}",
               address: "${this.state.updated.address}",
               postcode: "${this.state.updated.postcode}",
-              region: "${this.state.region}",
+              region: "${this.props.user.region}",
             }) {
                   id
                   client

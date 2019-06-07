@@ -75,7 +75,84 @@ class CarerScheduleList extends Component {
            let Schedules = res.data.listSchedules.items
             this.setState({Schedules, loaded: true})
         }).catch(err => console.log('Error: ',err))
-        
+      }
+      
+     async componentDidMount(){
+          const onSubSchedule = `
+            subscription subCreateSchedule{
+              onCreateSchedule{
+                      id
+                      client
+                      address
+                      postcode
+                      date
+                      carer
+                      start
+                      end
+                      note
+              }
+            }
+            `
+          await API.graphql(graphqlOperation(onSubSchedule)).subscribe(res =>{   
+            let schedule = res.value.data.onCreateSchedule
+            //console.log(schedule )
+            this.setState({Schedules: [schedule, ...this.state.Schedules]}) //console.log(this.state.Schedules) 
+        })
+
+        const onUpdateSchedule = `
+            subscription onUpdateSchedule{
+              onUpdateSchedule{
+                    id
+                    client
+                    date
+                    carer
+                    start
+                    end
+              }
+            }
+            `
+          await API.graphql(graphqlOperation(onUpdateSchedule)).subscribe(res =>{ 
+            //console.log(res)           
+            let schedule = res.value.data.onUpdateSchedule
+                //schedule.region = this.props.region
+            //let index =  this.state.Schedules.indexOf(schedule)
+            let updateSch = this.state.Schedules.filter((sched)=>{
+                if(sched.id !== schedule.id){sched = schedule}
+                return sched
+            })
+            //updateSch[index] =  schedule
+            this.setState({Schedules: [...updateSch]})
+        })
+
+        const onDeleteSchedule = `
+            subscription onDeleteSchedule{
+              onDeleteSchedule{
+                    id
+                    client
+                    address
+                    postcode
+                    date
+                    carer
+                    date
+                    start
+                    end
+                    note
+                    region
+              }
+            }
+            `
+          await API.graphql(graphqlOperation(onDeleteSchedule)).subscribe(res =>{ 
+            //console.log(res)           
+            let schedule = res.value.data.onDeleteSchedule
+            let index = this.state.Schedules.indexOf(schedule)
+            
+            let newSchedules = this.state.Schedules.filter((sched)=>{
+                return sched.id !== schedule.id
+            })
+            //newSchedules.splice(index,1)
+            this.setState({Schedules: [...newSchedules]})
+           // console.log(this.state.Schedules) 
+        })
       }
 
       render() {

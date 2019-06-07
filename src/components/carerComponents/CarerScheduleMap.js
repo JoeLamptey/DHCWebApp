@@ -3,6 +3,10 @@ import data from '../data'
 import numeral from 'numeral'
 //import axios from 'axios'
 
+import {API, graphqlOperation} from 'aws-amplify'
+import awsmobile from '../../aws-exports'
+API.configure(awsmobile)
+
 const style ={
     map:{  
         top:0,
@@ -43,15 +47,60 @@ let distance = (locA, locB)=>{
     return d
 }
 
+let pending =(date)=>{ //Date().getFullYear()+'-'+Date().getMonth()+'-'+Date.getDate()
+    let d = new Date()
+    date = new Date(date)
+    if(date =  Date()){
+        console.log(d.getHours(),d.getMinutes())
+        console.log(date.slice(1,10))
+    }else if(date < Date){
+        console.log(date,d)
+    }else{
+        console.log('year: ',d.getFullYear())
+        console.log('month: ',d.getMonth())
+        console.log('day: ',d.getDate())
+        console.log(date.slice(1,10))
+    }
+}
+
 class CarerScheduleMap extends Component {
 
     constructor(props){
         super(props)
         this.state={
             distance:'Unknown',
-            time: '00:00:00'
+            time: '00:00:00',
+            schedules: []
         }
     }
+
+    async componentWillMount(){ //console.log(this.props)
+        const listScheduleQuery = `
+            query listSchedules {
+              listSchedules(filter: {carer:{contains: "${this.props.firstname + ' '+this.props.lastname}"}}){
+                items{
+                  id
+                  client
+                  address
+                  postcode
+                  date
+                  carer
+                  date
+                  start
+                  end
+                  note
+                }
+              }
+            }
+        `
+        await API.graphql(graphqlOperation(listScheduleQuery)).then(res =>{            
+           let schedules = res.data.listSchedules.items
+            this.setState({schedules})
+            console.log(schedules)
+        }).catch(err => console.log('Error: ',err))
+        pending('2019-06-06')
+      }
+
 
     componentDidMount(){
         const mapboxgl = window.mapboxgl
@@ -78,7 +127,7 @@ class CarerScheduleMap extends Component {
                             }
                             dist = distance(loca, data[0])
                             time = dist* 4.59318
-                            console.log(time)
+                            //console.log(time)
                             this.setState({
                                 distance: numeral(dist).format('0,0.00'),
                                 time: numeral(time).format('00:00:00')
@@ -97,8 +146,6 @@ class CarerScheduleMap extends Component {
                 mapboxgl: mapboxgl,
                 
             }))
-
-            map.addLayer(<label>Hello</label>, 'notification')
         })
 
         const popup = new mapboxgl.Popup()
@@ -126,7 +173,8 @@ class CarerScheduleMap extends Component {
    
     }
 
-    render() { //console.log(this.state.time)
+
+    render() { //console.log(this.props)
         
         return (
             <div className={style.body}>
