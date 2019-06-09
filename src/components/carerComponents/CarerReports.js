@@ -62,12 +62,12 @@ class CarerReport extends Component {
         </AppBar>
         {value === 0 && 
             <TabContainer>                
-                <CarerCreateReport createClient={this.createClient}/>
+                <CarerCreateReport createClient={this.createClient} {...this.props}/>
             </TabContainer>
         }
         {value === 1 && 
             <TabContainer>
-                <CarerViewReport />
+                <CarerViewReport {...this.props}/>
             </TabContainer>}
       </div>
     );

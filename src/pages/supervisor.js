@@ -15,7 +15,7 @@ class Supervisor extends Component{
             <div>
                 <Header 
                     title={this.props.firstname.toUpperCase()+ '  '+ this.props.lastname.toUpperCase()} 
-                    menu={['Clients','Carers', 'Monitoring', 'Reports' ]}
+                    menu={['Clients','Carers', 'Monitoring', 'My Reports' ]}
                     submenu={['Schedules', 'Profile', 'Logout']}
                     menuPages={[<SupervisorClient {...this.props}/>, 
                         <SupervisorCarer {...this.props}/>, 

@@ -14,7 +14,7 @@ API.configure(awsmobile)
 const styles = theme => ({
   root: {
     width: '100%',
-  },
+  },container:{},
   heading: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: '33.33%',
@@ -44,18 +44,21 @@ class AdminCarerReports extends React.Component {
   };
 
  async componentWillMount(){
-    const listReportQuery = `
-        query listReports {
-            listReports(filter: {report_type:{ eq: "Complaint"}}) {
-              items {
-                  id
-                  title
-                  recipient
-                  sender
-                  description
-              }
+      const listReportQuery = `
+      query listReports {
+          listReports(filter: {
+            source: {eq: "carer"}
+          }) {
+            items {
+                id
+                title
+                recipient
+                sender
+                description
+                date
             }
-        }
+          }
+      }
     `
     await API.graphql(graphqlOperation(listReportQuery)).then(res =>{            
         const reports = res.data.listReports.items
@@ -64,11 +67,72 @@ class AdminCarerReports extends React.Component {
     
   }
 
-  componentWillUpdate(){
+  getReport= async (id)=>{
+      this.id = id
+      const newReport=`
+          query getReport{
+            getReport(id: "${this.id}"){
+                id
+                title
+                recipient
+                sender
+                description
+                source
+                region
+                date
+            }
+          }
+      `
+      await API.graphql(graphqlOperation(newReport)).then(res =>{   
+          let report = res.data.getReport
+           //console.log(report )
+          if(report.source === 'carer'){
+            this.setState({reports: [report, ...this.state.reports]})
+          }
+      }).catch(err => console.log('Error: ',err))
+    }
 
+  async componentDidMount(){
+    
+
+    const onCreateReport = `
+            subscription onCreateReport{
+              onCreateReport{
+                      id
+                      title
+                      recipient
+                      sender
+                      description
+              }
+            }
+            `
+          await API.graphql(graphqlOperation(onCreateReport)).subscribe(res =>{   
+            let report = res.value.data.onCreateReport
+            //console.log(report.id )
+            this.getReport(report.id)
+        })
   }
 
-  render() {
+  // async componentDidMount(){
+  //   const onCreateReport = `
+  //           subscription onCreateReport{
+  //             onCreateReport{
+  //                     id
+  //                     title
+  //                     recipient
+  //                     sender
+  //                     description
+  //             }
+  //           }
+  //           `
+  //         await API.graphql(graphqlOperation(onCreateReport)).subscribe(res =>{   
+  //           let report = res.value.data.onCreateReport
+  //           //console.log(report )
+  //           this.setState({reports: [report, ...this.state.reports]})
+  //       })
+  // }
+
+  render() { //console.log(this.props.region)
         const { classes } = this.props;
         const { expanded,loaded } = this.state;
 
@@ -78,12 +142,15 @@ class AdminCarerReports extends React.Component {
                 this.state.reports.map((item, index)=>{
                    return (<ExpansionPanel expanded={expanded === 'panel'+index} key={index} onChange={this.handleChange('panel'+index)}>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={classes.heading}>To: {item.recipient}</Typography>
+                            <Typography className={classes.heading}>From: {item.sender}</Typography>
                             <Typography className={classes.secondaryHeading}>{item.title}</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Typography>
                                 {item.description}
+                                <span style={{float:" right", marginLeft: "1px"}}>
+                                  {(item.date !== undefined)? JSON.stringify(item.date).slice(1,22): null}
+                                </span>
                             </Typography>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>)

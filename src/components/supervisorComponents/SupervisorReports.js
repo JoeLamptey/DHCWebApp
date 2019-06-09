@@ -25,7 +25,7 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    margin: '0% 15%',
+    margin: '0% 5%',
     backgroundImage: 'none !important',
   },
   container: {
@@ -71,12 +71,12 @@ class CarerReport extends Component {
         </AppBar>
         {value === 0 && 
             <TabContainer>                
-                <SupervisorCreateReport createClient={this.createClient}/>
+                <SupervisorCreateReport createClient={this.createClient} {...this.props}/>
             </TabContainer>
         }
         {value === 1 && 
             <TabContainer>
-                <SupervisorViewReport />
+                <SupervisorViewReport {...this.props}/>
             </TabContainer>}
       </div>
     );

@@ -26,14 +26,15 @@ const styles = theme => ({
   },
 });
 
-let reports = []
+//let reports = []
 
 class CarerViewReport extends Component {
     state = {
         expanded: null,
         
         reports: [],
-        loaded: false
+        loaded: false,
+        name: this.props.firstname+' '+ this.props.lastname
       };
     
       handleChange = panel => (event, expanded) => {
@@ -45,19 +46,23 @@ class CarerViewReport extends Component {
      async componentWillMount(){
         const listReportQuery = `
             query listReports {
-                listReports(filter: {sender:{ eq: "carer"}}) {
-                items {
-                    id
-                    title
-                    recipient
-                    sender
-                    description
-                }
+                listReports(filter: {
+                  sender:{ eq: "${this.state.name}"},
+                }) {
+                  items {
+                      id
+                      title
+                      recipient
+                      sender
+                      description
+                      date
+                  }
                 }
             }
         `
         await API.graphql(graphqlOperation(listReportQuery)).then(res =>{            
-            reports = res.data.listReports.items
+            let reports = res.data.listReports.items
+            //console.log(reports)
             this.setState({reports, loaded: true})
         }).catch(err => console.log('Error: ',err))
         
@@ -67,7 +72,7 @@ class CarerViewReport extends Component {
 
       }
 
-      render() {
+      render() { //console.log(this.state.name)
         const { classes } = this.props;
         const { expanded,loaded } = this.state;
 
@@ -83,6 +88,9 @@ class CarerViewReport extends Component {
                         <ExpansionPanelDetails>
                             <Typography>
                                 {item.description}
+                                <span style={{float:" right", marginLeft: "1px"}}>
+                                  {(item.date !== undefined)? JSON.stringify(item.date).slice(1,22): ''}
+                                </span>
                             </Typography>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>)

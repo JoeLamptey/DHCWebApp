@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import AdminManagerReports from './AdminManagerReports'
 import AdminManagerNew from './AdminManagerNew'
 import AdminManagerList from './AdminManagerList'
-import AdminManagerEvents from './AdminManagerEvents'
+//import AdminManagerEvents from './AdminManagerEvents'
 
 import '../../styles/admin_client.css'
 
@@ -64,7 +64,7 @@ class AdminManager extends Component {
                     onChange={this.handleChange} textColor="primary">
                     <Tab label="Add Manager" />
                     <Tab label="Reports" />
-                    <Tab label="Events" />
+                    {/* <Tab label="Events" /> */}
                     <Tab label="List" />
                   </Tabs>
                 </AppBar>
@@ -77,9 +77,9 @@ class AdminManager extends Component {
                     <TabContainer>
                         <AdminManagerReports />
                     </TabContainer>}
-                {value === 2 && <TabContainer>
+                {/* {value === 2 && <TabContainer>
                     <AdminManagerEvents />
-                    </TabContainer>}
+                    </TabContainer>} */}
                 {value === 3 && <TabContainer >
                     <AdminManagerList />
                     </TabContainer>}

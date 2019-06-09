@@ -9,7 +9,7 @@ import awsmobile from '../../aws-exports'
 API.configure(awsmobile)
 
 const styles = theme => ({
-   
+   root:{},
     container: {
         flexGrow: 1,
     },

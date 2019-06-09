@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import data from '../data'
+//import data from '../data'
 import numeral from 'numeral'
 //import axios from 'axios'
 
@@ -20,10 +20,9 @@ const style ={
     }
 }
 
-
  let secloc = {
-     latitude: 55.753847300000004,
-     longitude: 48.7423134
+     latitude: 55.787318, // 55.806722
+     longitude: 37.640906  // 37.541526
  }
 
 
@@ -47,21 +46,31 @@ let distance = (locA, locB)=>{
     return d
 }
 
-let pending =(date)=>{ //Date().getFullYear()+'-'+Date().getMonth()+'-'+Date.getDate()
-    let d = new Date()
-    date = new Date(date)
-    if(date =  Date()){
-        console.log(d.getHours(),d.getMinutes())
-        console.log(date.slice(1,10))
-    }else if(date < Date){
-        console.log(date,d)
-    }else{
-        console.log('year: ',d.getFullYear())
-        console.log('month: ',d.getMonth())
-        console.log('day: ',d.getDate())
-        console.log(date.slice(1,10))
-    }
-}
+// let pending =(date)=>{ 
+//     let d = new Date()
+//     date = new Date(date)
+//     if(date.getFullYear() ===  d.getFullYear() 
+//         && date.getMonth() === d.getMonth() && date.getDay() === d.getDay()){
+//         console.log('equals')
+//         console.log(d.getHours(),d.getMinutes())
+//         console.log(date)
+//         //console.log(date.slice(1,10))
+//     }else if(date < Date){
+//         console.log(date,d)
+//         console.log('less than')
+//     }else{ console.log('greater than')
+//         // console.log('year: ',d.getFullYear())
+//         // console.log('month: ',d.getMonth())
+//         // console.log('day: ',d.getDate())
+//         console.log(date, d)
+//     }
+// }
+
+const mapboxgl = window.mapboxgl
+//const MapboxGeocoder =  window.MapboxGeocoder
+//const mapboxSdk = window.mapboxSdk
+mapboxgl.accessToken = 'pk.eyJ1IjoibmlpbmlpIiwiYSI6ImNqdG1vNGh2czBoZTE0NmxpMHd1Ynpna3EifQ.ZPedbjHDKONkcYRclXSAbw';
+//let globalSchedules = []
 
 class CarerScheduleMap extends Component {
 
@@ -70,7 +79,8 @@ class CarerScheduleMap extends Component {
         this.state={
             distance:'Unknown',
             time: '00:00:00',
-            schedules: []
+            schedules: [],
+            coords: []
         }
     }
 
@@ -96,25 +106,48 @@ class CarerScheduleMap extends Component {
         await API.graphql(graphqlOperation(listScheduleQuery)).then(res =>{            
            let schedules = res.data.listSchedules.items
             this.setState({schedules})
-            console.log(schedules)
+            //globalSchedules = schedules
+            //console.log(schedules)
         }).catch(err => console.log('Error: ',err))
-        pending('2019-06-06')
+        
+        // let geoloc =  await this.state.schedules.map(sched =>{
+        //     let add = JSON.stringify(sched.address)
+        //         add = add.slice(1,add.length-1)
+        //     let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+add+".json?access_token="+mapboxgl.accessToken
+        //     //console.log('addresess: ',add)
+        //     axios.get(url)
+        //         .then((info)=>{ console.log('addresess: ',info)
+        //             if(info.data.features[0]){
+        //                 let coords = {
+        //                     longitude: info.data.features[0].center[0],
+        //                     latitude: info.data.features[0].center[1]
+        //                 }
+        //                 console.log('Geolocation: ',info.data.features[0])
+        //                 return coords
+        //             }    
+        //         })
+        //         .catch(err=> console.log('error',err))
+        // })
+        // this.setState({coords:  geoloc})
       }
 
 
     componentDidMount(){
-        const mapboxgl = window.mapboxgl
-        const MapboxGeocoder =  window.MapboxGeocoder
-        mapboxgl.accessToken = 'pk.eyJ1IjoibmlpbmlpIiwiYSI6ImNqdG1vNGh2czBoZTE0NmxpMHd1Ynpna3EifQ.ZPedbjHDKONkcYRclXSAbw';
+        
+        //pending('2019-06-08')
         let map = new mapboxgl.Map({
             container: 'map', // container id
             style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
             center: [secloc.longitude,secloc.latitude], // starting position [lng, lat]
             zoom: 15 // starting zoom
         })
-
                 
-        map.on('load', ()=>{
+        map.on('load', ()=>{ 
+
+            new mapboxgl.Marker()
+                        .setLngLat([secloc.longitude, secloc.latitude])
+                        .addTo(map)
+            console.log('coords: ',this.state)            
             setInterval(
                 async()=> { 
                         let loca = {}
@@ -125,13 +158,17 @@ class CarerScheduleMap extends Component {
                                 latitude: pos.coords.latitude,
                                 longitude: pos.coords.longitude
                             }
-                            dist = distance(loca, data[0])
+                            dist = distance(loca, secloc)
                             time = dist* 4.59318
                             //console.log(time)
                             this.setState({
                                 distance: numeral(dist).format('0,0.00'),
                                 time: numeral(time).format('00:00:00')
                             })
+
+                            new mapboxgl.Marker({color: '#a00'})
+                                .setLngLat([loca.longitude, loca.latitude])
+                                .addTo(map)
                     })
                 }
             ,5000)
@@ -141,24 +178,44 @@ class CarerScheduleMap extends Component {
                 trackUserLocation: true
             }))
 
-            map.addControl(new MapboxGeocoder({
-                accessToken: mapboxgl.accessToken,
-                mapboxgl: mapboxgl,
-                
-            }))
+            // map.addControl(new MapboxGeocoder({
+            //     accessToken: mapboxgl.accessToken,
+            //     mapboxgl: mapboxgl,
+            
+            // }))
+
+            // const popup = new mapboxgl.Popup()
+            //                     .setHTML("<div>Hello Carers!</div>")
+            //                     .setMaxWidth("300px")
+            //                     .addTo(map);
+
+            // this.state.coords.map((campus)=>{ 
+            //     return new mapboxgl.Marker()
+            //                 .setLngLat([campus.longitude,campus.latitude])
+            //                 .setPopup(popup)
+            //                 .addTo(map)
+            // })
+            console.log(this.state.coords)
         })
 
-        const popup = new mapboxgl.Popup()
-                                .setHTML("<div>Hello Carers!</div>")
-                                .setMaxWidth("300px")
-                                .addTo(map);
+        // let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken })
+        //     mapboxClient.geocoding.forwardGeocode({
+        //         query: 'Kochnovskiy Proyezd, 3',
+        //         autocomplete: false,
+        //         limit: 1
+        //     })
+        //     .send()
+        //     .then(function (response) {
+        //         if (response && response.body && response.body.features && response.body.features.length) {
+        //         let feature = response.body.features[0];
+               
+        //         new mapboxgl.Marker({color: '#00a'})
+        //             .setLngLat(feature.center)
+        //             .addTo(map);
+        //         }
+        // });
 
-        data.map((campus)=>{ 
-            return new mapboxgl.Marker()
-                        .setLngLat([campus.longitude,campus.latitude])
-                        .setPopup(popup)
-                        .addTo(map)
-        })
+        
 
         map.on('error',(info)=>{
             console.log('err: ',info)
@@ -174,12 +231,12 @@ class CarerScheduleMap extends Component {
     }
 
 
-    render() { //console.log(this.props)
+    render() { //console.log(this.state.schedules)
         
         return (
             <div className={style.body}>
                <div id='map' className={style.map} style={{height: '450px', width:'100%'}}>
-                   <label>{this.state.distance} feet, {this.state.time} walk time</label>
+                   <label style={{zIndex: 5, float: 'screenLeft'}}>{this.state.distance} feet, {this.state.time} walk time</label>
                </div>
             </div>
         );

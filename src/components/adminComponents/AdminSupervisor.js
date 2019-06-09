@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import AdminSupervisorReports from './AdminSupervisorReports'
 import AdminSupervisorNew from './AdminSupervisorNew'
 import AdminSupervisorList from './AdminSupervisorList'
-import AdminSupervisorTraining from './AdminSupervisorTraining'
+//import AdminSupervisorTraining from './AdminSupervisorTraining'
 
 import '../../styles/admin_client.css'
 
@@ -74,24 +74,24 @@ class AdminSupervisor extends Component {
                     onChange={this.handleChange} textColor="primary">
                     <Tab label="Add Supervisor" />
                     <Tab label="Reports" />
-                    <Tab label="Training" />
+                    {/* <Tab label="Training" /> */}
                     <Tab label="List" />
                   </Tabs>
                 </AppBar>
                 {value === 0 && 
                     <TabContainer>                
-                        <AdminSupervisorNew createSupervisor={this.createSupervisor}/>
+                        <AdminSupervisorNew createSupervisor={this.createSupervisor} {...this.props}/>
                     </TabContainer>
                 }
                 {value === 1 && 
                     <TabContainer>
-                        <AdminSupervisorReports />
+                        <AdminSupervisorReports  {...this.props} />
                     </TabContainer>}
-                {value === 2 && <TabContainer>
+                {/* {value === 2 && <TabContainer>
                     <AdminSupervisorTraining />
-                    </TabContainer>}
-                {value === 3 && <TabContainer>
-                    <AdminSupervisorList />
+                    </TabContainer>} */}
+                {value === 2 && <TabContainer>
+                    <AdminSupervisorList  {...this.props}/>
                     </TabContainer>}
         </div>
       </div>

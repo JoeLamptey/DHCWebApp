@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import SupervisorCarerReports from './SupervisorCarerReport'
 import SupervisorCarerNew from './SupervisorCarerNew'
 import SupervisorCarerList from './SupervisorCarerList'
-import SupervisorCarerTraining from './SupervisorCarerTraining'
+//import SupervisorCarerTraining from './SupervisorCarerTraining'
 
 import '../../styles/admin_client.css'
 
@@ -67,7 +67,7 @@ class SupervisorCarer extends Component {
                     onChange={this.handleChange} textColor="primary">
                     <Tab label="Add Carer" />
                     <Tab label="Reports" />
-                    <Tab label="Training" />
+                    {/* <Tab label="Training" /> */}
                     <Tab label="List" />
                   </Tabs>
                 </AppBar>
@@ -80,10 +80,10 @@ class SupervisorCarer extends Component {
                     <TabContainer>
                         <SupervisorCarerReports {...this.props}/>
                     </TabContainer>}
-                {value === 2 && <TabContainer>
+                {/* {value === 2 && <TabContainer>
                     <SupervisorCarerTraining {...this.props}/>
-                    </TabContainer>}
-                {value === 3 && <TabContainer >
+                    </TabContainer>} */}
+                {value === 2 && <TabContainer >
                     <SupervisorCarerList  {...this.props}/>
                     </TabContainer>}
         </div>

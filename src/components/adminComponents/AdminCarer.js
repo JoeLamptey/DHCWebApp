@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import AdminCarerReports from './AdminCarerReports'
 import AdminCarerNew from './AdminCarerNew'
 import AdminCarerList from './AdminCarerList'
-import AdminCarerTraining from './AdminCarerTraining'
+//import AdminCarerTraining from './AdminCarerTraining'
 
 import '../../styles/admin_client.css'
 
@@ -64,24 +64,24 @@ class AdminCarer extends Component {
                     onChange={this.handleChange} textColor="primary">
                     <Tab label="Add Carer" />
                     <Tab label="Reports" />
-                    <Tab label="Training" />
+                    {/* <Tab label="Training" /> */}
                     <Tab label="List" />
                   </Tabs>
                 </AppBar>
                 {value === 0 && 
                     <TabContainer>                
-                        <AdminCarerNew createCarer={this.createCarer}/>
+                        <AdminCarerNew createCarer={this.createCarer} />
                     </TabContainer>
                 }
                 {value === 1 && 
                     <TabContainer>
-                        <AdminCarerReports />
+                        <AdminCarerReports {...this.props}/>
                     </TabContainer>}
-                {value === 2 && <TabContainer>
+                {/* {value === 2 && <TabContainer>
                     <AdminCarerTraining />
-                    </TabContainer>}
-                {value === 3 && <TabContainer >
-                    <AdminCarerList />
+                    </TabContainer>} */}
+                {value === 2 && <TabContainer >
+                    <AdminCarerList {...this.props}/>
                     </TabContainer>}
         </div>
       </div>

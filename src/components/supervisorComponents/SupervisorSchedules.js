@@ -110,8 +110,26 @@ class SupervisorSchedules extends Component{
         await API.graphql(graphqlOperation(createScheduleQuery)).then(res =>{            
             const schedule = res.data.createSchedule
             //console.log(schedule)
-            this.setState({schedule})
-        }).catch(err => console.log('Error: ',err))
+            this.setState({
+                schedule,
+                alert: 'success',
+                notification: 'Schedule successful!',
+                hide: 'block'
+            })
+        }).catch(err => {
+            let error = JSON.stringify(err.errors[0].message)
+            if(error.match(/AWSDate/)){
+                let start = error.indexOf('value=') + 7
+                let end = error.indexOf('\'}')
+                error = error.slice(start, end)
+            }
+            this.setState({
+                alert: 'alert', 
+                hide: 'block',
+                notification:  error +', is invalid, please try again!'
+            })
+            console.log('Error: ',error)
+        })
       }
 
     scheduleClient=(e)=>{
@@ -120,6 +138,16 @@ class SupervisorSchedules extends Component{
         if(this.state.client.name === 'Schedule Client'){
             this.setState({notification: ' Please select a client!', hide: 'block'})
         }else{
+            if(e.target.carer1.value === ''){
+                e.target.carer1.value = 'carer1'
+            }
+            if(e.target.carer2.value === ''){
+                e.target.carer2.value = 'carer2'
+            }
+            if(e.target.note.value === ''){
+                e.target.note.value = 'Please don\'t be late'
+            }
+
             let schedule ={
                 date: e.target.date.value,
                 start: e.target.starttime.value,
@@ -131,14 +159,9 @@ class SupervisorSchedules extends Component{
                 address: this.state.client.address,
                 postcode: this.state.client.postcode,                
             }
-            this.setState({
-                schedule,
-                alert: 'success',
-                notification: 'Schedule successful!',
-                hide: 'block'
-            })
-            this.createSchedule(schedule)
             //console.log(schedule)
+            this.createSchedule(schedule)
+            
     
             e.target.date.value = ''
             e.target.starttime.value = ''
@@ -213,7 +236,7 @@ class SupervisorSchedules extends Component{
     }
 
     search=(e)=>{
-        let info = e.target.value
+        let info = e.target.value.toLowerCase()
        let searchClients = this.state.Clients.filter((client)=>{
             return (client.firstname.toLowerCase().match(info)||client.lastname.toLowerCase().match(info))
         })

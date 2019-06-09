@@ -114,13 +114,18 @@ class CarerScheduleList extends Component {
           await API.graphql(graphqlOperation(onUpdateSchedule)).subscribe(res =>{ 
             //console.log(res)           
             let schedule = res.value.data.onUpdateSchedule
-                //schedule.region = this.props.region
-            //let index =  this.state.Schedules.indexOf(schedule)
+            //console.log(schedule) 
             let updateSch = this.state.Schedules.filter((sched)=>{
-                if(sched.id !== schedule.id){sched = schedule}
+                if(sched.id === schedule.id){
+                      sched.carer = schedule.carer
+                      sched.client = schedule.client
+                      sched.start = schedule.start
+                      sched.end = schedule.end
+                      return sched
+                }
                 return sched
             })
-            //updateSch[index] =  schedule
+            //console.log(updateSch)
             this.setState({Schedules: [...updateSch]})
         })
 
@@ -143,15 +148,11 @@ class CarerScheduleList extends Component {
             `
           await API.graphql(graphqlOperation(onDeleteSchedule)).subscribe(res =>{ 
             //console.log(res)           
-            let schedule = res.value.data.onDeleteSchedule
-            let index = this.state.Schedules.indexOf(schedule)
-            
+            let schedule = res.value.data.onDeleteSchedule            
             let newSchedules = this.state.Schedules.filter((sched)=>{
                 return sched.id !== schedule.id
             })
-            //newSchedules.splice(index,1)
             this.setState({Schedules: [...newSchedules]})
-           // console.log(this.state.Schedules) 
         })
       }
 

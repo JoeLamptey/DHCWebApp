@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import AdminClientReports from './AdminClientReports'
 import AdminClientNew from './AdminClientNew'
 import AdminClientList from './AdminClientList'
-import AdminClientEvents from './AdminClientEvents'
+//import AdminClientEvents from './AdminClientEvents'
 
 import '../../styles/admin_client.css'
 
@@ -65,7 +65,7 @@ class AdminClient extends Component {
                     textColor="primary">
                     <Tab label="Add Client" />
                     <Tab label="Complaints" />
-                    <Tab label="Events" />
+                    {/* <Tab label="Events" /> */}
                     <Tab label="List" />
                   </Tabs>
                 </AppBar>
@@ -78,10 +78,10 @@ class AdminClient extends Component {
                     <TabContainer>
                         <AdminClientReports />
                     </TabContainer>}
-                {value === 2 && <TabContainer>
+                {/* {value === 2 && <TabContainer>
                     <AdminClientEvents />
-                    </TabContainer>}
-                {value === 3 && <TabContainer >
+                    </TabContainer>} */}
+                {value === 2 && <TabContainer >
                     <AdminClientList />
                     </TabContainer>}
         </div>

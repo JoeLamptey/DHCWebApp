@@ -11,6 +11,9 @@ import awsmobile from '../../aws-exports'
 API.configure(awsmobile)
 
 const styles = theme =>({
+    root: {
+        width: '100%',
+    },
     form: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -61,7 +64,9 @@ class CarerCreateReport extends Component{
             recipient: 'Supervisor',
             report_type: 'Incident',
             title: '',
-            description: ''
+            description: '',
+            region: this.props.region,
+            name:  this.props.firstname+' '+this.props.lastname
         }
     }
     title=(e)=>{
@@ -113,12 +118,16 @@ class CarerCreateReport extends Component{
                 title: "${report.title}",
                 recipient: "${report.recipient}",
                 description: "${report.description}",
-                sender: "carer"
+                sender: "${this.state.name}",
+                region: "${this.state.region}"
+                date: "${Date()}",
+                source: "carer"
             }){
                 id
                 title
                 description
-                sender
+                date
+                recipient
             }
 
         }`
@@ -127,12 +136,12 @@ class CarerCreateReport extends Component{
             //console.log(res.data.createDHCReports.items) 
             const reportdb = res.data.createReport
             this.setState({report: reportdb}) 
-            console.log(reportdb)        
+            //console.log(reportdb)        
          }).catch(err => console.log(err))
         
     }
 
-    render(){
+    render(){ //console.log(this.props)
         const {classes} = this.props
         return(
             <div>

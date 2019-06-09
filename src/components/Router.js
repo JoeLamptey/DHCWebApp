@@ -4,7 +4,7 @@ import {API, graphqlOperation} from 'aws-amplify'
 import awsmobile from '../aws-exports'
 API.configure(awsmobile)
 
-const Verify = async (user)=>{ 
+const Verify = async (user)=>{ //console.log(user)
     
     let auth = {status: false, user: null}
 
@@ -33,11 +33,11 @@ const Verify = async (user)=>{
     `
     await API.graphql(graphqlOperation(listUserQuery)).then(res =>{    //console.log('Return: ',res)          
        user = res.data.listUsers.items[0]
-       if(user === undefined){ //console.log('Response: ',user) 
+       if(user === undefined){ //console.log('Undefined: ',user) 
             return auth = {status: false, user: null}
        }else{
             auth = {status: true, user: user}
-            //console.log('Response: ',auth) 
+            //console.log('OAuth: ',auth) 
             return auth 
        }
     }).catch(err => {

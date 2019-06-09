@@ -363,6 +363,7 @@ class SupervisorAddClient extends Component{
           //console.log('response: ',res.data.createClient)
           let newUser = res.data.createUser
           this.setState({newUser: newUser, alert: 'success'})
+          console.log(newUser)
       }).catch(err => {
             console.log('Error: ', err)
             this.setState({alert: 'alert', hide: 'block', notification: 'Failed to create Client'})

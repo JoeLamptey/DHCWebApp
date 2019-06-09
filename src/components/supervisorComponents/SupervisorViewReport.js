@@ -7,9 +7,26 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import {API, graphqlOperation} from 'aws-amplify'
+import awsmobile from '../../aws-exports'
+API.configure(awsmobile)
+
 const styles = theme => ({
   root: {
-    width: '100%',
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    margin: '0% 10%',
+    backgroundImage: 'none !important',
+    
+  },
+  container: {
+    
+  },
+  textField: {
+    
+  },
+  button:{
+     
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -23,102 +40,73 @@ const styles = theme => ({
 });
 
 class SupervisorViewReport extends Component {
-    state = {
-        expanded: null,
-      };
+  state = {
+    expanded: null,
     
-      handleChange = panel => (event, expanded) => {
-        this.setState({
-          expanded: expanded ? panel : false,
-        });
-      };
+    reports: [],
+    loaded: false,
+    name: this.props.firstname+' '+ this.props.lastname
+  };
+
+  handleChange = panel => (event, expanded) => {
+    this.setState({
+      expanded: expanded ? panel : false,
+    });
+  };
+
+ async componentWillMount(){
+    const listReportQuery = `
+        query listReports {
+            listReports(filter: {
+              sender:{ eq: "${this.state.name}"},
+            }) {
+              items {
+                  id
+                  title
+                  recipient
+                  sender
+                  description
+                  date
+              }
+            }
+        }
+    `
+    await API.graphql(graphqlOperation(listReportQuery)).then(res =>{            
+        let reports = res.data.listReports.items
+        //console.log(reports)
+        this.setState({reports, loaded: true})
+    }).catch(err => console.log('Error: ',err))
     
-      render() {
-        const { classes } = this.props;
-        const { expanded } = this.state;
-    
-        return (
-          <div className={classes.root}>
-            <ExpansionPanel expanded={expanded === 'panel1'} onChange={this.handleChange('panel1')}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>General settings</Typography>
-                <Typography className={classes.secondaryHeading}>I am an expansion panel</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>
-                  Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-                  maximus est, id dignissim quam.
-                </Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel expanded={expanded === 'panel2'} onChange={this.handleChange('panel2')}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>Users</Typography>
-                <Typography className={classes.secondaryHeading}>
-                  You are currently not an owner
-                </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>
-                  Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-                  diam eros in elit. Pellentesque convallis laoreet laoreet.
-                </Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel expanded={expanded === 'panel3'} onChange={this.handleChange('panel3')}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>Advanced settings</Typography>
-                <Typography className={classes.secondaryHeading}>
-                  Filtering has been entirely disabled for whole web server
-                </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>
-                  Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-                  eros, vitae egestas augue. Duis vel est augue.
-                </Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel expanded={expanded === 'panel4'} onChange={this.handleChange('panel4')}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>Personal data</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>
-                  Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-                  eros, vitae egestas augue. Duis vel est augue.
-                </Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel expanded={expanded === 'panel1'} onChange={this.handleChange('panel1')}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>General settings</Typography>
-                <Typography className={classes.secondaryHeading}>I am an expansion panel</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>
-                  Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-                  maximus est, id dignissim quam.
-                </Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel expanded={expanded === 'panel2'} onChange={this.handleChange('panel2')}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>Users</Typography>
-                <Typography className={classes.secondaryHeading}>
-                  You are currently not an owner
-                </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>
-                  Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-                  diam eros in elit. Pellentesque convallis laoreet laoreet.
-                </Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </div>
-        );
-      }
-    }
+  }
+
+
+  render() { //console.log(this.state.name)
+    const { classes } = this.props;
+    const { expanded,loaded } = this.state;
+
+    return( loaded &&
+    <div className={classes.root}>
+        {
+            this.state.reports.map((item, index)=>{
+               return (<ExpansionPanel expanded={expanded === 'panel'+index} key={index} onChange={this.handleChange('panel'+index)}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography className={classes.heading}>To: {item.recipient}</Typography>
+                        <Typography className={classes.secondaryHeading}>{item.title}</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Typography>
+                            {item.description}
+                            <span style={{float:" right", marginLeft: "1px"}}>
+                              {(item.date !== undefined)? JSON.stringify(item.date).slice(1,22): ''}
+                            </span>
+                        </Typography>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>)
+            })
+        }                        
+    </div> 
+    )
+  }
+}
 
 export default withStyles(styles)(SupervisorViewReport)
