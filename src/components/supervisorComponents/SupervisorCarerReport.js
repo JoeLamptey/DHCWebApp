@@ -78,6 +78,30 @@ class SupervisorCarerReports extends React.Component {
     
   }
 
+  getReport= async (id)=>{
+      this.id = id
+      const newReport=`
+          query getReport{
+            getReport(id: "${this.id}"){
+                id
+                title
+                recipient
+                sender
+                description
+                source
+                region
+                date
+            }
+          }
+      `
+      await API.graphql(graphqlOperation(newReport)).then(res =>{   
+          let report = res.data.getReport
+          //console.log(report )
+          if(report.source === 'carer'&& report.recipient === "Supervisor" && report.region === this.props.region){
+            this.setState({reports: [report, ...this.state.reports]})
+          }
+      }).catch(err => console.log('Error: ',err))
+    }
   async componentDidMount(){
     const onCreateReport = `
             subscription onCreateReport{
@@ -93,9 +117,9 @@ class SupervisorCarerReports extends React.Component {
           await API.graphql(graphqlOperation(onCreateReport)).subscribe(res =>{   
             let report = res.value.data.onCreateReport
             //console.log(report )
-            if(report.source === 'carer'&& report.recipient === 'supervisor' && report.region === this.props.region){
-              this.setState({reports: [report, ...this.state.reports]})
-            }
+            //if(report.source === 'carer'&& report.recipient === 'supervisor' && report.region === this.props.region){
+              this.getReport(report.id)
+            //}
         })
   }
 

@@ -75,12 +75,12 @@ class ClientSchedule extends Component {
         </AppBar>
         {value === 0 && 
             <TabContainer>                
-                <ClientScheduleList createClient={this.createClient}/>
+                <ClientScheduleList createClient={this.createClient} {...this.props}/>
             </TabContainer>
         }
         {value === 1 && 
             <TabContainer>
-                <ClientScheduleMap />
+                <ClientScheduleMap {...this.props}/>
             </TabContainer>}
       </div>
     );

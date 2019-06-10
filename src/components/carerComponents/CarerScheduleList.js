@@ -77,8 +77,66 @@ class CarerScheduleList extends Component {
         }).catch(err => console.log('Error: ',err))
       }
       
+
+      getSchedule= async (id)=>{
+        this.id = id
+        const newSchedule=`
+            query getSchedule{
+              getSchedule(id: "${this.id}"){
+                  id
+                  start
+                  end
+                  date
+                  client
+                  carer
+                  postcode
+                  address
+                  note
+              }
+            }
+        `
+        await API.graphql(graphqlOperation(newSchedule)).then(res =>{   
+            let schedule = res.data.getSchedule
+            // let newSchedule = {...schedule, carer1: schedule.carer[0], carer2: schedule.carer[1]}
+            // delete newSchedule.carer
+            //if(schedule.source === 'supervisor'){
+              this.setState({Schedules: [schedule, ...this.state.Schedules]})
+            //}
+        }).catch(err => console.log('Error: ',err))
+      }
+
+      getUpdateSchedule= async (id)=>{
+        this.id = id
+        const newSchedule=`
+            query getSchedule{
+              getSchedule(id: "${this.id}"){
+                  id
+                  start
+                  end
+                  date
+                  client
+                  carer
+                  postcode
+                  address
+                  note
+              }
+            }
+        `
+        await API.graphql(graphqlOperation(newSchedule)).then(res =>{   
+            let schedule = res.data.getSchedule
+            let newSchedule =  this.state.Schedules.map(item=>{
+                if(item.id === schedule.id){
+                   item = schedule
+                }
+                return item
+            })
+            this.setState({Schedules: newSchedule})
+        }).catch(err => console.log('Error: ',err))
+      }
+
+
      async componentDidMount(){
-          const onSubSchedule = `
+          const onCreateSchedule = `
             subscription subCreateSchedule{
               onCreateSchedule{
                       id
@@ -93,21 +151,16 @@ class CarerScheduleList extends Component {
               }
             }
             `
-          await API.graphql(graphqlOperation(onSubSchedule)).subscribe(res =>{   
-            let schedule = res.value.data.onCreateSchedule
-            //console.log(schedule )
-            this.setState({Schedules: [schedule, ...this.state.Schedules]}) //console.log(this.state.Schedules) 
-        })
+            await API.graphql(graphqlOperation(onCreateSchedule)).subscribe(res =>{   
+              let schedule = res.value.data.onCreateSchedule
+              //console.log(schedule)
+              this.getSchedule(schedule.id)
+          })
 
         const onUpdateSchedule = `
             subscription onUpdateSchedule{
               onUpdateSchedule{
                     id
-                    client
-                    date
-                    carer
-                    start
-                    end
               }
             }
             `
@@ -115,18 +168,19 @@ class CarerScheduleList extends Component {
             //console.log(res)           
             let schedule = res.value.data.onUpdateSchedule
             //console.log(schedule) 
-            let updateSch = this.state.Schedules.filter((sched)=>{
-                if(sched.id === schedule.id){
-                      sched.carer = schedule.carer
-                      sched.client = schedule.client
-                      sched.start = schedule.start
-                      sched.end = schedule.end
-                      return sched
-                }
-                return sched
-            })
+            // let updateSch = this.state.Schedules.filter((sched)=>{
+            //     if(sched.id === schedule.id){
+            //           sched.carer = schedule.carer
+            //           sched.client = schedule.client
+            //           sched.start = schedule.start
+            //           sched.end = schedule.end
+            //           return sched
+            //     }
+            //     return sched
+            // })
             //console.log(updateSch)
-            this.setState({Schedules: [...updateSch]})
+            // this.setState({Schedules: [...updateSch]})
+            this.getUpdateSchedule(schedule.id)
         })
 
         const onDeleteSchedule = `
@@ -134,15 +188,7 @@ class CarerScheduleList extends Component {
               onDeleteSchedule{
                     id
                     client
-                    address
-                    postcode
-                    date
-                    carer
-                    date
-                    start
-                    end
-                    note
-                    region
+                   
               }
             }
             `
@@ -173,7 +219,7 @@ class CarerScheduleList extends Component {
                             <Typography>
                                 {item.carer[0]+ ', and    '+ item.carer[1]+', '}                                
                                 {'  '+item.note+'.   '}
-                                {'  '+item.postcode+',  '}
+                                {'  and the location: '+item.postcode+',  '}
                                 {'  '+item.address+'.  '}
                             </Typography>
                         </ExpansionPanelDetails>

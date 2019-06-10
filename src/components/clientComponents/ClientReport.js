@@ -62,12 +62,12 @@ class ClientReport extends Component {
         </AppBar>
         {value === 0 && 
             <TabContainer>                
-                <ClientCreateReport createClient={this.createClient}/>
+                <ClientCreateReport createClient={this.createClient} {...this.props}/>
             </TabContainer>
         }
         {value === 1 && 
             <TabContainer>
-                <ClientViewReport />
+                <ClientViewReport {...this.props}/>
             </TabContainer>}
       </div>
     );

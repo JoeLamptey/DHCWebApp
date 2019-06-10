@@ -67,22 +67,41 @@ class AdminClientReports extends React.Component {
     
   }
 
+  getReport= async (id)=>{
+    this.id = id
+    const newReport=`
+        query getReport{
+          getReport(id: "${this.id}"){
+              id
+              title
+              recipient
+              sender
+              description
+              source
+              region
+              date
+          }
+        }
+    `
+    await API.graphql(graphqlOperation(newReport)).then(res =>{   
+        let report = res.data.getReport
+        if(report.source === 'client'){
+          this.setState({reports: [report, ...this.state.reports]})
+        }
+    }).catch(err => console.log('Error: ',err))
+  }
+
   async componentDidMount(){
     const onCreateReport = `
             subscription onCreateReport{
               onCreateReport{
-                      id
-                      title
-                      recipient
-                      sender
-                      description
+                  id
               }
             }
             `
           await API.graphql(graphqlOperation(onCreateReport)).subscribe(res =>{   
             let report = res.value.data.onCreateReport
-            //console.log(report )
-            this.setState({reports: [report, ...this.state.reports]})
+            this.getReport(report.id)
         })
   }
 

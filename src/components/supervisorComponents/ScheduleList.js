@@ -70,42 +70,53 @@ class ScheduleList extends Component {
         }).catch(err => console.log('Error: ',err))
     }
 
-    create=async ()=>{
-      //console.log('to be created: ',e)
-      // console.log(this.state.create)
-
-      // const createCarerQuery = `
-      //     mutation createCarer {
-      //           createCarer(input: {
-      //             firstname: "${this.state.create.firstname}",
-      //             lastname: "${this.state.create.lastname}",
-      //             mobile: "${this.state.create.mobile}",
-      //             postcode: "${this.state.create.postcode}",
-      //             email: "${this.state.create.email}",
-      //             address: "${this.state.create.address}",
-      //             birthday: "${this.state.create.birthday}",
-      //             nextofkin: "${this.state.create.nextofkin}",
-      //             nok_mobile: "${this.state.create.nok_mobile}",
-      //             nok_email: "${this.state.create.nok_email}",
-      //             region: "${this.state.create.region}",
-      //           }) {
-      //                 id
-      //                 firstname
-      //                 lastname
-      //                 mobile
-      //                 region
-      //         }
-      //     }
-      //   `
-      // await API.graphql(graphqlOperation(createCarerQuery)).then(res =>{            
-      //     const create = res.data.createCarer
-      //     this.setState({create})
-      // }).catch(err => console.log('Error: ',err))
+    getSchedule= async (id)=>{
+      this.id = id
+      const newSchedule=`
+          query getSchedule{
+            getSchedule(id: "${this.id}"){
+                id
+                start
+                end
+                date
+                client
+                carer
+                postcode
+                address
+                note
+            }
+          }
+      `
+      await API.graphql(graphqlOperation(newSchedule)).then(res =>{   
+          let schedule = res.data.getSchedule
+          let newSchedule = {...schedule, carer1: schedule.carer[0], carer2: schedule.carer[1]}
+          delete newSchedule.carer
+          //if(schedule.source === 'supervisor'){
+            this.setState({data: [newSchedule, ...this.state.data]})
+          //}
+      }).catch(err => console.log('Error: ',err))
     }
+
+   async componentDidMount(){
+      const onCreateSchedule = `
+          subscription onCreateSchedule{
+            onCreateSchedule{
+                id
+                start
+                end
+            }
+          }
+          `
+        await API.graphql(graphqlOperation(onCreateSchedule)).subscribe(res =>{   
+            let schedule = res.value.data.onCreateSchedule
+            //console.log(schedule)
+            this.getSchedule(schedule.id)
+        })
+   }
     
     delete=async ()=>{
       
-      console.log('to be deleted: ',this.state.deleted)
+      //console.log('to be deleted: ',this.state.deleted)
 
       const deleteScheduleQuery = `
       mutation deleteSchedule {
