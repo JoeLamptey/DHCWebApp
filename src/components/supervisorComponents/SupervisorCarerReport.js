@@ -102,28 +102,23 @@ class SupervisorCarerReports extends React.Component {
           }
       }).catch(err => console.log('Error: ',err))
     }
+    
   async componentDidMount(){
     const onCreateReport = `
             subscription onCreateReport{
               onCreateReport{
-                      id
-                      title
-                      recipient
-                      sender
-                      description
+                  id
               }
             }
             `
           await API.graphql(graphqlOperation(onCreateReport)).subscribe(res =>{   
             let report = res.value.data.onCreateReport
-            //console.log(report )
-            //if(report.source === 'carer'&& report.recipient === 'supervisor' && report.region === this.props.region){
               this.getReport(report.id)
-            //}
+           
         })
   }
 
-  render() { //console.log(this.props.region)
+  render() { 
         const { classes } = this.props;
         const { expanded,loaded } = this.state;
 
