@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import numeral from 'numeral'
 //import axios from 'axios'
 
-import {API, graphqlOperation} from 'aws-amplify'
+//import {API, graphqlOperation} from 'aws-amplify'
+import {API} from 'aws-amplify'
 import awsmobile from '../../aws-exports'
 API.configure(awsmobile)
 

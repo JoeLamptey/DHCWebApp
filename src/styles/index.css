@@ -1,6 +1,6 @@
 
 body{
-    background-image: url('../images/ad1.jpeg');
+    background-image: url('../images/ad2.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 0px 0px;
@@ -15,7 +15,8 @@ body{
 
 h1{
     /* color: red; */
-    color:  rgb(240, 241, 247);
+    /* color:  rgb(240, 241, 247); */
+    color:  rgb(91, 112, 233);
     font-weight: 3;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
