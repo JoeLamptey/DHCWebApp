@@ -26,7 +26,7 @@ class DHCRouter extends Component{
         this.setState({auth: auth})
     }
 
-    render(){ console.log(this.state.auth)
+    render(){ //console.log(this.state.auth)
         
         return(
             <Router>
