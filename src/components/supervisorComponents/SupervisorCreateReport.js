@@ -68,7 +68,10 @@ class SupervisorCreateReport extends Component{
             title: '',
             description: '',
             region: this.props.region,
-            name:  this.props.firstname+' '+this.props.lastname
+            name:  this.props.firstname+' '+this.props.lastname,
+            signal: '',
+            hide: 'none',
+            notification: ''
         }
     }
     title=(e)=>{
@@ -119,9 +122,14 @@ class SupervisorCreateReport extends Component{
         }`
 
          API.graphql(graphqlOperation(createReportQuery)).then((res) =>{
-            //console.log(res.data.createDHCReports.items) 
+            //console.log(res.data.createReport) 
             const reportdb = res.data.createReport
-            this.setState({report: reportdb}) 
+            this.setState({
+                report: reportdb,
+                signal: 'success',
+                hide: 'block',
+                notification: 'Report is successfully sent!'
+            }) 
             //console.log(reportdb)        
          }).catch(err => console.log(err))
         
@@ -185,6 +193,9 @@ class SupervisorCreateReport extends Component{
                                     color='primary'>
                                     Create Report
                                 </Button>
+                                <div align='right' className={this.state.signal} style={{display: this.state.hide}}>
+                                    {this.state.notification}
+                                </div>
                             </form>
                         </Paper>
                     </Grid>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import data from '../data'
+// import data from '../data'
 //import axios from 'axios'
 
 const style ={
@@ -15,35 +15,10 @@ const style ={
     }
 }
 
-// let myloca= {
-//     latitude: 55.759060399999996,
-//     longitude: 48.740467599
-// }
-
  let secloc = {
-     latitude: 55.753847300000004,
-     longitude: 48.7423134
+     latitude: 55.753881, //55.753881 
+     longitude: 48.7417498 //48.7417498
  }
-
-// let loc = [
-//     {
-//         latitude: 55.74440010000001,
-//            longitude: 48.7541523
-//     },{
-//         latitude: 55.753796,
-//         longitude: 48.741692
-//     },{
-//         latitude: 55.7538699,
-//         longitude: 48.74225550000
-//     },{
-//         latitude: 55.753664199999996,
-//         longitude: 48.7430999
-//     },
-//     {
-//         longitude: 48.744056,
-//         latitude: 55.753081
-//     }
-// ]
 
 let distance = (locA, locB)=>{
     const R = 6373e3 //(where R is the radius of the Earth)
@@ -66,10 +41,22 @@ let distance = (locA, locB)=>{
 }
 
 class MonitoringMapView extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            error: '',
+            error_div: 'none',
+            alert: 'alert',
+            location_div: 'none',
+            location: '',
+            inform: 'success',
+            distance: ''
+        }
+    }
 
     componentDidMount(){
         const mapboxgl = window.mapboxgl
-        //const MapboxGeocoder =  window.MapboxGeocoder
+        const MapboxGeocoder =  window.MapboxGeocoder
         mapboxgl.accessToken = 'pk.eyJ1IjoibmlpbmlpIiwiYSI6ImNqdG1vNGh2czBoZTE0NmxpMHd1Ynpna3EifQ.ZPedbjHDKONkcYRclXSAbw';
         let map = new mapboxgl.Map({
             container: 'map', // container id
@@ -77,7 +64,6 @@ class MonitoringMapView extends Component {
             center: [secloc.longitude,secloc.latitude], // starting position [lng, lat]
             zoom: 15 // starting zoom
         })
-
                 
         map.on('load', ()=>{
             setInterval(
@@ -88,12 +74,13 @@ class MonitoringMapView extends Component {
                                 latitude: pos.coords.latitude,
                                 longitude: pos.coords.longitude
                             }
-                            console.log('Distance: ',distance(loca, data[0])+' feet')
+                            // console.log('Distance: ',distance(loca, secloc)+' feet')
+                            this.setState({
+                                location: loca,
+                                location_div: 'block',
+                                distance: distance(loca, secloc)
+                            })
                     })
-                    //for(let i = 1; i< loc.length; i++){
-                        //console.log('Distance: ',distance(loc[0], loc[1])+' feet')
-                        //console.log('Distance: ',distance(loca, data[0])+' feet')
-                    //}
                 }
             ,5000)
 
@@ -101,26 +88,32 @@ class MonitoringMapView extends Component {
                 positionOptions: {enableHighAccuracy: true},
                 trackUserLocation: true
             }))
-            // map.addControl(new MapboxGeocoder({
-            //     accessToken: mapboxgl.accessToken,
-            //     mapboxgl: mapboxgl,
+
+            map.addControl(new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl,
                 
-            // }))
+            }))
         })
 
-        data.map((campus)=>{ //console.log(campus)
-            return new mapboxgl.Marker()
-                        .setLngLat([campus.longitude,campus.latitude])
-                        .addTo(map)
-        })
+        // data.map((campus)=>{ //console.log(campus)
+        //     return new mapboxgl.Marker()
+        //         .setLngLat([campus.longitude,campus.latitude])
+        //         .addTo(map)
+        // })
 
         map.on('error',(info)=>{
-            console.log('err: ',info)
+            this.setState({
+                error: info,
+                error_div: 'block'
+            })
+            //console.log('err: ',info)
         })
 
-        map.on('trackuserlocationstart',(info)=>{
-            console.log('start: ',info)
-        })
+        // map.on('trackuserlocationstart',(info)=>{
+        //     this.setState({location: info})
+        //     // console.log('start: ',info)
+        // })
 
         // http.get('/geocoding/v5/mapbox.places/Innopolis University.json?access_token=pk.eyJ1IjoibmlpbmlpIiwiYSI6ImNqdG1vNGh2czBoZTE0NmxpMHd1Ynpna3EifQ.ZPedbjHDKONkcYRclXSAbw',(info)=>{
         //     console.log('InnopolisU: ',info)
@@ -137,7 +130,23 @@ class MonitoringMapView extends Component {
         
         return (
             <div className={style.body}>
-               <div id='map' className={style.map} style={{height: '450px', width:'100%'}}></div>
+               <div id='map' 
+                    className={style.map} 
+                    style={{height: '450px', width:'100%'}}>
+               </div>
+               <div className={this.state.alert} style={{display: this.state.error_div}}>
+                    {this.state.error}
+                </div>
+                <div className={this.state.inform} 
+                    style={{paddingTop: 5, display: this.state.location_div}}>
+                    {JSON.stringify(Date()).substring(1,22)+ " GMT "} 
+                    {(this.state.location !== '')?
+                        `latitude: ${this.state.location.latitude.toFixed(6)}, 
+                          longitude: ${this.state.location.longitude.toFixed(6)}`
+                        : null
+                    }
+                    {(this.state.distance !== '')? `  Distance: ${this.state.distance.toFixed(2)} feet`: null}
+                </div>
             </div>
         );
     }

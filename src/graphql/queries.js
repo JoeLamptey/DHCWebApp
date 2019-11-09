@@ -1,22 +1,24 @@
-// eslint-disable
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getDomiciliary = `query GetDomiciliary($id: ID!) {
-  getDomiciliary(id: $id) {
+export const getTodo = `query GetTodo($id: ID!) {
+  getTodo(id: $id) {
     id
-    title
+    name
+    description
   }
 }
 `;
-export const listDomiciliaries = `query ListDomiciliaries(
-  $filter: TableDomiciliaryFilterInput
+export const listTodos = `query ListTodos(
+  $filter: ModelTodoFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listDomiciliaries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      title
+      name
+      description
     }
     nextToken
   }

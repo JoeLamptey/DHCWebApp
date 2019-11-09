@@ -1,24 +1,27 @@
-// eslint-disable
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createDomiciliary = `mutation CreateDomiciliary($input: CreateDomiciliaryInput!) {
-  createDomiciliary(input: $input) {
+export const createTodo = `mutation CreateTodo($input: CreateTodoInput!) {
+  createTodo(input: $input) {
     id
-    title
+    name
+    description
   }
 }
 `;
-export const updateDomiciliary = `mutation UpdateDomiciliary($input: UpdateDomiciliaryInput!) {
-  updateDomiciliary(input: $input) {
+export const updateTodo = `mutation UpdateTodo($input: UpdateTodoInput!) {
+  updateTodo(input: $input) {
     id
-    title
+    name
+    description
   }
 }
 `;
-export const deleteDomiciliary = `mutation DeleteDomiciliary($input: DeleteDomiciliaryInput!) {
-  deleteDomiciliary(input: $input) {
+export const deleteTodo = `mutation DeleteTodo($input: DeleteTodoInput!) {
+  deleteTodo(input: $input) {
     id
-    title
+    name
+    description
   }
 }
 `;

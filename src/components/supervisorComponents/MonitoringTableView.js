@@ -25,38 +25,71 @@ class MonitoringTabularView extends Component {
       }
     }
 
-    async componentWillMount(){ //console.log(this.props)
-        const ListSchedulesQuery = `
-        query listSchedules{
-          listSchedules(filter: {region:{ eq: "${this.props.user.region}"}}){
-            items{
-              id
-              client
-              start
-              end
-              address
-              postcode
-              carer
-              note
-              alert
-              date
-              region
-            }
-          }
-        }
-        `
-
-        await API.graphql(graphqlOperation(ListSchedulesQuery)).then((res)=>{
-            let schedules = res.data.listSchedules.items
-            let newSchedules = schedules.map(schedule=>{ //console.log(schedule)
-                  schedule = {...schedule, carer1:schedule.carer[0], carer2:schedule.carer[1]}
-                  delete schedule.carer
-                  return schedule
-                })
-            this.setState({data: newSchedules})
-        }).catch(e => console.log('Error: ', e))
+    componentWillMount(){         
+        this.listSchedule()
     }
   
+    async componentDidMount(){
+        const onCreateSchedule = `
+          subscription onCreateSchedule{
+            onCreateSchedule{
+                id
+                start
+                end
+            }
+          }
+          `
+        await API.graphql(graphqlOperation(onCreateSchedule)).subscribe(() =>{   
+            // let schedule = res.value.data.onCreateSchedule
+            //console.log(schedule)
+            this.listSchedule()
+        })
+
+        const onDeleteSchedule = `
+          subscription onDeleteSchedule{
+            onDeleteSchedule{
+              id
+              start
+              end
+              postcode
+            }
+          }
+        `
+        await API.graphql(graphqlOperation(onDeleteSchedule)).subscribe(() =>{
+          // let schedule = res.value.data.onDeleteSchedule
+          this.listSchedule() 
+          // console.log(schedule)
+        })
+    }
+
+    listSchedule = async ()=>{
+      const listScheduleQuery = `
+            query listSchedules {
+                listSchedules(filter: {region:{ eq: "${this.props.user.region}"}}) {
+                  items {
+                      id
+                      start
+                      end
+                      date
+                      client
+                      carer
+                      postcode
+                      address
+                      note
+                  }
+                }
+            }
+        `
+        await API.graphql(graphqlOperation(listScheduleQuery)).then(res =>{            
+          const schedules = res.data.listSchedules.items
+          let newSchedules = schedules.map(schedule=>{ //console.log(schedule)
+            schedule = {...schedule, carer1:schedule.carer[0], carer2:schedule.carer[1]}
+            delete schedule.carer
+            return schedule
+          })
+      this.setState({data: newSchedules})
+        }).catch(err => console.log('Error: ',err))
+    }
     create=async ()=>{
       //console.log('to be created: ',e)
       // console.log(this.state.create)

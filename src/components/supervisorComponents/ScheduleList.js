@@ -27,21 +27,25 @@ class ScheduleList extends Component {
       }
     }
   
-    refresh=()=>{this.setState({status: 'updated!'})}
+    // refresh=()=>{this.setState({status: 'updated!'})}
     
     componentDidUpdate( prevProps,prevState){
-        const info = prevProps.update
+        // const info = prevProps.update
         
-        if(info.name !== 'Schedule Client' && info.date !== undefined
-            && info.start !== undefined && info.end !==undefined && info.carer1 !==undefined){
-            const data = prevState.data;
-            data.push(info);           
-            prevProps = ''
-        }
+        // if(info.name !== 'Schedule Client' && info.date !== undefined
+        //     && info.start !== undefined && info.end !==undefined && info.carer1 !==undefined){
+        //     const data = prevState.data;
+        //     data.push(info);           
+        //     prevProps = ''
+        // }
         
     }
 
-    async componentWillMount(){  //(filter: {region:{ eq: "${this.props.region}"}})
+    componentWillMount(){  //(filter: {region:{ eq: "${this.props.region}"}})
+      this.listSchedule()
+    }
+
+    listSchedule = async ()=>{
       const listScheduleQuery = `
             query listSchedules {
                 listSchedules(filter: {region:{ eq: "${this.props.user.region}"}}) {
@@ -111,6 +115,22 @@ class ScheduleList extends Component {
             let schedule = res.value.data.onCreateSchedule
             //console.log(schedule)
             this.getSchedule(schedule.id)
+        })
+
+        const onDeleteSchedule = `
+          subscription onDeleteSchedule{
+            onDeleteSchedule{
+              id
+              start
+              end
+              postcode
+            }
+          }
+        `
+        await API.graphql(graphqlOperation(onDeleteSchedule)).subscribe(() =>{
+          // let schedule = res.value.data.onDeleteSchedule
+          this.listSchedule() 
+          // console.log(schedule)
         })
    }
     

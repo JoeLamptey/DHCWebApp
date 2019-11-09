@@ -128,7 +128,7 @@ class SupervisorSchedules extends Component{
                 hide: 'block',
                 notification:  error +', is invalid, please try again!'
             })
-            console.log('Error: ',error)
+            // console.log('Error: ',error)
         })
       }
 
@@ -192,7 +192,7 @@ class SupervisorSchedules extends Component{
     }
 
     refresh=()=>{
-       if(this.state.hide !== 'none'){this.setState({hide:'none'})}
+    //    if(this.state.hide !== 'none'){this.setState({hide:'none'})}
     }
 
     async componentWillMount(){
@@ -379,9 +379,10 @@ class SupervisorSchedules extends Component{
                             
                             <ScheduleList
                                 user={this.props}
-                                refresh={this.refresh} 
-                                update={{name: this.state.client.name,
-                                    ...this.state.schedule}}/>
+                                // refresh={this.refresh} 
+                                // update={{name: this.state.client.name,
+                                //     ...this.state.schedule}}
+                                    />
                         </Paper>
                     </Grid>
                 </Grid>

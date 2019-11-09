@@ -1,0 +1,784 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Admin {
+  address: String
+  email: AWSEmail
+  id: ID!
+  mobile: AWSPhone
+  name: String!
+  nextofkin: String
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+type AdminConnection {
+  items: [Admin]
+  nextToken: String
+}
+
+type Carer {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String
+  id: ID!
+  lastname: String
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_email: AWSEmail
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+type CarerConnection {
+  items: [Carer]
+  nextToken: String
+}
+
+type Client {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String!
+  id: ID!
+  lastname: String!
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_email: AWSEmail
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+type ClientConnection {
+  items: [Client]
+  nextToken: String
+}
+
+type Domiciliary {
+  address: String
+  email: AWSEmail
+  id: ID!
+  name: String
+  resident_manager: String
+  telephone: AWSPhone
+}
+
+type DomiciliaryConnection {
+  items: [Domiciliary]
+  nextToken: String
+}
+
+type Event {
+  date: AWSDate
+  duration: String
+  host: String
+  id: ID!
+  name: String
+  place: String
+  start: AWSTime
+}
+
+type EventConnection {
+  items: [Event]
+  nextToken: String
+}
+
+type Manager {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String!
+  id: ID!
+  lastname: String
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+type ManagerConnection {
+  items: [Manager]
+  nextToken: String
+}
+
+type Mutation {
+  createAdmin(input: CreateAdminInput!): Admin
+  createCarer(input: CreateCarerInput!): Carer
+  createClient(input: CreateClientInput!): Client
+  createDomiciliary(input: CreateDomiciliaryInput!): Domiciliary
+  createEvent(input: CreateEventInput!): Event
+  createManager(input: CreateManagerInput!): Manager
+  createReport(input: CreateReportInput!): Report
+  createSchedule(input: CreateScheduleInput!): Schedule
+  createSupervisors(input: CreateSupervisorsInput!): Supervisors
+  createTraining(input: CreateTrainingInput!): Training
+  createUser(input: CreateUserInput!): User
+  deleteAdmin(input: DeleteAdminInput!): Admin
+  deleteCarer(input: DeleteCarerInput!): Carer
+  deleteClient(input: DeleteClientInput!): Client
+  deleteDomiciliary(input: DeleteDomiciliaryInput!): Domiciliary
+  deleteEvent(input: DeleteEventInput!): Event
+  deleteManager(input: DeleteManagerInput!): Manager
+  deleteReport(input: DeleteReportInput!): Report
+  deleteSchedule(input: DeleteScheduleInput!): Schedule
+  deleteSupervisors(input: DeleteSupervisorsInput!): Supervisors
+  deleteTraining(input: DeleteTrainingInput!): Training
+  deleteUser(input: DeleteUserInput!): User
+  updateAdmin(input: UpdateAdminInput!): Admin
+  updateCarer(input: UpdateCarerInput!): Carer
+  updateClient(input: UpdateClientInput!): Client
+  updateDomiciliary(input: UpdateDomiciliaryInput!): Domiciliary
+  updateEvent(input: UpdateEventInput!): Event
+  updateManager(input: UpdateManagerInput!): Manager
+  updateReport(input: UpdateReportInput!): Report
+  updateSchedule(input: UpdateScheduleInput!): Schedule
+  updateSupervisors(input: UpdateSupervisorsInput!): Supervisors
+  updateTraining(input: UpdateTrainingInput!): Training
+  updateUser(input: UpdateUserInput!): User
+}
+
+type Query {
+  getAdmin(id: ID!): Admin
+  getCarer(id: ID!): Carer
+  getClient(id: ID!): Client
+  getDomiciliary(id: ID!): Domiciliary
+  getEvent(id: ID!): Event
+  getManager(id: ID!): Manager
+  getReport(id: ID!): Report
+  getSchedule(id: ID!): Schedule
+  getSupervisors(id: ID!): Supervisors
+  getTraining(id: ID!): Training
+  getUser(id: ID!): User
+  listAdmins(filter: TableAdminFilterInput, limit: Int, nextToken: String): AdminConnection
+  listCarers(filter: TableCarerFilterInput, limit: Int, nextToken: String): CarerConnection
+  listClients(filter: TableClientFilterInput, limit: Int, nextToken: String): ClientConnection
+  listDomiciliaries(filter: TableDomiciliaryFilterInput, limit: Int, nextToken: String): DomiciliaryConnection
+  listEvents(filter: TableEventFilterInput, limit: Int, nextToken: String): EventConnection
+  listManagers(filter: TableManagerFilterInput, limit: Int, nextToken: String): ManagerConnection
+  listReports(filter: TableReportFilterInput, limit: Int, nextToken: String): ReportConnection
+  listSchedules(filter: TableScheduleFilterInput, limit: Int, nextToken: String): ScheduleConnection
+  listSupervisors(filter: TableSupervisorsFilterInput, limit: Int, nextToken: String): SupervisorsConnection
+  listTrainings(filter: TableTrainingFilterInput, limit: Int, nextToken: String): TrainingConnection
+  listUsers(filter: TableUserFilterInput, limit: Int, nextToken: String): UserConnection
+}
+
+type Report {
+  date: String
+  description: String
+  id: ID!
+  recipient: String
+  region: String
+  report_type: String
+  sender: String
+  source: String
+  title: String
+}
+
+type ReportConnection {
+  items: [Report]
+  nextToken: String
+}
+
+type Schedule {
+  address: String
+  alert: [String]
+  carer: [String]
+  client: String
+  date: AWSDate
+  end: AWSTime
+  id: ID!
+  note: [String]
+  postcode: String
+  region: String
+  start: AWSTime
+}
+
+type ScheduleConnection {
+  items: [Schedule]
+  nextToken: String
+}
+
+type Subscription {
+  onCreateAdmin(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Admin @aws_subscribe(mutations : ["createAdmin"])
+  onCreateCarer(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Carer @aws_subscribe(mutations : ["createCarer"])
+  onCreateClient(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Client @aws_subscribe(mutations : ["createClient"])
+  onCreateDomiciliary(address: String, email: AWSEmail, id: ID, name: String, telephone: AWSPhone): Domiciliary @aws_subscribe(mutations : ["createDomiciliary"])
+  onCreateEvent(date: AWSDate, duration: String, id: ID, name: String, place: String): Event @aws_subscribe(mutations : ["createEvent"])
+  onCreateManager(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Manager @aws_subscribe(mutations : ["createManager"])
+  onCreateReport(description: String, id: ID, recipient: String, sender: String, title: String): Report @aws_subscribe(mutations : ["createReport"])
+  onCreateSchedule(address: String, end: AWSTime, id: ID, postcode: String, start: AWSTime): Schedule @aws_subscribe(mutations : ["createSchedule"])
+  onCreateSupervisors(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Supervisors @aws_subscribe(mutations : ["createSupervisors"])
+  onCreateTraining(date: AWSDate, duration: String, id: ID, name: String, place: String): Training @aws_subscribe(mutations : ["createTraining"])
+  onCreateUser(email: AWSEmail, firstname: String, id: ID, lastname: String, mobile: AWSPhone): User @aws_subscribe(mutations : ["createUser"])
+  onDeleteAdmin(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Admin @aws_subscribe(mutations : ["deleteAdmin"])
+  onDeleteCarer(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Carer @aws_subscribe(mutations : ["deleteCarer"])
+  onDeleteClient(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Client @aws_subscribe(mutations : ["deleteClient"])
+  onDeleteDomiciliary(address: String, email: AWSEmail, id: ID, name: String, telephone: AWSPhone): Domiciliary @aws_subscribe(mutations : ["deleteDomiciliary"])
+  onDeleteEvent(date: AWSDate, duration: String, id: ID, name: String, place: String): Event @aws_subscribe(mutations : ["deleteEvent"])
+  onDeleteManager(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Manager @aws_subscribe(mutations : ["deleteManager"])
+  onDeleteReport(description: String, id: ID, recipient: String, sender: String, title: String): Report @aws_subscribe(mutations : ["deleteReport"])
+  onDeleteSchedule(address: String, end: AWSTime, id: ID, postcode: String, start: AWSTime): Schedule @aws_subscribe(mutations : ["deleteSchedule"])
+  onDeleteSupervisors(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Supervisors @aws_subscribe(mutations : ["deleteSupervisors"])
+  onDeleteTraining(date: AWSDate, duration: String, id: ID, name: String, place: String): Training @aws_subscribe(mutations : ["deleteTraining"])
+  onDeleteUser(email: AWSEmail, firstname: String, id: ID, lastname: String, mobile: AWSPhone): User @aws_subscribe(mutations : ["deleteUser"])
+  onUpdateAdmin(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Admin @aws_subscribe(mutations : ["updateAdmin"])
+  onUpdateCarer(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Carer @aws_subscribe(mutations : ["updateCarer"])
+  onUpdateClient(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Client @aws_subscribe(mutations : ["updateClient"])
+  onUpdateDomiciliary(address: String, email: AWSEmail, id: ID, name: String, telephone: AWSPhone): Domiciliary @aws_subscribe(mutations : ["updateDomiciliary"])
+  onUpdateEvent(date: AWSDate, duration: String, id: ID, name: String, place: String): Event @aws_subscribe(mutations : ["updateEvent"])
+  onUpdateManager(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Manager @aws_subscribe(mutations : ["updateManager"])
+  onUpdateReport(description: String, id: ID, recipient: String, sender: String, title: String): Report @aws_subscribe(mutations : ["updateReport"])
+  onUpdateSchedule(address: String, end: AWSTime, id: ID, postcode: String, start: AWSTime): Schedule @aws_subscribe(mutations : ["updateSchedule"])
+  onUpdateSupervisors(email: AWSEmail, id: ID, mobile: AWSPhone, name: String, postcode: String): Supervisors @aws_subscribe(mutations : ["updateSupervisors"])
+  onUpdateTraining(date: AWSDate, duration: String, id: ID, name: String, place: String): Training @aws_subscribe(mutations : ["updateTraining"])
+  onUpdateUser(email: AWSEmail, firstname: String, id: ID, lastname: String, mobile: AWSPhone): User @aws_subscribe(mutations : ["updateUser"])
+}
+
+type Supervisors {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String!
+  id: ID!
+  lastname: String!
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_email: AWSEmail
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+type SupervisorsConnection {
+  items: [Supervisors]
+  nextToken: String
+}
+
+type Training {
+  date: AWSDate
+  duration: String
+  id: ID!
+  name: String
+  place: String
+  start: AWSTime
+}
+
+type TrainingConnection {
+  items: [Training]
+  nextToken: String
+}
+
+type User {
+  address: String
+  birthday: String
+  email: AWSEmail
+  firstname: String!
+  id: ID!
+  lastname: String!
+  mobile: AWSPhone
+  password: String
+  postcode: String
+  region: String
+  type: String
+}
+
+type UserConnection {
+  items: [User]
+  nextToken: String
+}
+
+input CreateAdminInput {
+  address: String
+  email: AWSEmail
+  mobile: AWSPhone
+  name: String!
+  nextofkin: String
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input CreateCarerInput {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String
+  lastname: String
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_email: AWSEmail
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input CreateClientInput {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String!
+  lastname: String!
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_email: AWSEmail
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input CreateDomiciliaryInput {
+  address: String
+  email: AWSEmail
+  name: String
+  resident_manager: String
+  telephone: AWSPhone
+}
+
+input CreateEventInput {
+  date: AWSDate
+  duration: String
+  host: String
+  name: String
+  place: String
+  start: AWSTime
+}
+
+input CreateManagerInput {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String!
+  lastname: String!
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_email: AWSEmail
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input CreateReportInput {
+  date: String
+  description: String
+  recipient: String
+  region: String
+  report_type: String
+  sender: String
+  source: String
+  title: String
+}
+
+input CreateScheduleInput {
+  address: String
+  alert: [String]
+  carer: [String]
+  client: String
+  date: AWSDate
+  end: AWSTime
+  note: [String]
+  postcode: String
+  region: String
+  start: AWSTime
+}
+
+input CreateSupervisorsInput {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String!
+  lastname: String!
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_email: AWSEmail
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input CreateTrainingInput {
+  date: AWSDate
+  duration: String
+  name: String
+  place: String
+  start: AWSTime
+}
+
+input CreateUserInput {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String!
+  lastname: String!
+  mobile: AWSPhone
+  password: String
+  postcode: String
+  region: String
+  type: String
+}
+
+input DeleteAdminInput {
+  id: ID!
+}
+
+input DeleteCarerInput {
+  id: ID!
+}
+
+input DeleteClientInput {
+  id: ID!
+}
+
+input DeleteDomiciliaryInput {
+  id: ID!
+}
+
+input DeleteEventInput {
+  id: ID!
+}
+
+input DeleteManagerInput {
+  id: ID!
+}
+
+input DeleteReportInput {
+  id: ID!
+}
+
+input DeleteScheduleInput {
+  id: ID!
+}
+
+input DeleteSupervisorsInput {
+  id: ID!
+}
+
+input DeleteTrainingInput {
+  id: ID!
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input TableAdminFilterInput {
+  address: TableStringFilterInput
+  email: TableStringFilterInput
+  id: TableIDFilterInput
+  mobile: TableStringFilterInput
+  name: TableStringFilterInput
+  nextofkin: TableStringFilterInput
+  nok_mobile: TableStringFilterInput
+  postcode: TableStringFilterInput
+  region: TableStringFilterInput
+}
+
+input TableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input TableCarerFilterInput {
+  address: TableStringFilterInput
+  email: TableStringFilterInput
+  id: TableIDFilterInput
+  mobile: TableStringFilterInput
+  name: TableStringFilterInput
+  nextofkin: TableStringFilterInput
+  nok_mobile: TableStringFilterInput
+  postcode: TableStringFilterInput
+  region: TableStringFilterInput
+}
+
+input TableClientFilterInput {
+  address: TableStringFilterInput
+  email: TableStringFilterInput
+  id: TableIDFilterInput
+  mobile: TableStringFilterInput
+  name: TableStringFilterInput
+  nextofkin: TableStringFilterInput
+  nok_mobile: TableStringFilterInput
+  postcode: TableStringFilterInput
+  region: TableStringFilterInput
+}
+
+input TableDomiciliaryFilterInput {
+  address: TableStringFilterInput
+  email: TableStringFilterInput
+  id: TableIDFilterInput
+  name: TableStringFilterInput
+  resident_manager: TableStringFilterInput
+  telephone: TableStringFilterInput
+}
+
+input TableEventFilterInput {
+  date: TableStringFilterInput
+  duration: TableStringFilterInput
+  host: TableStringFilterInput
+  id: TableIDFilterInput
+  name: TableStringFilterInput
+  place: TableStringFilterInput
+  start: TableStringFilterInput
+}
+
+input TableFloatFilterInput {
+  between: [Float]
+  contains: Float
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+  notContains: Float
+}
+
+input TableIDFilterInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+}
+
+input TableIntFilterInput {
+  between: [Int]
+  contains: Int
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+  notContains: Int
+}
+
+input TableManagerFilterInput {
+  address: TableStringFilterInput
+  email: TableStringFilterInput
+  id: TableIDFilterInput
+  mobile: TableStringFilterInput
+  name: TableStringFilterInput
+  nextofkin: TableStringFilterInput
+  nok_mobile: TableStringFilterInput
+  postcode: TableStringFilterInput
+  region: TableStringFilterInput
+}
+
+input TableReportFilterInput {
+  description: TableStringFilterInput
+  id: TableIDFilterInput
+  recipient: TableStringFilterInput
+  region: TableStringFilterInput
+  report_type: TableStringFilterInput
+  sender: TableStringFilterInput
+  source: TableStringFilterInput
+  title: TableStringFilterInput
+}
+
+input TableScheduleFilterInput {
+  address: TableStringFilterInput
+  alert: TableStringFilterInput
+  carer: TableStringFilterInput
+  client: TableStringFilterInput
+  end: TableStringFilterInput
+  id: TableIDFilterInput
+  note: TableStringFilterInput
+  postcode: TableStringFilterInput
+  region: TableStringFilterInput
+  start: TableStringFilterInput
+}
+
+input TableStringFilterInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+}
+
+input TableSupervisorsFilterInput {
+  address: TableStringFilterInput
+  email: TableStringFilterInput
+  id: TableIDFilterInput
+  mobile: TableStringFilterInput
+  name: TableStringFilterInput
+  nextofkin: TableStringFilterInput
+  nok_mobile: TableStringFilterInput
+  postcode: TableStringFilterInput
+  region: TableStringFilterInput
+}
+
+input TableTrainingFilterInput {
+  date: TableStringFilterInput
+  duration: TableStringFilterInput
+  id: TableIDFilterInput
+  name: TableStringFilterInput
+  place: TableStringFilterInput
+  start: TableStringFilterInput
+}
+
+input TableUserFilterInput {
+  address: TableStringFilterInput
+  email: TableStringFilterInput
+  firstname: TableStringFilterInput
+  id: TableIDFilterInput
+  lastname: TableStringFilterInput
+  mobile: TableStringFilterInput
+  password: TableStringFilterInput
+  postcode: TableStringFilterInput
+  type: TableStringFilterInput
+}
+
+input UpdateAdminInput {
+  address: String
+  email: AWSEmail
+  id: ID!
+  mobile: AWSPhone
+  name: String
+  nextofkin: String
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input UpdateCarerInput {
+  address: String
+  email: AWSEmail
+  id: ID!
+  mobile: AWSPhone
+  name: String
+  nextofkin: String
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input UpdateClientInput {
+  address: String
+  birthday: AWSDate
+  email: AWSEmail
+  firstname: String!
+  id: ID!
+  lastname: String!
+  middlename: String
+  mobile: AWSPhone
+  nextofkin: String
+  nok_email: AWSEmail
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input UpdateDomiciliaryInput {
+  address: String
+  email: AWSEmail
+  id: ID!
+  name: String
+  resident_manager: String
+  telephone: AWSPhone
+}
+
+input UpdateEventInput {
+  date: AWSDate
+  duration: String
+  host: String
+  id: ID!
+  name: String
+  place: String
+  start: AWSTime
+}
+
+input UpdateManagerInput {
+  address: String
+  email: AWSEmail
+  id: ID!
+  mobile: AWSPhone
+  name: String
+  nextofkin: String
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input UpdateReportInput {
+  description: String
+  id: ID!
+  recipient: String
+  report_type: String
+  sender: String
+  title: String
+}
+
+input UpdateScheduleInput {
+  address: String
+  alert: [String]
+  carer: [String]
+  client: String
+  date: AWSDate
+  end: AWSTime
+  id: ID!
+  note: [String]
+  postcode: String
+  region: String
+  start: AWSTime
+}
+
+input UpdateSupervisorsInput {
+  address: String
+  email: AWSEmail
+  id: ID!
+  mobile: AWSPhone
+  name: String
+  nextofkin: String
+  nok_mobile: AWSPhone
+  postcode: String
+  region: String
+}
+
+input UpdateTrainingInput {
+  date: AWSDate
+  duration: String
+  id: ID!
+  name: String
+  place: String
+  start: AWSTime
+}
+
+input UpdateUserInput {
+  address: String
+  email: AWSEmail
+  firstname: String
+  id: ID!
+  lastname: String
+  mobile: AWSPhone
+  password: String
+  postcode: String
+  region: String
+  type: String
+}

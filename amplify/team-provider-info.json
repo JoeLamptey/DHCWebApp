@@ -10,5 +10,29 @@
             "StackName": "dhc-webapp-dev-20190514211436",
             "StackId": "arn:aws:cloudformation:us-east-1:295841432243:stack/dhc-webapp-dev-20190514211436/252a3dc0-7674-11e9-808f-0ad4d2e93658"
         }
+    },
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "dhc-webapp-prod-20190911155555-authRole",
+            "UnauthRoleArn": "arn:aws:iam::295841432243:role/dhc-webapp-prod-20190911155555-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::295841432243:role/dhc-webapp-prod-20190911155555-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "dhc-webapp-prod-20190911155555-deployment",
+            "UnauthRoleName": "dhc-webapp-prod-20190911155555-unauthRole",
+            "StackName": "dhc-webapp-prod-20190911155555",
+            "StackId": "arn:aws:cloudformation:us-east-1:295841432243:stack/dhc-webapp-prod-20190911155555/7f3bd760-d493-11e9-87f8-0e984b426fca"
+        }
+    },
+    "new": {
+        "awscloudformation": {
+            "AuthRoleName": "dhc-webapp-new-20190911161543-authRole",
+            "UnauthRoleArn": "arn:aws:iam::295841432243:role/dhc-webapp-new-20190911161543-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::295841432243:role/dhc-webapp-new-20190911161543-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "dhc-webapp-new-20190911161543-deployment",
+            "UnauthRoleName": "dhc-webapp-new-20190911161543-unauthRole",
+            "StackName": "dhc-webapp-new-20190911161543",
+            "StackId": "arn:aws:cloudformation:us-east-1:295841432243:stack/dhc-webapp-new-20190911161543/432c2420-d496-11e9-b5e8-0e6c5fec19cc"
+        }
     }
 }
