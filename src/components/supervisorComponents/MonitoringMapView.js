@@ -16,8 +16,8 @@ const style ={
 }
 
  let secloc = {
-     latitude: 55.753881, //55.753881 
-     longitude: 48.7417498 //48.7417498
+     latitude: 55.753881, //55.753881 55.753879
+     longitude: 48.7417498 //48.7417498 48.741747
  }
 
 let distance = (locA, locB)=>{
